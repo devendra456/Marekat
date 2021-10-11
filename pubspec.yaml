@@ -1,0 +1,83 @@
+name: Daemmart
+
+description: This is the flutter mobile application.
+
+version: 1.0.0
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  http: any
+  intl: any
+  provider: any
+#  json_annotation: any
+#  logging: any
+  connectivity: any
+  shimmer: any
+#  bordered_text: any
+  flutter_html: any
+  flutter_svg: any
+  url_launcher: any
+#  toast: any
+  shared_preferences: any
+  flutter_icons: any
+#  dotted_line: any
+#  timeline_list: any
+#  progress_dialog: any
+#  after_init: any
+  webview_flutter: any
+#  clipboard: any
+  google_fonts: any
+  flutter_rating_bar: any
+  expandable: any
+  dropdown_search: any
+  flutter_countdown_timer: any
+#  splashscreen: any
+#  package_info: any
+  intl_phone_number_input: any
+#  flutter_chat_bubble: any
+  cupertino_icons: any
+  carousel_slider: any
+#  cached_network_image: any
+  timeline_tile: any
+  shared_value: any
+#  rename: any
+  permission_handler: ^6.0.0
+  fluttertoast: ^8.0.7
+  share: ^2.0.4
+#  video_player: ^2.1.10
+  path_provider: any
+  path: any
+  file_picker: ^3.0.3
+  flutter_offline: any
+  location: ^4.3.0
+  flutter_phoenix: ^1.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  build_runner: ^1.10.6
+  json_serializable: ^3.3.0
+#  flutter_launcher_icons: ^0.7.5
+#  flutter_launcher_name: ^0.0.1
+
+#flutter_icons:
+#  android: true
+#  ios: true
+#  image_path: "assets/app_logo.png"
+
+flutter_launcher_name:
+  name: "Daemmart"
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
+
+flutter_intl:
+  enabled: true
