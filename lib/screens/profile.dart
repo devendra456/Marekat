@@ -1,16 +1,16 @@
-import 'package:Daemmart/app_config.dart';
-import 'package:Daemmart/custom/toast_component.dart';
-import 'package:Daemmart/generated/l10n.dart';
-import 'package:Daemmart/helpers/shared_value_helper.dart';
-import 'package:Daemmart/my_theme.dart';
-import 'package:Daemmart/repositories/profile_repositories.dart';
-import 'package:Daemmart/screens/address.dart';
-import 'package:Daemmart/screens/order_list.dart';
-import 'package:Daemmart/screens/profile_edit.dart';
-import 'package:Daemmart/screens/wallet.dart';
-import 'package:Daemmart/ui_sections/main_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:marekat/app_config.dart';
+import 'package:marekat/custom/toast_component.dart';
+import 'package:marekat/generated/l10n.dart';
+import 'package:marekat/helpers/shared_value_helper.dart';
+import 'package:marekat/my_theme.dart';
+import 'package:marekat/repositories/profile_repositories.dart';
+import 'package:marekat/screens/address.dart';
+import 'package:marekat/screens/order_list.dart';
+import 'package:marekat/screens/profile_edit.dart';
+import 'package:marekat/screens/wallet.dart';
+import 'package:marekat/ui_sections/main_drawer.dart';
 
 import 'login.dart';
 

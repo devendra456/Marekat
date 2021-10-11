@@ -1,10 +1,10 @@
-import 'package:Daemmart/app_config.dart';
-import 'package:Daemmart/data_model/wishlist_check_response.dart';
-import 'package:Daemmart/data_model/wishlist_delete_response.dart';
-import 'package:Daemmart/data_model/wishlist_response.dart';
-import 'package:Daemmart/helpers/shared_value_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:marekat/app_config.dart';
+import 'package:marekat/data_model/wishlist_check_response.dart';
+import 'package:marekat/data_model/wishlist_delete_response.dart';
+import 'package:marekat/data_model/wishlist_response.dart';
+import 'package:marekat/helpers/shared_value_helper.dart';
 
 class WishListRepository {
   Future<WishlistResponse> getUserWishlist() async {

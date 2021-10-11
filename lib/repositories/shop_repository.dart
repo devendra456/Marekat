@@ -1,10 +1,10 @@
-import 'package:Daemmart/app_config.dart';
-import 'package:Daemmart/data_model/product_mini_response.dart';
-import 'package:Daemmart/data_model/shop_details_response.dart';
-import 'package:Daemmart/data_model/shop_response.dart';
-import 'package:Daemmart/helpers/shared_value_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:marekat/app_config.dart';
+import 'package:marekat/data_model/product_mini_response.dart';
+import 'package:marekat/data_model/shop_details_response.dart';
+import 'package:marekat/data_model/shop_response.dart';
+import 'package:marekat/helpers/shared_value_helper.dart';
 
 class ShopRepository {
   Future<ShopResponse> getShops({name = "", page = 1}) async {

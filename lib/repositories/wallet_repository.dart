@@ -1,8 +1,8 @@
-import 'package:Daemmart/app_config.dart';
-import 'package:Daemmart/data_model/wallet_balance_response.dart';
-import 'package:Daemmart/data_model/wallet_recharge_response.dart';
-import 'package:Daemmart/helpers/shared_value_helper.dart';
 import 'package:http/http.dart' as http;
+import 'package:marekat/app_config.dart';
+import 'package:marekat/data_model/wallet_balance_response.dart';
+import 'package:marekat/data_model/wallet_recharge_response.dart';
+import 'package:marekat/helpers/shared_value_helper.dart';
 
 class WalletRepository {
   Future<WalletBalanceResponse> getBalance() async {

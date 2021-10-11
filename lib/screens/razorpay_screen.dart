@@ -1,14 +1,14 @@
 import 'dart:convert';
 
-import 'package:Daemmart/app_config.dart';
-import 'package:Daemmart/custom/toast_component.dart';
-import 'package:Daemmart/generated/l10n.dart';
-import 'package:Daemmart/helpers/shared_value_helper.dart';
-import 'package:Daemmart/my_theme.dart';
-import 'package:Daemmart/repositories/payment_repository.dart';
-import 'package:Daemmart/screens/order_list.dart';
-import 'package:Daemmart/screens/wallet.dart';
 import 'package:flutter/material.dart';
+import 'package:marekat/app_config.dart';
+import 'package:marekat/custom/toast_component.dart';
+import 'package:marekat/generated/l10n.dart';
+import 'package:marekat/helpers/shared_value_helper.dart';
+import 'package:marekat/my_theme.dart';
+import 'package:marekat/repositories/payment_repository.dart';
+import 'package:marekat/screens/order_list.dart';
+import 'package:marekat/screens/wallet.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class RazorpayScreen extends StatefulWidget {

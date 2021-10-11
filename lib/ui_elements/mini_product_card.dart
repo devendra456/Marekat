@@ -1,7 +1,7 @@
-import 'package:Daemmart/app_config.dart';
-import 'package:Daemmart/my_theme.dart';
-import 'package:Daemmart/screens/product_details.dart';
 import 'package:flutter/material.dart';
+import 'package:marekat/app_config.dart';
+import 'package:marekat/my_theme.dart';
+import 'package:marekat/screens/product_details.dart';
 
 class MiniProductCard extends StatefulWidget {
   int id;

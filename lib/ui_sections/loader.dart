@@ -1,6 +1,6 @@
-import 'package:Daemmart/my_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:marekat/my_theme.dart';
 
 class Loader {
   static BuildContext dialogContext;

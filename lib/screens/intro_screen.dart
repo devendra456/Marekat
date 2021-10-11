@@ -1,5 +1,5 @@
-import 'package:Daemmart/my_theme.dart';
-import 'package:Daemmart/screens/main_screen.dart';
+import 'package:marekat/my_theme.dart';
+import 'package:marekat/screens/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';

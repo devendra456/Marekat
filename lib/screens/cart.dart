@@ -1,18 +1,18 @@
-import 'package:Daemmart/app_config.dart';
-import 'package:Daemmart/custom/toast_component.dart';
-import 'package:Daemmart/generated/l10n.dart';
-import 'package:Daemmart/helpers/shared_value_helper.dart';
-import 'package:Daemmart/helpers/shimmer_helper.dart';
-import 'package:Daemmart/helpers/string_helper.dart';
-import 'package:Daemmart/my_theme.dart';
-import 'package:Daemmart/repositories/cart_repository.dart';
-import 'package:Daemmart/screens/main_screen.dart';
-import 'package:Daemmart/screens/shipping_info.dart';
-import 'package:Daemmart/ui_sections/main_drawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:marekat/app_config.dart';
+import 'package:marekat/custom/toast_component.dart';
+import 'package:marekat/generated/l10n.dart';
+import 'package:marekat/helpers/shared_value_helper.dart';
+import 'package:marekat/helpers/shimmer_helper.dart';
+import 'package:marekat/helpers/string_helper.dart';
+import 'package:marekat/my_theme.dart';
+import 'package:marekat/repositories/cart_repository.dart';
+import 'package:marekat/screens/main_screen.dart';
+import 'package:marekat/screens/shipping_info.dart';
+import 'package:marekat/ui_sections/main_drawer.dart';
 
 import 'login.dart';
 

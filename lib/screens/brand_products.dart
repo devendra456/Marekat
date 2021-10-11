@@ -1,9 +1,9 @@
-import 'package:Daemmart/generated/l10n.dart';
-import 'package:Daemmart/helpers/shimmer_helper.dart';
-import 'package:Daemmart/my_theme.dart';
-import 'package:Daemmart/repositories/product_repository.dart';
-import 'package:Daemmart/ui_elements/product_card.dart';
 import 'package:flutter/material.dart';
+import 'package:marekat/generated/l10n.dart';
+import 'package:marekat/helpers/shimmer_helper.dart';
+import 'package:marekat/my_theme.dart';
+import 'package:marekat/repositories/product_repository.dart';
+import 'package:marekat/ui_elements/product_card.dart';
 
 class BrandProducts extends StatefulWidget {
   BrandProducts({Key key, this.id, this.brand_name}) : super(key: key);
@@ -33,7 +33,8 @@ class _BrandProductsState extends State<BrandProducts> {
     fetchData();
 
     _xcrollController.addListener(() {
-      if (_xcrollController.position.pixels == _xcrollController.position.maxScrollExtent) {
+      if (_xcrollController.position.pixels ==
+          _xcrollController.position.maxScrollExtent) {
         setState(() {
           _page++;
         });
@@ -52,7 +53,8 @@ class _BrandProductsState extends State<BrandProducts> {
   }
 
   fetchData() async {
-    var productResponse = await ProductRepository().getBrandProducts(id: widget.id, page: _page, name: _searchKey);
+    var productResponse = await ProductRepository()
+        .getBrandProducts(id: widget.id, page: _page, name: _searchKey);
     _productList.addAll(productResponse.products);
     _isInitial = false;
     _totalData = productResponse.meta.total;
@@ -80,7 +82,12 @@ class _BrandProductsState extends State<BrandProducts> {
         backgroundColor: Colors.white,
         appBar: buildAppBar(context),
         body: Stack(
-          children: [buildProductList(), Align(alignment: Alignment.bottomCenter, child: buildLoadingContainer())],
+          children: [
+            buildProductList(),
+            Align(
+                alignment: Alignment.bottomCenter,
+                child: buildLoadingContainer())
+          ],
         ));
   }
 
@@ -90,7 +97,9 @@ class _BrandProductsState extends State<BrandProducts> {
       width: double.infinity,
       color: Colors.white,
       child: Center(
-        child: Text(_totalData == _productList.length ? S.of(context).noMoreProducts : S.of(context).loadingMoreProducts),
+        child: Text(_totalData == _productList.length
+            ? S.of(context).noMoreProducts
+            : S.of(context).loadingMoreProducts),
       ),
     );
   }
@@ -120,8 +129,10 @@ class _BrandProductsState extends State<BrandProducts> {
             },
             autofocus: true,
             decoration: InputDecoration(
-                hintText: S.of(context).searchProductsOfBrand + widget.brand_name,
-                hintStyle: TextStyle(fontSize: 14.0, color: MyTheme.textfield_grey),
+                hintText:
+                    S.of(context).searchProductsOfBrand + widget.brand_name,
+                hintStyle:
+                    TextStyle(fontSize: 14.0, color: MyTheme.textfield_grey),
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: MyTheme.white, width: 0.0),
                 ),
@@ -151,7 +162,9 @@ class _BrandProductsState extends State<BrandProducts> {
 
   buildProductList() {
     if (_isInitial && _productList.length == 0) {
-      return SingleChildScrollView(child: ShimmerHelper().buildProductGridShimmer(scontroller: _scrollController));
+      return SingleChildScrollView(
+          child: ShimmerHelper()
+              .buildProductGridShimmer(scontroller: _scrollController));
     } else if (_productList.length > 0) {
       return RefreshIndicator(
         color: MyTheme.accent_color,
@@ -160,13 +173,18 @@ class _BrandProductsState extends State<BrandProducts> {
         onRefresh: _onRefresh,
         child: SingleChildScrollView(
           controller: _xcrollController,
-          physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+          physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics()),
           child: GridView.builder(
             // 2
             //addAutomaticKeepAlives: true,
             itemCount: _productList.length,
             controller: _scrollController,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10, childAspectRatio: 0.618),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                childAspectRatio: 0.618),
             padding: EdgeInsets.all(16),
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
@@ -176,7 +194,7 @@ class _BrandProductsState extends State<BrandProducts> {
                 id: _productList[index].id,
                 image: _productList[index].thumbnail_image,
                 name: _productList[index].name,
-                price: _productList[index].base_price,
+                price: _productList[index].stroked_price,
               );
             },
           ),

@@ -35,10 +35,10 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
-  /// `Daemmart`
+  /// `Marekat`
   String get app_name {
     return Intl.message(
-      'Daemmart',
+      'Marekat',
       name: 'app_name',
       desc: '',
       args: [],
@@ -245,10 +245,10 @@ class S {
     );
   }
 
-  /// `Login to Daemmart`
+  /// `Login to Marekat`
   String get login_to_daemmart {
     return Intl.message(
-      'Login to Daemmart',
+      'Login to Marekat',
       name: 'login_to_daemmart',
       desc: '',
       args: [],

@@ -1,9 +1,9 @@
-import 'package:Daemmart/generated/l10n.dart';
-import 'package:Daemmart/helpers/shimmer_helper.dart';
-import 'package:Daemmart/my_theme.dart';
-import 'package:Daemmart/repositories/product_repository.dart';
-import 'package:Daemmart/ui_elements/product_card.dart';
 import 'package:flutter/material.dart';
+import 'package:marekat/generated/l10n.dart';
+import 'package:marekat/helpers/shimmer_helper.dart';
+import 'package:marekat/my_theme.dart';
+import 'package:marekat/repositories/product_repository.dart';
+import 'package:marekat/ui_elements/product_card.dart';
 
 class TodaysDealProducts extends StatefulWidget {
   @override
@@ -51,7 +51,11 @@ class _TodaysDealProductsState extends State<TodaysDealProducts> {
               child: GridView.builder(
                 itemCount: productResponse.products.length,
                 controller: _scrollController,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10, childAspectRatio: 0.618),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    childAspectRatio: 0.618),
                 padding: EdgeInsets.all(16),
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
@@ -61,13 +65,14 @@ class _TodaysDealProductsState extends State<TodaysDealProducts> {
                     id: productResponse.products[index].id,
                     image: productResponse.products[index].thumbnail_image,
                     name: productResponse.products[index].name,
-                    price: productResponse.products[index].base_price,
+                    price: productResponse.products[index].stroked_price,
                   );
                 },
               ),
             );
           } else {
-            return ShimmerHelper().buildProductGridShimmer(scontroller: _scrollController);
+            return ShimmerHelper()
+                .buildProductGridShimmer(scontroller: _scrollController);
           }
         });
   }

@@ -1,13 +1,13 @@
 import 'dart:async';
 
-import 'package:Daemmart/helpers/shared_value_helper.dart';
-import 'package:Daemmart/repositories/auth_repository.dart';
-import 'package:Daemmart/screens/main_screen.dart';
-import 'package:Daemmart/screens/offline_screen.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_offline/flutter_offline.dart';
+import 'package:marekat/helpers/shared_value_helper.dart';
+import 'package:marekat/repositories/auth_repository.dart';
+import 'package:marekat/screens/main_screen.dart';
+import 'package:marekat/screens/offline_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'intro_screen.dart';

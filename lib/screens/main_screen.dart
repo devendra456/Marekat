@@ -1,15 +1,15 @@
 import 'dart:ui';
 
-import 'package:Daemmart/generated/l10n.dart';
-import 'package:Daemmart/my_theme.dart';
-import 'package:Daemmart/screens/cart.dart';
-import 'package:Daemmart/screens/category_list.dart';
-import 'package:Daemmart/screens/home.dart';
-import 'package:Daemmart/screens/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:marekat/generated/l10n.dart';
+import 'package:marekat/my_theme.dart';
+import 'package:marekat/screens/cart.dart';
+import 'package:marekat/screens/category_list.dart';
+import 'package:marekat/screens/home.dart';
+import 'package:marekat/screens/profile.dart';
 
 import 'filter.dart';
 
@@ -75,11 +75,12 @@ class _MainScreenState extends State<MainScreen> {
               padding: const EdgeInsets.all(4.0),
               child: Container(
                 decoration: BoxDecoration(
-                    border: Border.all(width: 4, color: MyTheme.green),
+                    border: Border.all(width: 4, color: MyTheme.black),
                     borderRadius: BorderRadius.circular(30)),
                 child: Center(
                   child: SvgPicture.asset(
                     "assets/favicon.svg",
+                    color: MyTheme.black,
                     height: 24,
                     width: 24,
                   ),
@@ -100,7 +101,7 @@ class _MainScreenState extends State<MainScreen> {
           child: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
             onTap: onTapped,
-            backgroundColor: MyTheme.green,
+            backgroundColor: MyTheme.accent_color,
             currentIndex: _currentIndex,
             showUnselectedLabels: false,
             showSelectedLabels: false,
@@ -121,7 +122,7 @@ class _MainScreenState extends State<MainScreen> {
                         width: 14,
                         height: 1,
                         color:
-                            _currentIndex == 0 ? Colors.white : MyTheme.green,
+                            _currentIndex == 0 ? Colors.white : MyTheme.black,
                       )
                     ],
                   ),
@@ -141,7 +142,7 @@ class _MainScreenState extends State<MainScreen> {
                         width: 14,
                         height: 1,
                         color:
-                            _currentIndex == 1 ? Colors.white : MyTheme.green,
+                            _currentIndex == 1 ? Colors.white : MyTheme.black,
                       )
                     ],
                   ),
@@ -157,6 +158,7 @@ class _MainScreenState extends State<MainScreen> {
                     children: [
                       SvgPicture.asset(
                         "assets/cart.svg",
+                        color: Colors.white,
                         height: 20,
                       ),
                       SizedBox(
@@ -166,7 +168,7 @@ class _MainScreenState extends State<MainScreen> {
                         width: 14,
                         height: 1,
                         color:
-                            _currentIndex == 3 ? Colors.white : MyTheme.green,
+                            _currentIndex == 3 ? Colors.white : MyTheme.black,
                       )
                     ],
                   ),
@@ -186,7 +188,7 @@ class _MainScreenState extends State<MainScreen> {
                         width: 14,
                         height: 1,
                         color:
-                            _currentIndex == 4 ? Colors.white : MyTheme.green,
+                            _currentIndex == 4 ? Colors.white : MyTheme.black,
                       )
                     ],
                   ),

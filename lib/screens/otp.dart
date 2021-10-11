@@ -1,10 +1,10 @@
-import 'package:Daemmart/custom/input_decorations.dart';
-import 'package:Daemmart/custom/toast_component.dart';
-import 'package:Daemmart/generated/l10n.dart';
-import 'package:Daemmart/my_theme.dart';
-import 'package:Daemmart/repositories/auth_repository.dart';
-import 'package:Daemmart/screens/login.dart';
 import 'package:flutter/material.dart';
+import 'package:marekat/custom/input_decorations.dart';
+import 'package:marekat/custom/toast_component.dart';
+import 'package:marekat/generated/l10n.dart';
+import 'package:marekat/my_theme.dart';
+import 'package:marekat/repositories/auth_repository.dart';
+import 'package:marekat/screens/login.dart';
 
 class Otp extends StatefulWidget {
   Otp({Key key, this.verify_by = "email", this.user_id}) : super(key: key);
@@ -20,7 +20,8 @@ class _OtpState extends State<Otp> {
   TextEditingController _verificationCodeController = TextEditingController();
 
   onTapResend() async {
-    var resendCodeResponse = await AuthRepository().getResendCodeResponse(widget.user_id, widget.verify_by);
+    var resendCodeResponse = await AuthRepository()
+        .getResendCodeResponse(widget.user_id, widget.verify_by);
 
     if (resendCodeResponse.result == false) {
       ToastComponent.showDialog(
@@ -43,7 +44,8 @@ class _OtpState extends State<Otp> {
       return;
     }
 
-    var confirmCodeResponse = await AuthRepository().getConfirmCodeResponse(widget.user_id, code);
+    var confirmCodeResponse =
+        await AuthRepository().getConfirmCodeResponse(widget.user_id, code);
 
     if (confirmCodeResponse.result == false) {
       ToastComponent.showDialog(
@@ -71,7 +73,8 @@ class _OtpState extends State<Otp> {
         children: [
           Container(
             width: _screen_width * (1 / 2),
-            child: Image.asset("assets/splash_login_registration_background_image.png"),
+            child: Image.asset(
+                "assets/splash_login_registration_background_image.png"),
           ),
           Container(
             width: double.infinity,
@@ -83,14 +86,21 @@ class _OtpState extends State<Otp> {
                   padding: const EdgeInsets.only(top: 40.0, bottom: 15),
                   child: Container(
                     width: _screen_width * (2 / 3),
-                    child: Image.asset('assets/login_registration_form_logo.png'),
+                    child:
+                        Image.asset('assets/login_registration_form_logo.png'),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20.0),
                   child: Text(
-                    S.of(context).verifyYour + (_verify_by == "email" ? S.of(context).emailAccount : S.of(context).phoneNumber),
-                    style: TextStyle(color: MyTheme.accent_color, fontSize: 18, fontWeight: FontWeight.w600),
+                    S.of(context).verifyYour +
+                        (_verify_by == "email"
+                            ? S.of(context).emailAccount
+                            : S.of(context).phoneNumber),
+                    style: TextStyle(
+                        color: MyTheme.accent_color,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600),
                   ),
                 ),
                 Padding(
@@ -98,10 +108,20 @@ class _OtpState extends State<Otp> {
                   child: Container(
                       width: _screen_width * (3 / 4),
                       child: _verify_by == "email"
-                          ? Text(S.of(context).enterTheVerificationCodeThatSentToYourEmailRecently,
-                              textAlign: TextAlign.center, style: TextStyle(color: MyTheme.dark_grey, fontSize: 14))
-                          : Text(S.of(context).enterTheVerificationCodeThatSentToYourPhoneRecently,
-                              textAlign: TextAlign.center, style: TextStyle(color: MyTheme.dark_grey, fontSize: 14))),
+                          ? Text(
+                              S
+                                  .of(context)
+                                  .enterTheVerificationCodeThatSentToYourEmailRecently,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: MyTheme.dark_grey, fontSize: 14))
+                          : Text(
+                              S
+                                  .of(context)
+                                  .enterTheVerificationCodeThatSentToYourPhoneRecently,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: MyTheme.dark_grey, fontSize: 14))),
                 ),
                 Container(
                   width: _screen_width * (3 / 4),
@@ -118,7 +138,9 @@ class _OtpState extends State<Otp> {
                               child: TextField(
                                 controller: _verificationCodeController,
                                 autofocus: false,
-                                decoration: InputDecorations.buildInputDecoration_1(hintText: S.of(context).aXB4JH),
+                                decoration:
+                                    InputDecorations.buildInputDecoration_1(
+                                        hintText: S.of(context).aXB4JH),
                               ),
                             ),
                           ],
@@ -128,15 +150,24 @@ class _OtpState extends State<Otp> {
                         padding: const EdgeInsets.only(top: 40.0),
                         child: Container(
                           height: 45,
-                          decoration: BoxDecoration(border: Border.all(color: MyTheme.textfield_grey, width: 1), borderRadius: const BorderRadius.all(Radius.circular(12.0))),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: MyTheme.textfield_grey, width: 1),
+                              borderRadius: const BorderRadius.all(
+                                  Radius.circular(12.0))),
                           child: MaterialButton(
                             minWidth: MediaQuery.of(context).size.width,
                             //height: 50,
                             color: MyTheme.accent_color,
-                            shape: RoundedRectangleBorder(borderRadius: const BorderRadius.all(Radius.circular(11.0))),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(11.0))),
                             child: Text(
                               S.of(context).confirm,
-                              style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600),
                             ),
                             onPressed: () {
                               onPressConfirm();
@@ -154,7 +185,11 @@ class _OtpState extends State<Otp> {
                       onTapResend();
                     },
                     child: Text(S.of(context).resendCode,
-                        textAlign: TextAlign.center, style: TextStyle(color: MyTheme.accent_color, decoration: TextDecoration.underline, fontSize: 13)),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: MyTheme.accent_color,
+                            decoration: TextDecoration.underline,
+                            fontSize: 13)),
                   ),
                 ),
               ],

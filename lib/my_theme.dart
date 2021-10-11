@@ -8,8 +8,8 @@ class MyTheme {
   static Color yellow = Color.fromARGB(255, 248, 152, 28);
   static Color orange = Color.fromARGB(255, 216, 89, 51);
 
-  static Color accent_color = Color.fromARGB(255, 148, 15, 124);
-  static Color soft_accent_color = Color.fromARGB(255, 255, 208, 166);
+  static Color accent_color = Color.fromARGB(255, 0, 0, 0);
+  static Color soft_accent_color = Color.fromARGB(255, 238, 161, 28);
   static Color splash_screen_color = Color.fromARGB(255, 255, 255, 255);
   //my colors
 

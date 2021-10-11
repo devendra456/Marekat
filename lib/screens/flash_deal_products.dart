@@ -1,13 +1,14 @@
-import 'package:Daemmart/generated/l10n.dart';
-import 'package:Daemmart/helpers/shimmer_helper.dart';
-import 'package:Daemmart/helpers/string_helper.dart';
-import 'package:Daemmart/my_theme.dart';
-import 'package:Daemmart/repositories/product_repository.dart';
-import 'package:Daemmart/ui_elements/product_card.dart';
 import 'package:flutter/material.dart';
+import 'package:marekat/generated/l10n.dart';
+import 'package:marekat/helpers/shimmer_helper.dart';
+import 'package:marekat/helpers/string_helper.dart';
+import 'package:marekat/my_theme.dart';
+import 'package:marekat/repositories/product_repository.dart';
+import 'package:marekat/ui_elements/product_card.dart';
 
 class FlashDealProducts extends StatefulWidget {
-  FlashDealProducts({Key key, this.flash_deal_id, this.flash_deal_name}) : super(key: key);
+  FlashDealProducts({Key key, this.flash_deal_id, this.flash_deal_name})
+      : super(key: key);
   final int flash_deal_id;
   final String flash_deal_name;
 
@@ -85,8 +86,10 @@ class _FlashDealProductsState extends State<FlashDealProducts> {
             onTap: () {},
             autofocus: true,
             decoration: InputDecoration(
-                hintText: S.of(context).searchProductsFrom + widget.flash_deal_name,
-                hintStyle: TextStyle(fontSize: 14.0, color: MyTheme.textfield_grey),
+                hintText:
+                    S.of(context).searchProductsFrom + widget.flash_deal_name,
+                hintStyle:
+                    TextStyle(fontSize: 14.0, color: MyTheme.textfield_grey),
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: MyTheme.white, width: 0.0),
                 ),
@@ -125,7 +128,11 @@ class _FlashDealProductsState extends State<FlashDealProducts> {
             child: GridView.builder(
               itemCount: _searchList.length,
               controller: _scrollController,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10, childAspectRatio: 0.618),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  childAspectRatio: 0.618),
               padding: EdgeInsets.all(16),
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -135,13 +142,14 @@ class _FlashDealProductsState extends State<FlashDealProducts> {
                   id: _searchList[index].id,
                   image: _searchList[index].thumbnail_image,
                   name: _searchList[index].name,
-                  price: _searchList[index].base_price,
+                  price: _searchList[index].stroked_price,
                 );
               },
             ),
           );
         } else {
-          return ShimmerHelper().buildProductGridShimmer(scontroller: _scrollController);
+          return ShimmerHelper()
+              .buildProductGridShimmer(scontroller: _scrollController);
         }
       },
     );

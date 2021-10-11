@@ -1,10 +1,10 @@
-import 'package:Daemmart/addon_config.dart';
-import 'package:Daemmart/custom/toast_component.dart';
-import 'package:Daemmart/helpers/shimmer_helper.dart';
-import 'package:Daemmart/my_theme.dart';
-import 'package:Daemmart/repositories/order_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:marekat/addon_config.dart';
+import 'package:marekat/custom/toast_component.dart';
+import 'package:marekat/helpers/shimmer_helper.dart';
+import 'package:marekat/my_theme.dart';
+import 'package:marekat/repositories/order_repository.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
 class OrderDetails extends StatefulWidget {
@@ -45,7 +45,8 @@ class _OrderDetailsState extends State<OrderDetails> {
   }
 
   fetchOrderDetails() async {
-    var orderDetailsResponse = await OrderRepository().getOrderDetails(id: widget.id);
+    var orderDetailsResponse =
+        await OrderRepository().getOrderDetails(id: widget.id);
 
     if (orderDetailsResponse.detailed_orders.length > 0) {
       _orderDetails = orderDetailsResponse.detailed_orders[0];
@@ -61,7 +62,8 @@ class _OrderDetailsState extends State<OrderDetails> {
   }
 
   fetchOrderedItems() async {
-    var orderItemResponse = await OrderRepository().getOrderItems(id: widget.id);
+    var orderItemResponse =
+        await OrderRepository().getOrderItems(id: widget.id);
     _orderedItemList.addAll(orderItemResponse.ordered_items);
     _orderItemsInit = true;
 
@@ -92,16 +94,23 @@ class _OrderDetailsState extends State<OrderDetails> {
         onRefresh: _onPageRefresh,
         child: CustomScrollView(
           controller: _mainScrollController,
-          physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+          physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics()),
           slivers: [
             SliverToBoxAdapter(
-              child: Padding(padding: const EdgeInsets.all(16.0), child: _orderDetails != null ? buildTimeLineTiles() : buildTimeLineShimmer()),
+              child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: _orderDetails != null
+                      ? buildTimeLineTiles()
+                      : buildTimeLineShimmer()),
             ),
             SliverList(
                 delegate: SliverChildListDelegate([
               Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: _orderDetails != null ? buildOrderDetailsTopCard() : ShimmerHelper().buildBasicShimmer(height: 150.0),
+                child: _orderDetails != null
+                    ? buildOrderDetailsTopCard()
+                    : ShimmerHelper().buildBasicShimmer(height: 150.0),
               ),
             ])),
             SliverList(
@@ -109,7 +118,10 @@ class _OrderDetailsState extends State<OrderDetails> {
               Center(
                 child: Text(
                   "Ordered Product",
-                  style: TextStyle(color: MyTheme.font_grey, fontSize: 14, fontWeight: FontWeight.w600),
+                  style: TextStyle(
+                      color: MyTheme.font_grey,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600),
                 ),
               ),
               Padding(
@@ -161,13 +173,19 @@ class _OrderDetailsState extends State<OrderDetails> {
                           child: Text(
                             "SUB TOTAL",
                             textAlign: TextAlign.end,
-                            style: TextStyle(color: MyTheme.font_grey, fontSize: 14, fontWeight: FontWeight.w600),
+                            style: TextStyle(
+                                color: MyTheme.font_grey,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600),
                           ),
                         ),
                         Spacer(),
                         Text(
                           _orderDetails.subtotal,
-                          style: TextStyle(color: MyTheme.font_grey, fontSize: 14, fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                              color: MyTheme.font_grey,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600),
                         ),
                       ],
                     )),
@@ -180,13 +198,19 @@ class _OrderDetailsState extends State<OrderDetails> {
                           child: Text(
                             "TAX",
                             textAlign: TextAlign.end,
-                            style: TextStyle(color: MyTheme.font_grey, fontSize: 14, fontWeight: FontWeight.w600),
+                            style: TextStyle(
+                                color: MyTheme.font_grey,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600),
                           ),
                         ),
                         Spacer(),
                         Text(
                           _orderDetails.tax,
-                          style: TextStyle(color: MyTheme.font_grey, fontSize: 14, fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                              color: MyTheme.font_grey,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600),
                         ),
                       ],
                     )),
@@ -199,13 +223,19 @@ class _OrderDetailsState extends State<OrderDetails> {
                           child: Text(
                             "SHIPPING COST",
                             textAlign: TextAlign.end,
-                            style: TextStyle(color: MyTheme.font_grey, fontSize: 14, fontWeight: FontWeight.w600),
+                            style: TextStyle(
+                                color: MyTheme.font_grey,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600),
                           ),
                         ),
                         Spacer(),
                         Text(
                           _orderDetails.shipping_cost,
-                          style: TextStyle(color: MyTheme.font_grey, fontSize: 14, fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                              color: MyTheme.font_grey,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600),
                         ),
                       ],
                     )),
@@ -218,13 +248,19 @@ class _OrderDetailsState extends State<OrderDetails> {
                           child: Text(
                             "DISCOUNT",
                             textAlign: TextAlign.end,
-                            style: TextStyle(color: MyTheme.font_grey, fontSize: 14, fontWeight: FontWeight.w600),
+                            style: TextStyle(
+                                color: MyTheme.font_grey,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600),
                           ),
                         ),
                         Spacer(),
                         Text(
                           _orderDetails.coupon_discount,
-                          style: TextStyle(color: MyTheme.font_grey, fontSize: 14, fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                              color: MyTheme.font_grey,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600),
                         ),
                       ],
                     )),
@@ -238,13 +274,19 @@ class _OrderDetailsState extends State<OrderDetails> {
                           child: Text(
                             "GRAND TOTAL",
                             textAlign: TextAlign.end,
-                            style: TextStyle(color: MyTheme.font_grey, fontSize: 14, fontWeight: FontWeight.w600),
+                            style: TextStyle(
+                                color: MyTheme.font_grey,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600),
                           ),
                         ),
                         Spacer(),
                         Text(
                           _orderDetails.grand_total,
-                          style: TextStyle(color: MyTheme.accent_color, fontSize: 14, fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                              color: MyTheme.accent_color,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600),
                         ),
                       ],
                     )),
@@ -331,7 +373,10 @@ class _OrderDetailsState extends State<OrderDetails> {
             indicatorStyle: IndicatorStyle(
               color: _stepIndex >= 0 ? Colors.green : MyTheme.medium_grey,
               padding: const EdgeInsets.all(0),
-              iconStyle: _stepIndex >= 0 ? IconStyle(color: Colors.white, iconData: Icons.check, fontSize: 16) : null,
+              iconStyle: _stepIndex >= 0
+                  ? IconStyle(
+                      color: Colors.white, iconData: Icons.check, fontSize: 16)
+                  : null,
             ),
             afterLineStyle: _stepIndex >= 1
                 ? LineStyle(
@@ -380,7 +425,10 @@ class _OrderDetailsState extends State<OrderDetails> {
             indicatorStyle: IndicatorStyle(
               color: _stepIndex >= 1 ? Colors.green : MyTheme.medium_grey,
               padding: const EdgeInsets.all(0),
-              iconStyle: _stepIndex >= 1 ? IconStyle(color: Colors.white, iconData: Icons.check, fontSize: 16) : null,
+              iconStyle: _stepIndex >= 1
+                  ? IconStyle(
+                      color: Colors.white, iconData: Icons.check, fontSize: 16)
+                  : null,
             ),
             beforeLineStyle: _stepIndex >= 1
                 ? LineStyle(
@@ -438,7 +486,10 @@ class _OrderDetailsState extends State<OrderDetails> {
             indicatorStyle: IndicatorStyle(
               color: _stepIndex >= 2 ? Colors.green : MyTheme.medium_grey,
               padding: const EdgeInsets.all(0),
-              iconStyle: _stepIndex >= 2 ? IconStyle(color: Colors.white, iconData: Icons.check, fontSize: 16) : null,
+              iconStyle: _stepIndex >= 2
+                  ? IconStyle(
+                      color: Colors.white, iconData: Icons.check, fontSize: 16)
+                  : null,
             ),
             beforeLineStyle: _stepIndex >= 2
                 ? LineStyle(
@@ -497,7 +548,10 @@ class _OrderDetailsState extends State<OrderDetails> {
             indicatorStyle: IndicatorStyle(
               color: _stepIndex >= 4 ? Colors.green : MyTheme.medium_grey,
               padding: const EdgeInsets.all(0),
-              iconStyle: _stepIndex >= 4 ? IconStyle(color: Colors.white, iconData: Icons.check, fontSize: 16) : null,
+              iconStyle: _stepIndex >= 4
+                  ? IconStyle(
+                      color: Colors.white, iconData: Icons.check, fontSize: 16)
+                  : null,
             ),
             beforeLineStyle: _stepIndex >= 4
                 ? LineStyle(
@@ -530,12 +584,18 @@ class _OrderDetailsState extends State<OrderDetails> {
               children: [
                 Text(
                   "Order Code",
-                  style: TextStyle(color: MyTheme.font_grey, fontSize: 13, fontWeight: FontWeight.w600),
+                  style: TextStyle(
+                      color: MyTheme.font_grey,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600),
                 ),
                 Spacer(),
                 Text(
                   "Shipping Method",
-                  style: TextStyle(color: MyTheme.font_grey, fontSize: 13, fontWeight: FontWeight.w600),
+                  style: TextStyle(
+                      color: MyTheme.font_grey,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600),
                 ),
               ],
             ),
@@ -545,7 +605,10 @@ class _OrderDetailsState extends State<OrderDetails> {
                 children: [
                   Text(
                     _orderDetails.code,
-                    style: TextStyle(color: MyTheme.accent_color, fontSize: 14, fontWeight: FontWeight.w600),
+                    style: TextStyle(
+                        color: MyTheme.accent_color,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600),
                   ),
                   Spacer(),
                   Text(
@@ -561,12 +624,18 @@ class _OrderDetailsState extends State<OrderDetails> {
               children: [
                 Text(
                   "Order Date",
-                  style: TextStyle(color: MyTheme.font_grey, fontSize: 13, fontWeight: FontWeight.w600),
+                  style: TextStyle(
+                      color: MyTheme.font_grey,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600),
                 ),
                 Spacer(),
                 Text(
                   "Payment Method",
-                  style: TextStyle(color: MyTheme.font_grey, fontSize: 13, fontWeight: FontWeight.w600),
+                  style: TextStyle(
+                      color: MyTheme.font_grey,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600),
                 ),
               ],
             ),
@@ -594,12 +663,18 @@ class _OrderDetailsState extends State<OrderDetails> {
               children: [
                 Text(
                   "Payment Status",
-                  style: TextStyle(color: MyTheme.font_grey, fontSize: 13, fontWeight: FontWeight.w600),
+                  style: TextStyle(
+                      color: MyTheme.font_grey,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600),
                 ),
                 Spacer(),
                 Text(
                   "Delivery Status",
-                  style: TextStyle(color: MyTheme.font_grey, fontSize: 13, fontWeight: FontWeight.w600),
+                  style: TextStyle(
+                      color: MyTheme.font_grey,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600),
                 ),
               ],
             ),
@@ -616,7 +691,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                       ),
                     ),
                   ),
-                  buildPaymentStatusCheckContainer(_orderDetails.payment_status),
+                  buildPaymentStatusCheckContainer(
+                      _orderDetails.payment_status),
                   Spacer(),
                   Text(
                     _orderDetails.delivery_status_string,
@@ -631,12 +707,18 @@ class _OrderDetailsState extends State<OrderDetails> {
               children: [
                 Text(
                   "Shipping Address",
-                  style: TextStyle(color: MyTheme.font_grey, fontSize: 13, fontWeight: FontWeight.w600),
+                  style: TextStyle(
+                      color: MyTheme.font_grey,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600),
                 ),
                 Spacer(),
                 Text(
                   "Total Amount",
-                  style: TextStyle(color: MyTheme.font_grey, fontSize: 13, fontWeight: FontWeight.w600),
+                  style: TextStyle(
+                      color: MyTheme.font_grey,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600),
                 ),
               ],
             ),
@@ -709,7 +791,10 @@ class _OrderDetailsState extends State<OrderDetails> {
                   Spacer(),
                   Text(
                     _orderDetails.grand_total,
-                    style: TextStyle(color: MyTheme.accent_color, fontSize: 16, fontWeight: FontWeight.w600),
+                    style: TextStyle(
+                        color: MyTheme.accent_color,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600),
                   ),
                 ],
               ),
@@ -748,21 +833,34 @@ class _OrderDetailsState extends State<OrderDetails> {
                 children: [
                   Text(
                     _orderedItemList[index].quantity.toString() + " x ",
-                    style: TextStyle(color: MyTheme.font_grey, fontSize: 13, fontWeight: FontWeight.w600),
+                    style: TextStyle(
+                        color: MyTheme.font_grey,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600),
                   ),
-                  _orderedItemList[index].variation != "" && _orderedItemList[index].variation != null
+                  _orderedItemList[index].variation != "" &&
+                          _orderedItemList[index].variation != null
                       ? Text(
                           _orderedItemList[index].variation,
-                          style: TextStyle(color: MyTheme.font_grey, fontSize: 13, fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                              color: MyTheme.font_grey,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600),
                         )
                       : Text(
                           "item",
-                          style: TextStyle(color: MyTheme.font_grey, fontSize: 13, fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                              color: MyTheme.font_grey,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600),
                         ),
                   Spacer(),
                   Text(
                     _orderedItemList[index].price,
-                    style: TextStyle(color: MyTheme.accent_color, fontSize: 14, fontWeight: FontWeight.w600),
+                    style: TextStyle(
+                        color: MyTheme.accent_color,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600),
                   ),
                 ],
               ),
@@ -781,7 +879,10 @@ class _OrderDetailsState extends State<OrderDetails> {
                         children: [
                           Text(
                             "Ask For Refund",
-                            style: TextStyle(color: MyTheme.accent_color, fontWeight: FontWeight.w600, decoration: TextDecoration.underline),
+                            style: TextStyle(
+                                color: MyTheme.accent_color,
+                                fontWeight: FontWeight.w600,
+                                decoration: TextDecoration.underline),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 2.0),
@@ -841,10 +942,15 @@ class _OrderDetailsState extends State<OrderDetails> {
     return Container(
       height: 16,
       width: 16,
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(16.0), color: payment_status == "paid" ? Colors.green : Colors.red),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16.0),
+          color: payment_status == "paid" ? Colors.green : Colors.red),
       child: Padding(
         padding: const EdgeInsets.all(3),
-        child: Icon(payment_status == "paid" ? FontAwesome.check : FontAwesome.times, color: Colors.white, size: 10),
+        child: Icon(
+            payment_status == "paid" ? FontAwesome.check : FontAwesome.times,
+            color: Colors.white,
+            size: 10),
       ),
     );
   }

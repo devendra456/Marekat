@@ -1,18 +1,18 @@
-import 'package:Daemmart/custom/toast_component.dart';
-import 'package:Daemmart/generated/l10n.dart';
-import 'package:Daemmart/helpers/reg_ex_inpur_formatter.dart';
-import 'package:Daemmart/helpers/shared_value_helper.dart';
-import 'package:Daemmart/helpers/shimmer_helper.dart';
-import 'package:Daemmart/my_theme.dart';
-import 'package:Daemmart/repositories/brand_repository.dart';
-import 'package:Daemmart/repositories/category_repository.dart';
-import 'package:Daemmart/repositories/product_repository.dart';
-import 'package:Daemmart/repositories/shop_repository.dart';
-import 'package:Daemmart/screens/seller_details.dart';
-import 'package:Daemmart/ui_elements/brand_square_card.dart';
-import 'package:Daemmart/ui_elements/product_card.dart';
-import 'package:Daemmart/ui_elements/shop_square_card.dart';
 import 'package:flutter/material.dart';
+import 'package:marekat/custom/toast_component.dart';
+import 'package:marekat/generated/l10n.dart';
+import 'package:marekat/helpers/reg_ex_inpur_formatter.dart';
+import 'package:marekat/helpers/shared_value_helper.dart';
+import 'package:marekat/helpers/shimmer_helper.dart';
+import 'package:marekat/my_theme.dart';
+import 'package:marekat/repositories/brand_repository.dart';
+import 'package:marekat/repositories/category_repository.dart';
+import 'package:marekat/repositories/product_repository.dart';
+import 'package:marekat/repositories/shop_repository.dart';
+import 'package:marekat/screens/seller_details.dart';
+import 'package:marekat/ui_elements/brand_square_card.dart';
+import 'package:marekat/ui_elements/product_card.dart';
+import 'package:marekat/ui_elements/shop_square_card.dart';
 
 class WhichFilter {
   String option_key;
@@ -1021,7 +1021,7 @@ class _FilterState extends State<Filter> {
                     id: _productList[index].id,
                     image: _productList[index].thumbnail_image,
                     name: _productList[index].name,
-                    price: _productList[index].base_price,
+                    price: _productList[index].stroked_price,
                   );
                 },
               )

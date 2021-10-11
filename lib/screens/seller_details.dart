@@ -1,16 +1,16 @@
-import 'package:Daemmart/app_config.dart';
-import 'package:Daemmart/generated/l10n.dart';
-import 'package:Daemmart/helpers/shimmer_helper.dart';
-import 'package:Daemmart/my_theme.dart';
-import 'package:Daemmart/repositories/shop_repository.dart';
-import 'package:Daemmart/screens/seller_products.dart';
-import 'package:Daemmart/ui_elements/list_product_card.dart';
-import 'package:Daemmart/ui_elements/mini_product_card.dart';
-import 'package:Daemmart/ui_elements/product_card.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:marekat/app_config.dart';
+import 'package:marekat/generated/l10n.dart';
+import 'package:marekat/helpers/shimmer_helper.dart';
+import 'package:marekat/my_theme.dart';
+import 'package:marekat/repositories/shop_repository.dart';
+import 'package:marekat/screens/seller_products.dart';
+import 'package:marekat/ui_elements/list_product_card.dart';
+import 'package:marekat/ui_elements/mini_product_card.dart';
+import 'package:marekat/ui_elements/product_card.dart';
 
 class SellerDetails extends StatefulWidget {
   int id;
@@ -74,7 +74,8 @@ class _SellerDetailsState extends State<SellerDetails> {
   }
 
   fetchNewArrivalProducts() async {
-    var newArrivalProductResponse = await ShopRepository().getNewFromThisSellerProducts(id: widget.id);
+    var newArrivalProductResponse =
+        await ShopRepository().getNewFromThisSellerProducts(id: widget.id);
     _newArrivalProducts.addAll(newArrivalProductResponse.products);
     _newArrivalProductInit = true;
 
@@ -82,13 +83,15 @@ class _SellerDetailsState extends State<SellerDetails> {
   }
 
   fetchTopProducts() async {
-    var topProductResponse = await ShopRepository().getTopFromThisSellerProducts(id: widget.id);
+    var topProductResponse =
+        await ShopRepository().getTopFromThisSellerProducts(id: widget.id);
     _topProducts.addAll(topProductResponse.products);
     _topProductInit = true;
   }
 
   fetchFeaturedProducts() async {
-    var featuredProductResponse = await ShopRepository().getfeaturedFromThisSellerProducts(id: widget.id);
+    var featuredProductResponse =
+        await ShopRepository().getfeaturedFromThisSellerProducts(id: widget.id);
     _featuredProducts.addAll(featuredProductResponse.products);
     _featuredProductInit = true;
   }
@@ -123,7 +126,8 @@ class _SellerDetailsState extends State<SellerDetails> {
           onRefresh: _onPageRefresh,
           child: CustomScrollView(
             controller: _mainScrollController,
-            physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+            physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics()),
             slivers: [
               SliverList(
                 delegate: SliverChildListDelegate([
@@ -145,7 +149,10 @@ class _SellerDetailsState extends State<SellerDetails> {
                     ),
                     child: Text(
                       S.of(context).newArrivals,
-                      style: TextStyle(color: MyTheme.font_grey, fontSize: 16, fontWeight: FontWeight.w600),
+                      style: TextStyle(
+                          color: MyTheme.font_grey,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600),
                     ),
                   ),
                   Padding(
@@ -170,7 +177,10 @@ class _SellerDetailsState extends State<SellerDetails> {
                     ),
                     child: Text(
                       S.of(context).topSellingProducts,
-                      style: TextStyle(color: MyTheme.font_grey, fontSize: 16, fontWeight: FontWeight.w600),
+                      style: TextStyle(
+                          color: MyTheme.font_grey,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600),
                     ),
                   ),
                   Padding(
@@ -191,7 +201,10 @@ class _SellerDetailsState extends State<SellerDetails> {
                     ),
                     child: Text(
                       S.of(context).featuredProducts,
-                      style: TextStyle(color: MyTheme.font_grey, fontSize: 16, fontWeight: FontWeight.w600),
+                      style: TextStyle(
+                          color: MyTheme.font_grey,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600),
                     ),
                   ),
                   Padding(
@@ -211,14 +224,20 @@ class _SellerDetailsState extends State<SellerDetails> {
 
   buildfeaturedProductList() {
     if (_featuredProductInit == false && _featuredProducts.length == 0) {
-      return SingleChildScrollView(child: ShimmerHelper().buildProductGridShimmer(scontroller: _scrollController));
+      return SingleChildScrollView(
+          child: ShimmerHelper()
+              .buildProductGridShimmer(scontroller: _scrollController));
     } else if (_featuredProducts.length > 0) {
       return GridView.builder(
         // 2
         //addAutomaticKeepAlives: true,
         itemCount: _featuredProducts.length,
         //controller: _scrollController,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10, childAspectRatio: 0.618),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+            childAspectRatio: 0.618),
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemBuilder: (context, index) {
@@ -227,12 +246,17 @@ class _SellerDetailsState extends State<SellerDetails> {
             id: _featuredProducts[index].id,
             image: _featuredProducts[index].thumbnail_image,
             name: _featuredProducts[index].name,
-            price: _featuredProducts[index].base_price,
+            price: _featuredProducts[index].stroked_price,
           );
         },
       );
     } else {
-      return Container(height: 100, child: Center(child: Text(S.of(context).noFeaturedProductIsAvailableFromThisSeller, style: TextStyle(color: MyTheme.font_grey))));
+      return Container(
+          height: 100,
+          child: Center(
+              child: Text(
+                  S.of(context).noFeaturedProductIsAvailableFromThisSeller,
+                  style: TextStyle(color: MyTheme.font_grey))));
     }
   }
 
@@ -274,7 +298,8 @@ class _SellerDetailsState extends State<SellerDetails> {
                             placeholder: 'assets/placeholder_rectangle.png',
                             image: AppConfig.BASE_PATH + i,
                             fit: BoxFit.fill,
-                            imageErrorBuilder: (BuildContext context, Object exception, StackTrace stackTrace) {
+                            imageErrorBuilder: (BuildContext context,
+                                Object exception, StackTrace stackTrace) {
                               return Image.asset("assets/placeholder.png");
                             },
                           ))),
@@ -287,10 +312,13 @@ class _SellerDetailsState extends State<SellerDetails> {
                         return Container(
                           width: 7.0,
                           height: 7.0,
-                          margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 4.0),
+                          margin: EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 4.0),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: _current_slider == index ? MyTheme.white : Color.fromRGBO(112, 112, 112, .3),
+                            color: _current_slider == index
+                                ? MyTheme.white
+                                : Color.fromRGBO(112, 112, 112, .3),
                           ),
                         );
                       }).toList(),
@@ -314,7 +342,11 @@ class _SellerDetailsState extends State<SellerDetails> {
         height: 50,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [_shopDetails != null ? buildShowProductsButton(context) : Container()],
+          children: [
+            _shopDetails != null
+                ? buildShowProductsButton(context)
+                : Container()
+          ],
         ),
       ),
     );
@@ -330,7 +362,8 @@ class _SellerDetailsState extends State<SellerDetails> {
       ),
       child: Text(
         S.of(context).viewAllProductsFromThisSeller,
-        style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
+        style: TextStyle(
+            color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
       ),
       onPressed: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -378,14 +411,18 @@ class _SellerDetailsState extends State<SellerDetails> {
                 id: _topProducts[index].id,
                 image: _topProducts[index].thumbnail_image,
                 name: _topProducts[index].name,
-                price: _topProducts[index].base_price,
+                price: _topProducts[index].stroked_price,
               ),
             );
           },
         ),
       );
     } else {
-      return Container(height: 100, child: Center(child: Text(S.of(context).noTopSellingProductsFromThisSeller, style: TextStyle(color: MyTheme.font_grey))));
+      return Container(
+          height: 100,
+          child: Center(
+              child: Text(S.of(context).noTopSellingProductsFromThisSeller,
+                  style: TextStyle(color: MyTheme.font_grey))));
     }
   }
 
@@ -393,9 +430,21 @@ class _SellerDetailsState extends State<SellerDetails> {
     if (_newArrivalProductInit == false && _newArrivalProducts.length == 0) {
       return Row(
         children: [
-          Padding(padding: const EdgeInsets.only(right: 8.0), child: ShimmerHelper().buildBasicShimmer(height: 120.0, width: (MediaQuery.of(context).size.width - 32) / 3)),
-          Padding(padding: const EdgeInsets.only(right: 8.0), child: ShimmerHelper().buildBasicShimmer(height: 120.0, width: (MediaQuery.of(context).size.width - 32) / 3)),
-          Padding(padding: const EdgeInsets.only(right: 0.0), child: ShimmerHelper().buildBasicShimmer(height: 120.0, width: (MediaQuery.of(context).size.width - 32) / 3)),
+          Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: ShimmerHelper().buildBasicShimmer(
+                  height: 120.0,
+                  width: (MediaQuery.of(context).size.width - 32) / 3)),
+          Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: ShimmerHelper().buildBasicShimmer(
+                  height: 120.0,
+                  width: (MediaQuery.of(context).size.width - 32) / 3)),
+          Padding(
+              padding: const EdgeInsets.only(right: 0.0),
+              child: ShimmerHelper().buildBasicShimmer(
+                  height: 120.0,
+                  width: (MediaQuery.of(context).size.width - 32) / 3)),
         ],
       );
     } else if (_newArrivalProducts.length > 0) {
@@ -413,7 +462,7 @@ class _SellerDetailsState extends State<SellerDetails> {
                   id: _newArrivalProducts[index].id,
                   image: _newArrivalProducts[index].thumbnail_image,
                   name: _newArrivalProducts[index].name,
-                  price: _newArrivalProducts[index].base_price,
+                  price: _newArrivalProducts[index].stroked_price,
                 ),
               );
             },
@@ -445,16 +494,19 @@ class _SellerDetailsState extends State<SellerDetails> {
               ? buildAppbarShopDetails()
               : Row(
                   children: [
-                    ShimmerHelper().buildBasicShimmer(height: 60.0, width: 60.0),
+                    ShimmerHelper()
+                        .buildBasicShimmer(height: 60.0, width: 60.0),
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          ShimmerHelper().buildBasicShimmer(height: 25.0, width: 150.0),
+                          ShimmerHelper()
+                              .buildBasicShimmer(height: 25.0, width: 150.0),
                           Padding(
                             padding: const EdgeInsets.only(top: 8.0),
-                            child: ShimmerHelper().buildBasicShimmer(height: 20.0, width: 100.0),
+                            child: ShimmerHelper()
+                                .buildBasicShimmer(height: 20.0, width: 100.0),
                           ),
                         ],
                       ),
@@ -472,13 +524,16 @@ class _SellerDetailsState extends State<SellerDetails> {
               showDialog(
                   context: context,
                   builder: (_) => AlertDialog(
-                        contentPadding: EdgeInsets.only(top: 16.0, left: 2.0, right: 2.0, bottom: 2.0),
+                        contentPadding: EdgeInsets.only(
+                            top: 16.0, left: 2.0, right: 2.0, bottom: 2.0),
                         content: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8.0, horizontal: 16.0),
                           child: Text(
                             _shopDetails.address,
                             maxLines: 3,
-                            style: TextStyle(color: MyTheme.font_grey, fontSize: 14),
+                            style: TextStyle(
+                                color: MyTheme.font_grey, fontSize: 14),
                           ),
                         ),
                         actions: [
@@ -508,7 +563,8 @@ class _SellerDetailsState extends State<SellerDetails> {
         margin: EdgeInsets.symmetric(vertical: 4.0, horizontal: 2.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
-          border: Border.all(color: Color.fromRGBO(112, 112, 112, .3), width: .5),
+          border:
+              Border.all(color: Color.fromRGBO(112, 112, 112, .3), width: .5),
           //shape: BoxShape.rectangle,
         ),
         child: ClipRRect(
@@ -517,7 +573,8 @@ class _SellerDetailsState extends State<SellerDetails> {
               placeholder: 'assets/placeholder.png',
               image: AppConfig.BASE_PATH + _shopDetails.logo,
               fit: BoxFit.cover,
-              imageErrorBuilder: (BuildContext context, Object exception, StackTrace stackTrace) {
+              imageErrorBuilder: (BuildContext context, Object exception,
+                  StackTrace stackTrace) {
                 return Image.asset(
                   "assets/placeholder.png",
                   fit: BoxFit.cover,
@@ -537,7 +594,11 @@ class _SellerDetailsState extends State<SellerDetails> {
                   textAlign: TextAlign.left,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
-                  style: TextStyle(color: MyTheme.font_grey, fontSize: 14, height: 1.6, fontWeight: FontWeight.w600),
+                  style: TextStyle(
+                      color: MyTheme.font_grey,
+                      fontSize: 14,
+                      height: 1.6,
+                      fontWeight: FontWeight.w600),
                 ),
               ),
               Padding(
@@ -563,7 +624,8 @@ class _SellerDetailsState extends State<SellerDetails> {
           itemCount: 5,
           ratingWidget: RatingWidget(
             full: Icon(FontAwesome.star, color: Colors.amber),
-            empty: Icon(FontAwesome.star, color: Color.fromRGBO(224, 224, 225, 1)),
+            empty:
+                Icon(FontAwesome.star, color: Color.fromRGBO(224, 224, 225, 1)),
             half: null,
           ),
           itemPadding: EdgeInsets.only(right: 4.0),

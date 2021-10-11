@@ -1,15 +1,21 @@
-import 'package:Daemmart/app_config.dart';
-import 'package:Daemmart/custom/toast_component.dart';
-import 'package:Daemmart/generated/l10n.dart';
-import 'package:Daemmart/my_theme.dart';
-import 'package:Daemmart/repositories/category_repository.dart';
-import 'package:Daemmart/screens/category_products.dart';
-import 'package:Daemmart/ui_sections/main_drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:marekat/app_config.dart';
+import 'package:marekat/custom/toast_component.dart';
+import 'package:marekat/generated/l10n.dart';
+import 'package:marekat/my_theme.dart';
+import 'package:marekat/repositories/category_repository.dart';
+import 'package:marekat/screens/category_products.dart';
+import 'package:marekat/ui_sections/main_drawer.dart';
 import 'package:shimmer/shimmer.dart';
 
 class CategoryList extends StatefulWidget {
-  CategoryList({Key key, this.parent_category_id = 0, this.parent_category_name = "", this.is_base_category = false, this.is_top_category = false}) : super(key: key);
+  CategoryList(
+      {Key key,
+      this.parent_category_id = 0,
+      this.parent_category_name = "",
+      this.is_base_category = false,
+      this.is_top_category = false})
+      : super(key: key);
 
   final int parent_category_id;
   final String parent_category_name;
@@ -72,7 +78,8 @@ class _CategoryListState extends State<CategoryList> {
               },
               child: Builder(
                 builder: (context) => Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 18.0, horizontal: 0.0),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 18.0, horizontal: 0.0),
                   child: Container(
                     child: Image.asset(
                       'assets/hamburger.png',
@@ -99,13 +106,18 @@ class _CategoryListState extends State<CategoryList> {
   }
 
   String getAppBarTitle() {
-    String name = widget.parent_category_name == "" ? (widget.is_top_category ? "Top Categories" : "Categories") : widget.parent_category_name;
+    String name = widget.parent_category_name == ""
+        ? (widget.is_top_category ? "Top Categories" : "Categories")
+        : widget.parent_category_name;
 
     return name;
   }
 
   buildCategoryList() {
-    var future = widget.is_top_category ? CategoryRepository().getTopCategories() : CategoryRepository().getCategories(parent_id: widget.parent_category_id);
+    var future = widget.is_top_category
+        ? CategoryRepository().getTopCategories()
+        : CategoryRepository()
+            .getCategories(parent_id: widget.parent_category_id);
     return FutureBuilder(
         future: future,
         builder: (context, snapshot) {
@@ -124,7 +136,8 @@ class _CategoryListState extends State<CategoryList> {
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return Padding(
-                    padding: const EdgeInsets.only(top: 4.0, bottom: 4.0, left: 12.0, right: 12.0),
+                    padding: const EdgeInsets.only(
+                        top: 4.0, bottom: 4.0, left: 12.0, right: 12.0),
                     child: buildCategoryItemCard(categoryResponse, index),
                   );
                 },
@@ -139,7 +152,8 @@ class _CategoryListState extends State<CategoryList> {
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return Padding(
-                    padding: const EdgeInsets.only(top: 4.0, bottom: 4.0, left: 16.0, right: 16.0),
+                    padding: const EdgeInsets.only(
+                        top: 4.0, bottom: 4.0, left: 16.0, right: 16.0),
                     child: Row(
                       children: [
                         Shimmer.fromColors(
@@ -157,7 +171,8 @@ class _CategoryListState extends State<CategoryList> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(left: 16.0, bottom: 8.0),
+                                padding: const EdgeInsets.only(
+                                    left: 16.0, bottom: 8.0),
                                 child: Shimmer.fromColors(
                                   baseColor: MyTheme.shimmer_base,
                                   highlightColor: MyTheme.shimmer_highlighted,
@@ -209,21 +224,25 @@ class _CategoryListState extends State<CategoryList> {
             );
           }));
         },
-        child: Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
+        child:
+            Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
           Container(
               width: 116,
               height: 100,
               child: ClipRRect(
-                  borderRadius: BorderRadius.horizontal(left: Radius.circular(16), right: Radius.zero),
+                  borderRadius: BorderRadius.horizontal(
+                      left: Radius.circular(16), right: Radius.zero),
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8.0, right: 8),
                     child: ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(8)),
                       child: FadeInImage.assetNetwork(
                         placeholder: 'assets/placeholder.png',
-                        image: AppConfig.BASE_PATH + categoryResponse.categories[index].banner,
+                        image: AppConfig.BASE_PATH +
+                            categoryResponse.categories[index].banner,
                         fit: BoxFit.cover,
-                        imageErrorBuilder: (BuildContext context, Object exception, StackTrace stackTrace) {
+                        imageErrorBuilder: (BuildContext context,
+                            Object exception, StackTrace stackTrace) {
                           return Image.asset(
                             "assets/placeholder.png",
                             fit: BoxFit.cover,
@@ -245,7 +264,11 @@ class _CategoryListState extends State<CategoryList> {
                       textAlign: TextAlign.left,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
-                      style: TextStyle(color: MyTheme.font_grey, fontSize: 14, height: 1.6, fontWeight: FontWeight.w600),
+                      style: TextStyle(
+                          color: MyTheme.font_grey,
+                          fontSize: 14,
+                          height: 1.6,
+                          fontWeight: FontWeight.w600),
                     ),
                   ),
                   Padding(
@@ -253,18 +276,25 @@ class _CategoryListState extends State<CategoryList> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        categoryResponse.categories[index].number_of_children > 0
+                        categoryResponse.categories[index].number_of_children >
+                                0
                             ? GestureDetector(
                                 onTap: () {
-                                  if (categoryResponse.categories[index].number_of_children > 0) {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  if (categoryResponse.categories[index]
+                                          .number_of_children >
+                                      0) {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
                                       return CategoryList(
-                                        parent_category_id: categoryResponse.categories[index].id,
-                                        parent_category_name: categoryResponse.categories[index].name,
+                                        parent_category_id: categoryResponse
+                                            .categories[index].id,
+                                        parent_category_name: categoryResponse
+                                            .categories[index].name,
                                       );
                                     }));
                                   } else {
-                                    ToastComponent.showDialog(S.of(context).noSubCategoriesAvailable);
+                                    ToastComponent.showDialog(
+                                        S.of(context).noSubCategoriesAvailable);
                                   }
                                 },
                                 child: Text(
@@ -274,7 +304,11 @@ class _CategoryListState extends State<CategoryList> {
                                   maxLines: 1,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    color: categoryResponse.categories[index].number_of_children > 0 ? MyTheme.accent_color : MyTheme.accent_color,
+                                    color: categoryResponse.categories[index]
+                                                .number_of_children >
+                                            0
+                                        ? MyTheme.accent_color
+                                        : MyTheme.accent_color,
                                   ),
                                 ),
                               )
@@ -288,15 +322,21 @@ class _CategoryListState extends State<CategoryList> {
                           padding: const EdgeInsets.fromLTRB(0, 12, 0, 0),
                           child: GestureDetector(
                               onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
                                   return CategoryProducts(
-                                    category_id: categoryResponse.categories[index].id,
-                                    category_name: categoryResponse.categories[index].name,
+                                    category_id:
+                                        categoryResponse.categories[index].id,
+                                    category_name:
+                                        categoryResponse.categories[index].name,
                                   );
                                 }));
                               },
                               child: Container(
-                                decoration: BoxDecoration(color: MyTheme.accent_color, borderRadius: BorderRadius.all(Radius.circular(4))),
+                                decoration: BoxDecoration(
+                                    color: MyTheme.accent_color,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(4))),
                                 height: 30,
                                 width: 100,
                                 child: Center(
@@ -339,13 +379,19 @@ class _CategoryListState extends State<CategoryList> {
                   minWidth: MediaQuery.of(context).size.width,
                   //height: 50,
                   color: MyTheme.accent_color,
-                  shape: RoundedRectangleBorder(borderRadius: const BorderRadius.all(Radius.circular(9.0))),
+                  shape: RoundedRectangleBorder(
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(9.0))),
                   child: Text(
                     S.of(context).allProductsOf + widget.parent_category_name,
-                    style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w600),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600),
                   ),
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
                       return CategoryProducts(
                         category_id: widget.parent_category_id,
                         category_name: widget.parent_category_name,

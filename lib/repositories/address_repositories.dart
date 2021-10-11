@@ -1,16 +1,16 @@
 import 'dart:convert';
 
-import 'package:Daemmart/data_model/address_add_response.dart';
-import 'package:Daemmart/data_model/address_delete_response.dart';
-import 'package:Daemmart/data_model/address_make_default_response.dart';
-import 'package:Daemmart/data_model/address_response.dart';
-import 'package:Daemmart/data_model/address_update_in_cart_response.dart';
-import 'package:Daemmart/data_model/address_update_response.dart';
-import 'package:Daemmart/data_model/city_response.dart';
-import 'package:Daemmart/data_model/country_response.dart';
-import 'package:Daemmart/data_model/shipping_cost_response.dart';
-import 'package:Daemmart/helpers/shared_value_helper.dart';
 import 'package:http/http.dart' as http;
+import 'package:marekat/data_model/address_add_response.dart';
+import 'package:marekat/data_model/address_delete_response.dart';
+import 'package:marekat/data_model/address_make_default_response.dart';
+import 'package:marekat/data_model/address_response.dart';
+import 'package:marekat/data_model/address_update_in_cart_response.dart';
+import 'package:marekat/data_model/address_update_response.dart';
+import 'package:marekat/data_model/city_response.dart';
+import 'package:marekat/data_model/country_response.dart';
+import 'package:marekat/data_model/shipping_cost_response.dart';
+import 'package:marekat/helpers/shared_value_helper.dart';
 
 import '../app_config.dart';
 

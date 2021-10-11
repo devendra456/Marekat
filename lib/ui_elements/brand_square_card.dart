@@ -1,7 +1,7 @@
-import 'package:Daemmart/app_config.dart';
-import 'package:Daemmart/my_theme.dart';
-import 'package:Daemmart/screens/brand_products.dart';
 import 'package:flutter/material.dart';
+import 'package:marekat/app_config.dart';
+import 'package:marekat/my_theme.dart';
+import 'package:marekat/screens/brand_products.dart';
 
 class BrandSquareCard extends StatefulWidget {
   int id;
@@ -45,11 +45,12 @@ class _BrandSquareCardState extends State<BrandSquareCard> {
               child: Container(
                 width: double.infinity,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(16), bottom: Radius.zero),
+                  borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(16), bottom: Radius.zero),
                   child: FadeInImage.assetNetwork(
                     placeholder: 'assets/placeholder.png',
                     image: AppConfig.BASE_PATH + widget.image,
-                    fit: BoxFit.scaleDown,
+                    fit: BoxFit.cover,
                     imageErrorBuilder: (
                       BuildContext context,
                       Object exception,

@@ -1,5 +1,5 @@
 {
-  "app_name": "Daemmart",
+  "app_name": "Marekat",
   "flash_deal": "Flash Deal",
   "today_deal": "Today's Deal",
   "top_sellers": "Top Sellers",
@@ -20,7 +20,7 @@
   "view_products": "View Products",
   "search": "Search",
   "search_here": "Search Here?",
-  "login_to_daemmart": "Login to Daemmart",
+  "login_to_daemmart": "Login to Marekat",
   "email": "Email",
   "password": "Password",
   "forget_password": "Forget Password",

@@ -1,7 +1,7 @@
-import 'package:Daemmart/app_config.dart';
-import 'package:Daemmart/my_theme.dart';
-import 'package:Daemmart/screens/product_details.dart';
 import 'package:flutter/material.dart';
+import 'package:marekat/app_config.dart';
+import 'package:marekat/my_theme.dart';
+import 'package:marekat/screens/product_details.dart';
 
 class ProductCard extends StatefulWidget {
   int id;
@@ -9,7 +9,8 @@ class ProductCard extends StatefulWidget {
   String name;
   String price;
 
-  ProductCard({Key key, this.id, this.image, this.name, this.price}) : super(key: key);
+  ProductCard({Key key, this.id, this.image, this.name, this.price})
+      : super(key: key);
 
   @override
   _ProductCardState createState() => _ProductCardState();
@@ -32,7 +33,8 @@ class _ProductCardState extends State<ProductCard> {
       },
       child: Card(
         shape: RoundedRectangleBorder(
-          side: new BorderSide(color: Color.fromARGB(255, 232, 232, 232), width: 1.0),
+          side: new BorderSide(
+              color: Color.fromARGB(255, 232, 232, 232), width: 1.0),
           borderRadius: BorderRadius.circular(8.0),
         ),
         elevation: 1.5,
@@ -45,12 +47,14 @@ class _ProductCardState extends State<ProductCard> {
                   width: double.infinity,
                   child: ClipRRect(
                       clipBehavior: Clip.hardEdge,
-                      borderRadius: BorderRadius.vertical(top: Radius.circular(8), bottom: Radius.zero),
+                      borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(8), bottom: Radius.zero),
                       child: FadeInImage.assetNetwork(
                         placeholder: 'assets/placeholder.png',
                         image: AppConfig.BASE_PATH + widget.image,
                         fit: BoxFit.cover,
-                        imageErrorBuilder: (BuildContext context, Object exception, StackTrace stackTrace) {
+                        imageErrorBuilder: (BuildContext context,
+                            Object exception, StackTrace stackTrace) {
                           return Image.asset(
                             "assets/placeholder.png",
                             fit: BoxFit.cover,
@@ -69,7 +73,11 @@ class _ProductCardState extends State<ProductCard> {
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
-                      style: TextStyle(color: MyTheme.font_grey, fontSize: 14, height: 1.6, fontWeight: FontWeight.w400),
+                      style: TextStyle(
+                          color: MyTheme.font_grey,
+                          fontSize: 14,
+                          height: 1.6,
+                          fontWeight: FontWeight.w400),
                     ),
                   ),
                   Padding(
@@ -79,7 +87,10 @@ class _ProductCardState extends State<ProductCard> {
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
-                      style: TextStyle(color: MyTheme.accent_color, fontSize: 14, fontWeight: FontWeight.w600),
+                      style: TextStyle(
+                          color: MyTheme.accent_color,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600),
                     ),
                   ),
                 ],

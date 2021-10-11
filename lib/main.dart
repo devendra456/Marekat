@@ -1,9 +1,9 @@
-import 'package:Daemmart/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:marekat/screens/main_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shared_value/shared_value.dart';
 
@@ -117,7 +117,7 @@ class _MyAppState extends State<MyApp> {
               textStyle: textTheme.bodyText2, fontSize: 12),
         ),
       ),
-      home: SplashScreen(),
+      home: MainScreen(),
     );
   }
 }

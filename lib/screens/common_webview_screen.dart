@@ -1,7 +1,7 @@
-import 'package:Daemmart/custom/toast_component.dart';
-import 'package:Daemmart/my_theme.dart';
-import 'package:Daemmart/ui_sections/loader.dart';
 import 'package:flutter/material.dart';
+import 'package:marekat/custom/toast_component.dart';
+import 'package:marekat/my_theme.dart';
+import 'package:marekat/ui_sections/loader.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class CommonWebviewScreen extends StatefulWidget {

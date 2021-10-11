@@ -1,18 +1,18 @@
-import 'package:Daemmart/app_config.dart';
-import 'package:Daemmart/generated/l10n.dart';
-import 'package:Daemmart/helpers/auth_helper.dart';
-import 'package:Daemmart/helpers/shared_value_helper.dart';
-import 'package:Daemmart/my_theme.dart';
-import 'package:Daemmart/screens/login.dart';
-import 'package:Daemmart/screens/main_screen.dart';
-import 'package:Daemmart/screens/order_list.dart';
-import 'package:Daemmart/screens/profile.dart';
-import 'package:Daemmart/screens/wallet.dart';
-import 'package:Daemmart/screens/wishlist.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:marekat/app_config.dart';
+import 'package:marekat/generated/l10n.dart';
+import 'package:marekat/helpers/auth_helper.dart';
+import 'package:marekat/helpers/shared_value_helper.dart';
+import 'package:marekat/my_theme.dart';
+import 'package:marekat/screens/login.dart';
+import 'package:marekat/screens/main_screen.dart';
+import 'package:marekat/screens/order_list.dart';
+import 'package:marekat/screens/profile.dart';
+import 'package:marekat/screens/wallet.dart';
+import 'package:marekat/screens/wishlist.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MainDrawer extends StatefulWidget {
@@ -236,10 +236,11 @@ class _MainDrawerState extends State<MainDrawer> {
                       Switch(
                         value: isSwitched,
                         onChanged: toggleSwitch,
-                        activeColor: Color.fromARGB(255, 248, 152, 28),
-                        activeTrackColor: Color.fromARGB(119, 248, 152, 28),
-                        inactiveThumbColor: Color.fromARGB(255, 148, 15, 124),
-                        inactiveTrackColor: Color.fromARGB(119, 148, 15, 124),
+                        activeColor: MyTheme.black,
+                        activeTrackColor: MyTheme.black.withAlpha(125),
+                        inactiveThumbColor: MyTheme.soft_accent_color,
+                        inactiveTrackColor:
+                            MyTheme.soft_accent_color.withAlpha(125),
                       ),
                       Text(
                         "ص",
@@ -261,22 +262,13 @@ class _MainDrawerState extends State<MainDrawer> {
       setState(() {
         isSwitched = true;
         setLang("ar");
-      }); /*
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (dialogContext) => MyApp()),
-          ModalRoute.withName("/MyApp"));*/
+      });
       Phoenix.rebirth(context);
     } else {
       setState(() {
         isSwitched = false;
         setLang("en");
       });
-      /*Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (dialogContext) => MyApp()),
-          ModalRoute.withName("/MyApp"));*/
-
       Phoenix.rebirth(context);
     }
   }

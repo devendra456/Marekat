@@ -1,16 +1,16 @@
 import 'dart:convert';
 
-import 'package:Daemmart/app_config.dart';
-import 'package:Daemmart/data_model/confirm_code_response.dart';
-import 'package:Daemmart/data_model/login_response.dart';
-import 'package:Daemmart/data_model/logout_response.dart';
-import 'package:Daemmart/data_model/password_confirm_response.dart';
-import 'package:Daemmart/data_model/password_forget_response.dart';
-import 'package:Daemmart/data_model/resend_code_response.dart';
-import 'package:Daemmart/data_model/signup_response.dart';
-import 'package:Daemmart/data_model/user_by_token.dart';
-import 'package:Daemmart/helpers/shared_value_helper.dart';
 import 'package:http/http.dart' as http;
+import 'package:marekat/app_config.dart';
+import 'package:marekat/data_model/confirm_code_response.dart';
+import 'package:marekat/data_model/login_response.dart';
+import 'package:marekat/data_model/logout_response.dart';
+import 'package:marekat/data_model/password_confirm_response.dart';
+import 'package:marekat/data_model/password_forget_response.dart';
+import 'package:marekat/data_model/resend_code_response.dart';
+import 'package:marekat/data_model/signup_response.dart';
+import 'package:marekat/data_model/user_by_token.dart';
+import 'package:marekat/helpers/shared_value_helper.dart';
 
 class AuthRepository {
   Future<LoginResponse> getLoginResponse(String email, String password) async {

@@ -1,15 +1,15 @@
 import 'dart:ui';
 
-import 'package:Daemmart/custom/toast_component.dart';
-import 'package:Daemmart/generated/l10n.dart';
-import 'package:Daemmart/helpers/reg_ex_inpur_formatter.dart';
-import 'package:Daemmart/helpers/shimmer_helper.dart';
-import 'package:Daemmart/my_theme.dart';
-import 'package:Daemmart/repositories/wallet_repository.dart';
-import 'package:Daemmart/screens/main_screen.dart';
-import 'package:Daemmart/screens/recharge_wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:marekat/custom/toast_component.dart';
+import 'package:marekat/generated/l10n.dart';
+import 'package:marekat/helpers/reg_ex_inpur_formatter.dart';
+import 'package:marekat/helpers/shimmer_helper.dart';
+import 'package:marekat/my_theme.dart';
+import 'package:marekat/repositories/wallet_repository.dart';
+import 'package:marekat/screens/main_screen.dart';
+import 'package:marekat/screens/recharge_wallet.dart';
 
 class Wallet extends StatefulWidget {
   Wallet({Key key, this.from_recharge = false}) : super(key: key);

@@ -1,8 +1,8 @@
-import 'package:Daemmart/custom/toast_component.dart';
-import 'package:Daemmart/my_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:marekat/custom/toast_component.dart';
+import 'package:marekat/my_theme.dart';
 
 class OfflineScreen extends StatelessWidget {
   const OfflineScreen({Key key}) : super(key: key);
@@ -62,7 +62,8 @@ class OfflineScreen extends StatelessWidget {
                   ),
                   minWidth: 104,
                   height: 40,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(21)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(21)),
                   color: MyTheme.accent_color,
                   textColor: MyTheme.white,
                 )

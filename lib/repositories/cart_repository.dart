@@ -1,14 +1,14 @@
 import 'dart:convert';
 
-import 'package:Daemmart/app_config.dart';
-import 'package:Daemmart/data_model/cart_add_response.dart';
-import 'package:Daemmart/data_model/cart_delete_response.dart';
-import 'package:Daemmart/data_model/cart_process_response.dart';
-import 'package:Daemmart/data_model/cart_response.dart';
-import 'package:Daemmart/data_model/cart_summary_response.dart';
-import 'package:Daemmart/helpers/shared_value_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:marekat/app_config.dart';
+import 'package:marekat/data_model/cart_add_response.dart';
+import 'package:marekat/data_model/cart_delete_response.dart';
+import 'package:marekat/data_model/cart_process_response.dart';
+import 'package:marekat/data_model/cart_response.dart';
+import 'package:marekat/data_model/cart_summary_response.dart';
+import 'package:marekat/helpers/shared_value_helper.dart';
 
 class CartRepository {
   Future<List<CartResponse>> getCartResponseList(

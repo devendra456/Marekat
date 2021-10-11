@@ -1,19 +1,19 @@
-import 'package:Daemmart/addon_config.dart';
-import 'package:Daemmart/app_config.dart';
-import 'package:Daemmart/custom/input_decorations.dart';
-import 'package:Daemmart/custom/intl_phone_input.dart';
-import 'package:Daemmart/custom/toast_component.dart';
-import 'package:Daemmart/generated/l10n.dart';
-import 'package:Daemmart/helpers/auth_helper.dart';
-import 'package:Daemmart/my_theme.dart';
-import 'package:Daemmart/repositories/auth_repository.dart';
-import 'package:Daemmart/screens/main_screen.dart';
-import 'package:Daemmart/screens/password_forget.dart';
-import 'package:Daemmart/screens/registration.dart';
-import 'package:Daemmart/ui_sections/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:marekat/addon_config.dart';
+import 'package:marekat/app_config.dart';
+import 'package:marekat/custom/input_decorations.dart';
+import 'package:marekat/custom/intl_phone_input.dart';
+import 'package:marekat/custom/toast_component.dart';
+import 'package:marekat/generated/l10n.dart';
+import 'package:marekat/helpers/auth_helper.dart';
+import 'package:marekat/my_theme.dart';
+import 'package:marekat/repositories/auth_repository.dart';
+import 'package:marekat/screens/main_screen.dart';
+import 'package:marekat/screens/password_forget.dart';
+import 'package:marekat/screens/registration.dart';
+import 'package:marekat/ui_sections/loader.dart';
 
 class Login extends StatefulWidget {
   @override

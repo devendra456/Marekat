@@ -1,14 +1,14 @@
 import 'dart:convert';
 import 'dart:io' as Io;
 
-import 'package:Daemmart/app_config.dart';
-import 'package:Daemmart/custom/input_decorations.dart';
-import 'package:Daemmart/custom/toast_component.dart';
-import 'package:Daemmart/generated/l10n.dart';
-import 'package:Daemmart/helpers/shared_value_helper.dart';
-import 'package:Daemmart/my_theme.dart';
-import 'package:Daemmart/repositories/profile_repositories.dart';
-import 'package:Daemmart/ui_sections/loader.dart';
+import 'package:marekat/app_config.dart';
+import 'package:marekat/custom/input_decorations.dart';
+import 'package:marekat/custom/toast_component.dart';
+import 'package:marekat/generated/l10n.dart';
+import 'package:marekat/helpers/shared_value_helper.dart';
+import 'package:marekat/my_theme.dart';
+import 'package:marekat/repositories/profile_repositories.dart';
+import 'package:marekat/ui_sections/loader.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

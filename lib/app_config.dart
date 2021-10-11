@@ -3,14 +3,14 @@ var this_year = DateTime.now().year.toString();
 class AppConfig {
   static String copyright_text =
       "@ Skyview " + this_year; //this shows in the splash screen
-  static String app_name = "Daemmart"; //this shows in the splash screen
+  static String app_name = "Marekat"; //this shows in the splash screen
 
   //configure this
   static const bool HTTPS = true;
 
   //configure this
-  static const DOMAIN_PATH = "daemmart.com";
-  static const SLUG_URL = "https://daemmart.com/product/";
+  static const DOMAIN_PATH = "demo.marekat.com";
+  static const SLUG_URL = "https://demo.marekat.com/product/";
   static const GOOGLE_API_KEY = "AIzaSyAIySYF5ZwWZyBj6bHICn3Ut5xYfg8ilSs";
 
   //do not configure these below

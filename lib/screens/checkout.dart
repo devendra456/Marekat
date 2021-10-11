@@ -1,17 +1,17 @@
-import 'package:Daemmart/custom/toast_component.dart';
-import 'package:Daemmart/generated/l10n.dart';
-import 'package:Daemmart/helpers/shared_value_helper.dart';
-import 'package:Daemmart/helpers/shimmer_helper.dart';
-import 'package:Daemmart/my_theme.dart';
-import 'package:Daemmart/repositories/cart_repository.dart';
-import 'package:Daemmart/repositories/coupon_repository.dart';
-import 'package:Daemmart/repositories/payment_repository.dart';
-import 'package:Daemmart/screens/order_list.dart';
-import 'package:Daemmart/screens/paypal_screen.dart';
-import 'package:Daemmart/screens/razorpay_screen.dart';
-import 'package:Daemmart/screens/stripe_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:marekat/custom/toast_component.dart';
+import 'package:marekat/generated/l10n.dart';
+import 'package:marekat/helpers/shared_value_helper.dart';
+import 'package:marekat/helpers/shimmer_helper.dart';
+import 'package:marekat/my_theme.dart';
+import 'package:marekat/repositories/cart_repository.dart';
+import 'package:marekat/repositories/coupon_repository.dart';
+import 'package:marekat/repositories/payment_repository.dart';
+import 'package:marekat/screens/order_list.dart';
+import 'package:marekat/screens/paypal_screen.dart';
+import 'package:marekat/screens/razorpay_screen.dart';
+import 'package:marekat/screens/stripe_screen.dart';
 
 class Checkout extends StatefulWidget {
   int owner_id;

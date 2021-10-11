@@ -1,4 +1,4 @@
-package com.daemmart.daemmart
+package com.marekat
 
 import io.flutter.embedding.android.FlutterActivity
 
