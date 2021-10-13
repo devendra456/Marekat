@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:marekat/addon_config.dart';
 import 'package:marekat/app_config.dart';
 import 'package:marekat/custom/input_decorations.dart';
@@ -8,9 +11,6 @@ import 'package:marekat/my_theme.dart';
 import 'package:marekat/repositories/auth_repository.dart';
 import 'package:marekat/screens/otp.dart';
 import 'package:marekat/ui_sections/loader.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 import 'login.dart';
 
@@ -117,93 +117,172 @@ class _RegistrationState extends State<Registration> {
         child: Container(
           width: double.infinity,
           child: SingleChildScrollView(
-              child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: double.infinity,
-                height: 140,
-                child: Stack(
-                  children: [
-                    Positioned(
-                      left: 24,
-                      top: 0,
-                      bottom: 16,
-                      child: Container(
-                        width: 160,
-                        child: Image.asset(
-                            'assets/login_registration_form_logo.png'),
-                      ),
-                    ),
-                    Positioned(
-                      right: -90,
-                      top: -150,
-                      child: SizedBox(
-                        height: 300,
-                        child: Image(
-                          image: AssetImage("assets/splash_top.png"),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * .4,
+                    height: 140,
+                    child:
+                        Image.asset('assets/login_registration_form_logo.png'),
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.only(bottom: 0.0, left: 24, right: 24),
+                  child: Text(
+                    S.of(context).join + " " + AppConfig.app_name,
+                    style: TextStyle(
+                        color: MyTheme.accent_color,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600),
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.only(left: 24.0, bottom: 16, right: 24),
+                  child: Text(
+                    "Lorem Ipsum has been the industry's standard \ndummy text ever since the",
+                    style: TextStyle(color: MyTheme.dark_grey),
+                  ),
+                ),
+                Container(
+                  width: _screen_width,
+                  padding: EdgeInsets.symmetric(horizontal: 24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 4.0),
+                        child: Text(
+                          S.of(context).name,
+                          style: TextStyle(
+                              color: MyTheme.accent_color,
+                              fontWeight: FontWeight.w600),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.only(bottom: 0.0, left: 24, right: 24),
-                child: Text(
-                  S.of(context).join + " " + AppConfig.app_name,
-                  style: TextStyle(
-                      color: MyTheme.accent_color,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600),
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.only(left: 24.0, bottom: 16, right: 24),
-                child: Text(
-                  "Lorem Ipsum has been the industry's standard \ndummy text ever since the",
-                  style: TextStyle(color: MyTheme.dark_grey),
-                ),
-              ),
-              Container(
-                width: _screen_width,
-                padding: EdgeInsets.symmetric(horizontal: 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 4.0),
-                      child: Text(
-                        S.of(context).name,
-                        style: TextStyle(
-                            color: MyTheme.accent_color,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: Container(
-                        height: 36,
-                        child: TextField(
-                          controller: _nameController,
-                          autofocus: false,
-                          decoration: InputDecorations.buildInputDecoration_1(
-                              hintText: S.of(context).johnDoe),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Container(
+                          height: 36,
+                          child: TextField(
+                            controller: _nameController,
+                            autofocus: false,
+                            decoration: InputDecorations.buildInputDecoration_1(
+                                hintText: S.of(context).johnDoe),
+                          ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 4.0),
-                      child: Text(
-                        _register_by == "email" ? "Email" : "Phone",
-                        style: TextStyle(
-                            color: MyTheme.accent_color,
-                            fontWeight: FontWeight.w600),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 4.0),
+                        child: Text(
+                          _register_by == "email" ? "Email" : "Phone",
+                          style: TextStyle(
+                              color: MyTheme.accent_color,
+                              fontWeight: FontWeight.w600),
+                        ),
                       ),
-                    ),
-                    if (_register_by == "email")
+                      if (_register_by == "email")
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Container(
+                                height: 36,
+                                child: TextField(
+                                  controller: _emailController,
+                                  autofocus: false,
+                                  decoration:
+                                      InputDecorations.buildInputDecoration_1(
+                                          hintText:
+                                              S.of(context).johndoeexamplecom),
+                                ),
+                              ),
+                              AddonConfig.otp_addon_installed
+                                  ? GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          _register_by = "phone";
+                                        });
+                                      },
+                                      child: Text(
+                                        S
+                                            .of(context)
+                                            .orRegisterWithAPhoneNumber,
+                                        style: TextStyle(
+                                            color: MyTheme.accent_color,
+                                            decoration:
+                                                TextDecoration.underline),
+                                      ),
+                                    )
+                                  : Container()
+                            ],
+                          ),
+                        )
+                      else
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Container(
+                                height: 36,
+                                child: CustomInternationalPhoneNumberInput(
+                                  onInputChanged: (PhoneNumber number) {
+                                    setState(() {
+                                      _phone = number.phoneNumber;
+                                    });
+                                  },
+                                  onInputValidated: (bool value) {
+                                    print(value);
+                                  },
+                                  selectorConfig: SelectorConfig(
+                                    selectorType: PhoneInputSelectorType.DIALOG,
+                                  ),
+                                  ignoreBlank: false,
+                                  autoValidateMode: AutovalidateMode.disabled,
+                                  selectorTextStyle:
+                                      TextStyle(color: MyTheme.font_grey),
+                                  initialValue: phoneCode,
+                                  textFieldController: _phoneNumberController,
+                                  formatInput: true,
+                                  keyboardType: TextInputType.numberWithOptions(
+                                      signed: true, decimal: true),
+                                  inputDecoration: InputDecorations
+                                      .buildInputDecorationPhone(
+                                          hintText: S.of(context).mobHint),
+                                  onSaved: (PhoneNumber number) {
+                                    //print('On Saved: $number');
+                                  },
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _register_by = "email";
+                                  });
+                                },
+                                child: Text(
+                                  S.of(context).orRegisterWithAnEmail,
+                                  style: TextStyle(
+                                      color: MyTheme.accent_color,
+                                      decoration: TextDecoration.underline),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 4.0),
+                        child: Text(
+                          S.of(context).password,
+                          style: TextStyle(
+                              color: MyTheme.accent_color,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),
                         child: Column(
@@ -212,205 +291,110 @@ class _RegistrationState extends State<Registration> {
                             Container(
                               height: 36,
                               child: TextField(
-                                controller: _emailController,
+                                controller: _passwordController,
                                 autofocus: false,
+                                obscureText: true,
+                                enableSuggestions: false,
+                                autocorrect: false,
                                 decoration:
                                     InputDecorations.buildInputDecoration_1(
-                                        hintText:
-                                            S.of(context).johndoeexamplecom),
+                                        hintText: "• • • • • • • •"),
                               ),
                             ),
-                            AddonConfig.otp_addon_installed
-                                ? GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        _register_by = "phone";
-                                      });
-                                    },
-                                    child: Text(
-                                      S.of(context).orRegisterWithAPhoneNumber,
-                                      style: TextStyle(
-                                          color: MyTheme.accent_color,
-                                          decoration: TextDecoration.underline),
-                                    ),
-                                  )
-                                : Container()
-                          ],
-                        ),
-                      )
-                    else
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Container(
-                              height: 36,
-                              child: CustomInternationalPhoneNumberInput(
-                                onInputChanged: (PhoneNumber number) {
-                                  setState(() {
-                                    _phone = number.phoneNumber;
-                                  });
-                                },
-                                onInputValidated: (bool value) {
-                                  print(value);
-                                },
-                                selectorConfig: SelectorConfig(
-                                  selectorType: PhoneInputSelectorType.DIALOG,
-                                ),
-                                ignoreBlank: false,
-                                autoValidateMode: AutovalidateMode.disabled,
-                                selectorTextStyle:
-                                    TextStyle(color: MyTheme.font_grey),
-                                initialValue: phoneCode,
-                                textFieldController: _phoneNumberController,
-                                formatInput: true,
-                                keyboardType: TextInputType.numberWithOptions(
-                                    signed: true, decimal: true),
-                                inputDecoration:
-                                    InputDecorations.buildInputDecorationPhone(
-                                        hintText: S.of(context).mobHint),
-                                onSaved: (PhoneNumber number) {
-                                  //print('On Saved: $number');
-                                },
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _register_by = "email";
-                                });
-                              },
-                              child: Text(
-                                S.of(context).orRegisterWithAnEmail,
-                                style: TextStyle(
-                                    color: MyTheme.accent_color,
-                                    decoration: TextDecoration.underline),
-                              ),
+                            Text(
+                              S.of(context).passwordMustBeAtLeast6Character,
+                              style: TextStyle(
+                                  color: MyTheme.textfield_grey,
+                                  fontStyle: FontStyle.italic),
                             )
                           ],
                         ),
                       ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 4.0),
-                      child: Text(
-                        S.of(context).password,
-                        style: TextStyle(
-                            color: MyTheme.accent_color,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Container(
-                            height: 36,
-                            child: TextField(
-                              controller: _passwordController,
-                              autofocus: false,
-                              obscureText: true,
-                              enableSuggestions: false,
-                              autocorrect: false,
-                              decoration:
-                                  InputDecorations.buildInputDecoration_1(
-                                      hintText: "• • • • • • • •"),
-                            ),
-                          ),
-                          Text(
-                            S.of(context).passwordMustBeAtLeast6Character,
-                            style: TextStyle(
-                                color: MyTheme.textfield_grey,
-                                fontStyle: FontStyle.italic),
-                          )
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 4.0),
-                      child: Text(
-                        S.of(context).retypePassword,
-                        style: TextStyle(
-                            color: MyTheme.accent_color,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: Container(
-                        height: 36,
-                        child: TextField(
-                          controller: _passwordConfirmController,
-                          autofocus: false,
-                          obscureText: true,
-                          enableSuggestions: false,
-                          autocorrect: false,
-                          decoration: InputDecorations.buildInputDecoration_1(
-                              hintText: "• • • • • • • •"),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 30.0),
-                      child: MaterialButton(
-                        minWidth: MediaQuery.of(context).size.width,
-                        height: 45,
-                        color: MyTheme.accent_color,
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(24.0))),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 4.0),
                         child: Text(
-                          S.of(context).signUp,
+                          S.of(context).retypePassword,
                           style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
+                              color: MyTheme.accent_color,
                               fontWeight: FontWeight.w600),
                         ),
-                        onPressed: () {
-                          onPressSignUp();
-                        },
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20.0),
-                      child: Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              S.of(context).alreadyHaveAnAccount,
-                              style: TextStyle(
-                                  color: MyTheme.medium_grey, fontSize: 12),
-                            ),
-                            MaterialButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(24.0))),
-                              child: Text(
-                                S.of(context).logIn,
-                                style: TextStyle(
-                                    color: MyTheme.accent_color,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              onPressed: () {
-                                Navigator.pop(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Login()),
-                                );
-                              },
-                            )
-                          ],
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Container(
+                          height: 36,
+                          child: TextField(
+                            controller: _passwordConfirmController,
+                            autofocus: false,
+                            obscureText: true,
+                            enableSuggestions: false,
+                            autocorrect: false,
+                            decoration: InputDecorations.buildInputDecoration_1(
+                                hintText: "• • • • • • • •"),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          )),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 30.0),
+                        child: MaterialButton(
+                          minWidth: MediaQuery.of(context).size.width,
+                          height: 45,
+                          color: MyTheme.accent_color,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: const BorderRadius.all(
+                                  Radius.circular(24.0))),
+                          child: Text(
+                            S.of(context).signUp,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600),
+                          ),
+                          onPressed: () {
+                            onPressSignUp();
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                S.of(context).alreadyHaveAnAccount,
+                                style: TextStyle(
+                                    color: MyTheme.medium_grey, fontSize: 12),
+                              ),
+                              MaterialButton(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(24.0))),
+                                child: Text(
+                                  S.of(context).logIn,
+                                  style: TextStyle(
+                                      color: MyTheme.accent_color,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Login()),
+                                  );
+                                },
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );

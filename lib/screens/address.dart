@@ -1,6 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dropdown_search/dropdown_search.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:http/http.dart' as http;
+import 'package:location/location.dart';
 import 'package:marekat/app_config.dart';
 import 'package:marekat/custom/toast_component.dart';
 import 'package:marekat/data_model/city_response.dart';
@@ -11,14 +19,6 @@ import 'package:marekat/helpers/shimmer_helper.dart';
 import 'package:marekat/my_theme.dart';
 import 'package:marekat/repositories/address_repositories.dart';
 import 'package:marekat/ui_sections/loader.dart';
-import 'package:dropdown_search/dropdown_search.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_icons/flutter_icons.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:http/http.dart' as http;
-import 'package:location/location.dart';
 
 class Address extends StatefulWidget {
   Address({Key key}) : super(key: key);
@@ -1312,64 +1312,7 @@ class _AddressState extends State<Address> {
     );
   }
 
-  _getMyCurrentLocation() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(actions: [
-            MaterialButton(
-              minWidth: 75,
-              height: 30,
-              color: Color.fromRGBO(253, 253, 253, 1),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(9.0),
-              ),
-              child: Text(
-                S.of(context).close,
-                style: TextStyle(
-                  color: MyTheme.font_grey,
-                ),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            SizedBox(
-              width: 16,
-            ),
-            MaterialButton(
-              minWidth: 75,
-              height: 30,
-              color: MyTheme.accent_color,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(9.0),
-              ),
-              child: Text(
-                S.of(context).ok,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600),
-              ),
-              onPressed: () {
-                _onPressedOK();
-              },
-            )
-          ], content: _mobileNumberField());
-        });
-  }
-
-  _onPressedOK() {
-    if (_mobileNumberController.text != null &&
-        _mobileNumberController.text != "") {
-      Navigator.of(context).pop();
-      //_getLocation();
-    } else {
-      ToastComponent.showDialog("Please enter mobile number");
-    }
-  }
-
-  _getLocation() async {
+  _getMyCurrentLocation() async {
     Location location = new Location();
 
     bool _serviceEnabled;
@@ -1392,62 +1335,10 @@ class _AddressState extends State<Address> {
       }
     }
 
-    _locationData = await location.getLocation();
-    print("${_locationData.latitude} ${_locationData.longitude}");
-    Loader.showLoaderDialog(context);
-
     var add = "";
-    var city = "";
-    var postalCode = "";
-    var country = "";
 
-    final address1 = await http.get(
-        Uri.parse("https://maps.googleapis"
-            ".com/maps/api/geocode/json?latlng=${_locationData.latitude},"
-            "${_locationData.longitude}&result_type"
-            "=country&key=${AppConfig.GOOGLE_API_KEY}"),
-        headers: {"Accept-Language": langCode.$});
-    if (address1.statusCode == HttpStatus.ok) {
-      final json = jsonDecode(address1.body);
-      if (json["results"].length > 0) {
-        country = json["results"][0]["formatted_address"].toString();
-      }
-    }
-
-    final address2 = await http.get(
-        Uri.parse("https://maps.googleapis"
-            ".com/maps/api/geocode/json?latlng=${_locationData.latitude},"
-            "${_locationData.longitude}&result_type=postal_code&key=${AppConfig.GOOGLE_API_KEY}"),
-        headers: {"Accept-Language": langCode.$});
-    if (address2.statusCode == HttpStatus.ok) {
-      final json = jsonDecode(address2.body);
-      if (json["results"].length > 0) {
-        var pc = json["results"][0]["formatted_address"].toString();
-        var pc1 = pc.trim().split(',');
-        var pc2 = pc1[pc1.length - 2];
-        var pc3 = pc2.trim().split(" ");
-        postalCode = pc3[pc3.length - 1];
-        print(pc);
-        print(pc1);
-        print(pc2);
-        print(pc3);
-      }
-    }
-
-    final address3 = await http.get(
-        Uri.parse("https://maps.googleapis"
-            ".com/maps/api/geocode/json?latlng=${_locationData.latitude},"
-            "${_locationData.longitude}&result_type=locality&key=${AppConfig.GOOGLE_API_KEY}"),
-        headers: {"Accept-Language": langCode.$});
-    if (address3.statusCode == HttpStatus.ok) {
-      final json = jsonDecode(address3.body);
-      if (json["results"].length > 0) {
-        var c = json["results"][0]["formatted_address"].toString();
-        var c1 = c.trim().split(',');
-        city = c1[0];
-      }
-    }
-
+    Loader.showLoaderDialog(context);
+    _locationData = await location.getLocation();
     final address4 = await http.get(
         Uri.parse("https://maps.googleapis"
             ".com/maps/api/geocode/json?latlng=${_locationData.latitude},"
@@ -1459,78 +1350,8 @@ class _AddressState extends State<Address> {
         add = json["results"][0]["formatted_address"].toString();
       }
     }
-
-    print(add);
-    print(city);
-    print(country);
-    print(postalCode);
-
-    if (add != "" && city != "" && country != "" && postalCode != "") {
-      AddressRepository()
-          .getAddressAddResponse(add, country, city, postalCode,
-              _mobileNumberController.text.toString())
-          .then((addressAddResponse) {
-        _mobileNumberController.text = "";
-
-        if (addressAddResponse.result == false) {
-          ToastComponent.showDialog(addressAddResponse.message);
-          return;
-        }
-
-        ToastComponent.showDialog(addressAddResponse.message);
-
-        afterAddingAnAddress();
-      });
-    } else {
-      ToastComponent.showDialog("Unable to detect your address");
-    }
     Loader.dismissDialog(context);
-  }
-
-  _mobileNumberField() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
-          child: Text(S.of(context).phone,
-              style: TextStyle(color: MyTheme.font_grey, fontSize: 12)),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
-          child: Container(
-            height: 40,
-            child: TextField(
-              autofocus: false,
-              controller: _mobileNumberController,
-              keyboardType: TextInputType.number,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly
-              ],
-              decoration: InputDecoration(
-                  hintText: S.of(context).enterPhone,
-                  hintStyle:
-                      TextStyle(fontSize: 12.0, color: MyTheme.textfield_grey),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: MyTheme.textfield_grey, width: 0.5),
-                    borderRadius: const BorderRadius.all(
-                      const Radius.circular(8.0),
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: MyTheme.textfield_grey, width: 1.0),
-                    borderRadius: const BorderRadius.all(
-                      const Radius.circular(8.0),
-                    ),
-                  ),
-                  contentPadding: EdgeInsets.only(left: 8.0, right: 8)),
-            ),
-          ),
-        )
-      ],
-    );
+    _addressController.text = add;
+    buildShowAddFormDialog(context);
   }
 }

@@ -81,9 +81,9 @@ class _PasswordForgetState extends State<PasswordForget> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 40.0, bottom: 15),
+                  padding: const EdgeInsets.only(top: 64.0, bottom: 15),
                   child: Container(
-                    width: _screen_width * (2 / 3),
+                    width: _screen_width * .4,
                     child:
                         Image.asset('assets/login_registration_form_logo.png'),
                   ),

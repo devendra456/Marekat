@@ -90,32 +90,12 @@ class _LoginState extends State<Login> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  width: double.infinity,
-                  height: 140,
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        left: 24,
-                        top: 0,
-                        bottom: 16,
-                        child: Container(
-                          width: 160,
-                          child: Image.asset(
-                              'assets/login_registration_form_logo.png'),
-                        ),
-                      ),
-                      Positioned(
-                        right: -90,
-                        top: -150,
-                        child: SizedBox(
-                          height: 300,
-                          child: Image(
-                            image: AssetImage("assets/splash_top.png"),
-                          ),
-                        ),
-                      ),
-                    ],
+                Center(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * .4,
+                    height: 140,
+                    child:
+                        Image.asset('assets/login_registration_form_logo.png'),
                   ),
                 ),
                 Padding(

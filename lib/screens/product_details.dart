@@ -1,5 +1,11 @@
 import 'dart:ui';
 
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:expandable/expandable.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:marekat/addon_config.dart';
 import 'package:marekat/app_config.dart';
 import 'package:marekat/custom/toast_component.dart';
@@ -16,12 +22,6 @@ import 'package:marekat/screens/common_webview_screen.dart';
 import 'package:marekat/screens/product_reviews.dart';
 import 'package:marekat/ui_elements/list_product_card.dart';
 import 'package:marekat/ui_elements/mini_product_card.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:expandable/expandable.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_icons/flutter_icons.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -57,7 +57,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   var _singlePriceString;
   int _quantity = 1;
   int _stock = 0;
-  var _slug;
+  var _link;
   var _pName;
   var _video_link;
   var unit;
@@ -72,6 +72,7 @@ class _ProductDetailsState extends State<ProductDetails> {
 
   @override
   void initState() {
+    print(widget.id);
     fetchAll();
     super.initState();
   }
@@ -133,7 +134,7 @@ class _ProductDetailsState extends State<ProductDetails> {
       calculateTotalPrice();
       _stock = _productDetails.current_stock;
       _productDetails.photos.forEach((photo) {
-        _carouselImageList.add(photo);
+        _carouselImageList.add(photo.path);
       });
       _productDetails.choice_options.forEach((choice_opiton) {
         _selectedChoices.add(choice_opiton.options[0]);
@@ -149,7 +150,8 @@ class _ProductDetailsState extends State<ProductDetails> {
         fetchAndSetVariantWiseInfo(change_appbar_string: false);
       }
       _productDetailsFetched = true;
-      _slug = _productDetails.slug;
+      //_slug = _productDetails.slug;
+      _link = _productDetails.link;
       _pName = _productDetails.name;
       _video_link = _productDetails.video_link;
       unit = _productDetails.unit;
@@ -900,7 +902,7 @@ class _ProductDetailsState extends State<ProductDetails> {
         ),
         Spacer(),
         Visibility(
-          visible: true,
+          visible: false,
           child: Container(
               child: Row(
             children: [
@@ -924,7 +926,7 @@ class _ProductDetailsState extends State<ProductDetails> {
               Icon(Icons.message,
                   size: 16, color: Color.fromRGBO(7, 101, 136, 1))
             ],
-          )),
+          ),),
         )
       ],
     );
@@ -1356,7 +1358,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 _appbarPriceString,
                 style: TextStyle(fontSize: 16, color: MyTheme.font_grey),
               ),
-            )),
+            ),),
       ),
       elevation: 0.0,
       titleSpacing: 0,
@@ -1366,7 +1368,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           child: IconButton(
             icon: Icon(Icons.share_outlined, color: MyTheme.dark_grey),
             onPressed: () {
-              Share.share(_pName + "\n" + AppConfig.SLUG_URL + _slug);
+              Share.share(_pName + "\n" + _link);
               //ToastComponent.showDialog(widget.id.toString());
             },
           ),
@@ -1488,51 +1490,53 @@ class _ProductDetailsState extends State<ProductDetails> {
         _productDetails.description == null ? "" : _productDetails.description;
 */
     return ExpandableNotifier(
-        child: ScrollOnExpand(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Expandable(
-            collapsed: Container(
-                height: 50,
-                child: SingleChildScrollView(
+      child: ScrollOnExpand(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Expandable(
+              collapsed: Container(
+                  height: 50,
+                  child: SingleChildScrollView(
+                    child: Container(
+                        child: Html(
+                            data: _productDetails.description == null
+                                ? ""
+                                : _productDetails.description)),
+                  )),
+              expanded: Container(
                   child: Container(
                       child: Html(
                           data: _productDetails.description == null
                               ? ""
-                              : _productDetails.description)),
-                )),
-            expanded: Container(
-                child: Container(
-                    child: Html(
-                        data: _productDetails.description == null
-                            ? ""
-                            : _productDetails.description))),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Builder(
-                builder: (context) {
-                  var controller = ExpandableController.of(context);
-                  return MaterialButton(
-                    child: Text(
-                      !controller.expanded
-                          ? S.of(context).viewMore
-                          : S.of(context).showLess,
-                      style: TextStyle(color: MyTheme.font_grey, fontSize: 11),
-                    ),
-                    onPressed: () {
-                      controller.toggle();
-                    },
-                  );
-                },
-              ),
-            ],
-          ),
-        ],
+                              : _productDetails.description))),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Builder(
+                  builder: (context) {
+                    var controller = ExpandableController.of(context);
+                    return MaterialButton(
+                      child: Text(
+                        !controller.expanded
+                            ? S.of(context).viewMore
+                            : S.of(context).showLess,
+                        style:
+                            TextStyle(color: MyTheme.font_grey, fontSize: 11),
+                      ),
+                      onPressed: () {
+                        controller.toggle();
+                      },
+                    );
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
-    ));
+    );
   }
 
   buildTopSellingProductList() {
@@ -1776,22 +1780,20 @@ class _ProductDetailsState extends State<ProductDetails> {
                           //shape: BoxShape.rectangle,
                         ),
                         child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child:
-                                /*Image.asset(
-                                        singleProduct.product_images[index])*/
-                                FadeInImage.assetNetwork(
-                              placeholder: 'assets/placeholder.png',
-                              image: AppConfig.BASE_PATH + url,
-                              fit: BoxFit.contain,
-                              imageErrorBuilder: (BuildContext context,
-                                  Object exception, StackTrace stackTrace) {
-                                return Image.asset(
-                                  "assets/placeholder.png",
-                                  fit: BoxFit.cover,
-                                );
-                              },
-                            )),
+                          borderRadius: BorderRadius.circular(10),
+                          child: FadeInImage.assetNetwork(
+                            placeholder: 'assets/placeholder.png',
+                            image: AppConfig.BASE_PATH + url,
+                            fit: BoxFit.contain,
+                            imageErrorBuilder: (BuildContext context,
+                                Object exception, StackTrace stackTrace) {
+                              return Image.asset(
+                                "assets/placeholder.png",
+                                fit: BoxFit.cover,
+                              );
+                            },
+                          ),
+                        ),
                       ),
                     ),
                   );

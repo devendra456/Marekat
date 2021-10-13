@@ -4,9 +4,11 @@
 //https://app.quicktype.io/
 import 'dart:convert';
 
-VariantResponse variantResponseFromJson(String str) => VariantResponse.fromJson(json.decode(str));
+VariantResponse variantResponseFromJson(String str) =>
+    VariantResponse.fromJson(json.decode(str));
 
-String variantResponseToJson(VariantResponse data) => json.encode(data.toJson());
+String variantResponseToJson(VariantResponse data) =>
+    json.encode(data.toJson());
 
 class VariantResponse {
   VariantResponse({
@@ -19,11 +21,12 @@ class VariantResponse {
 
   int product_id;
   String variant;
-  int price;
+  double price;
   String price_string;
   int stock;
 
-  factory VariantResponse.fromJson(Map<String, dynamic> json) => VariantResponse(
+  factory VariantResponse.fromJson(Map<String, dynamic> json) =>
+      VariantResponse(
         product_id: json["product_id"],
         variant: json["variant"],
         price: json["price"],
