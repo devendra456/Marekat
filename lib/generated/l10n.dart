@@ -2484,6 +2484,216 @@ class S {
       args: [],
     );
   }
+
+  /// `Oops!`
+  String get oops {
+    return Intl.message(
+      'Oops!',
+      name: 'oops',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter Postal Code`
+  String get pleaseEnterPostalCode {
+    return Intl.message(
+      'Please enter Postal Code',
+      name: 'pleaseEnterPostalCode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter Phone Number`
+  String get pleaseEnterPhoneNumber {
+    return Intl.message(
+      'Please enter Phone Number',
+      name: 'pleaseEnterPhoneNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ordered Product`
+  String get orderedProduct {
+    return Intl.message(
+      'Ordered Product',
+      name: 'orderedProduct',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No items are ordered`
+  String get noItemsAreOrdered {
+    return Intl.message(
+      'No items are ordered',
+      name: 'noItemsAreOrdered',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Order placed`
+  String get orderPlaced {
+    return Intl.message(
+      'Order placed',
+      name: 'orderPlaced',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `On Delivery`
+  String get onDelivery {
+    return Intl.message(
+      'On Delivery',
+      name: 'onDelivery',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delivered`
+  String get delivered {
+    return Intl.message(
+      'Delivered',
+      name: 'delivered',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Order Code`
+  String get orderCode {
+    return Intl.message(
+      'Order Code',
+      name: 'orderCode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Shipping Method`
+  String get shippingMethod {
+    return Intl.message(
+      'Shipping Method',
+      name: 'shippingMethod',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Order Date`
+  String get orderDate {
+    return Intl.message(
+      'Order Date',
+      name: 'orderDate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Shipping Address`
+  String get shippingAddress {
+    return Intl.message(
+      'Shipping Address',
+      name: 'shippingAddress',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `item`
+  String get item {
+    return Intl.message(
+      'item',
+      name: 'item',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ask For Refund`
+  String get askForRefund {
+    return Intl.message(
+      'Ask For Refund',
+      name: 'askForRefund',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Order Details`
+  String get orderDetails {
+    return Intl.message(
+      'Order Details',
+      name: 'orderDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirmed`
+  String get confirmed {
+    return Intl.message(
+      'Confirmed',
+      name: 'confirmed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `GET MY LOCATION`
+  String get getMyLocation {
+    return Intl.message(
+      'GET MY LOCATION',
+      name: 'getMyLocation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Amount`
+  String get amount {
+    return Intl.message(
+      'Amount',
+      name: 'amount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Explore more and shortlist some items`
+  String get exploreMoreAndShortlistSomeItems {
+    return Intl.message(
+      'Explore more and shortlist some items',
+      name: 'exploreMoreAndShortlistSomeItems',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sign up with Marekat smart store to continue\nshopping healthy and organic products`
+  String get signUpWithAppnameSmartStoreToContinuenshoppingHealthyAnd {
+    return Intl.message(
+      'Sign up with Marekat smart store to continue\nshopping healthy and organic products',
+      name: 'signUpWithAppnameSmartStoreToContinuenshoppingHealthyAnd',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `\nLogin to browse through huge amounts\nof healthy goods`
+  String get nloginToBrowseThroughHugeAmountsnofHealthyGoods {
+    return Intl.message(
+      '\nLogin to browse through huge amounts\nof healthy goods',
+      name: 'nloginToBrowseThroughHugeAmountsnofHealthyGoods',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

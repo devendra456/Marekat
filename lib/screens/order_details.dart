@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:marekat/addon_config.dart';
 import 'package:marekat/custom/toast_component.dart';
+import 'package:marekat/generated/l10n.dart';
+import 'package:marekat/helpers/shared_value_helper.dart';
 import 'package:marekat/helpers/shimmer_helper.dart';
-import 'package:marekat/my_theme.dart';
 import 'package:marekat/repositories/order_repository.dart';
 import 'package:timeline_tile/timeline_tile.dart';
+
+import '../addon_config.dart';
+import '../my_theme.dart';
 
 class OrderDetails extends StatefulWidget {
   int id;
@@ -117,7 +120,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                 delegate: SliverChildListDelegate([
               Center(
                 child: Text(
-                  "Ordered Product",
+                  S.of(context).orderedProduct,
                   style: TextStyle(
                       color: MyTheme.font_grey,
                       fontSize: 14,
@@ -133,7 +136,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                           : Container(
                               height: 100,
                               child: Text(
-                                "No items are ordered",
+                                S.of(context).noItemsAreOrdered,
                                 style: TextStyle(color: MyTheme.font_grey),
                               ),
                             )))
@@ -171,7 +174,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                         Container(
                           width: 120,
                           child: Text(
-                            "SUB TOTAL",
+                            S.of(context).subTotal,
                             textAlign: TextAlign.end,
                             style: TextStyle(
                                 color: MyTheme.font_grey,
@@ -196,7 +199,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                         Container(
                           width: 120,
                           child: Text(
-                            "TAX",
+                            S.of(context).tax,
                             textAlign: TextAlign.end,
                             style: TextStyle(
                                 color: MyTheme.font_grey,
@@ -221,7 +224,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                         Container(
                           width: 120,
                           child: Text(
-                            "SHIPPING COST",
+                            S.of(context).shippingCost,
                             textAlign: TextAlign.end,
                             style: TextStyle(
                                 color: MyTheme.font_grey,
@@ -246,7 +249,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                         Container(
                           width: 120,
                           child: Text(
-                            "DISCOUNT",
+                            S.of(context).discount,
                             textAlign: TextAlign.end,
                             style: TextStyle(
                                 color: MyTheme.font_grey,
@@ -272,7 +275,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                         Container(
                           width: 120,
                           child: Text(
-                            "GRAND TOTAL",
+                            S.of(context).grandTotal,
                             textAlign: TextAlign.end,
                             style: TextStyle(
                                 color: MyTheme.font_grey,
@@ -338,7 +341,7 @@ class _OrderDetailsState extends State<OrderDetails> {
           TimelineTile(
             axis: TimelineAxis.horizontal,
             alignment: TimelineAlign.end,
-            isFirst: true,
+            isFirst: langCode.$ == 'en' ? true : false,
             startChild: Container(
               width: (MediaQuery.of(context).size.width - 32) / 4,
               child: Column(
@@ -362,7 +365,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                   Padding(
                     padding: const EdgeInsets.all(4.0),
                     child: Text(
-                      "Order placed",
+                      S.of(context).orderPlaced,
                       textAlign: TextAlign.center,
                       style: TextStyle(color: MyTheme.font_grey),
                     ),
@@ -378,15 +381,28 @@ class _OrderDetailsState extends State<OrderDetails> {
                       color: Colors.white, iconData: Icons.check, fontSize: 16)
                   : null,
             ),
-            afterLineStyle: _stepIndex >= 1
-                ? LineStyle(
-                    color: Colors.green,
-                    thickness: 5,
-                  )
-                : LineStyle(
-                    color: MyTheme.medium_grey,
-                    thickness: 4,
-                  ),
+            afterLineStyle: langCode.$ == 'en'
+                ? (_stepIndex >= 1
+                    ? LineStyle(
+                        color: Colors.green,
+                        thickness: 5,
+                      )
+                    : LineStyle(
+                        color: MyTheme.medium_grey,
+                        thickness: 4,
+                      ))
+                : LineStyle(color: MyTheme.white),
+            beforeLineStyle: langCode.$ == 'ar'
+                ? (_stepIndex >= 1
+                    ? LineStyle(
+                        color: Colors.green,
+                        thickness: 5,
+                      )
+                    : LineStyle(
+                        color: MyTheme.medium_grey,
+                        thickness: 4,
+                      ))
+                : LineStyle(color: MyTheme.white),
           ),
           TimelineTile(
             axis: TimelineAxis.horizontal,
@@ -414,7 +430,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                   Padding(
                     padding: const EdgeInsets.all(4.0),
                     child: Text(
-                      "Confirmed",
+                      S.of(context).confirmed,
                       textAlign: TextAlign.center,
                       style: TextStyle(color: MyTheme.font_grey),
                     ),
@@ -430,24 +446,44 @@ class _OrderDetailsState extends State<OrderDetails> {
                       color: Colors.white, iconData: Icons.check, fontSize: 16)
                   : null,
             ),
-            beforeLineStyle: _stepIndex >= 1
-                ? LineStyle(
-                    color: Colors.green,
-                    thickness: 5,
-                  )
-                : LineStyle(
-                    color: MyTheme.medium_grey,
-                    thickness: 4,
-                  ),
-            afterLineStyle: _stepIndex >= 2
-                ? LineStyle(
-                    color: Colors.green,
-                    thickness: 5,
-                  )
-                : LineStyle(
-                    color: MyTheme.medium_grey,
-                    thickness: 4,
-                  ),
+            beforeLineStyle: langCode.$ == "en"
+                ? (_stepIndex >= 1
+                    ? LineStyle(
+                        color: Colors.green,
+                        thickness: 5,
+                      )
+                    : LineStyle(
+                        color: MyTheme.medium_grey,
+                        thickness: 4,
+                      ))
+                : (_stepIndex >= 2
+                    ? LineStyle(
+                        color: Colors.green,
+                        thickness: 5,
+                      )
+                    : LineStyle(
+                        color: MyTheme.medium_grey,
+                        thickness: 4,
+                      )),
+            afterLineStyle: langCode.$ == "en"
+                ? (_stepIndex >= 2
+                    ? LineStyle(
+                        color: Colors.green,
+                        thickness: 5,
+                      )
+                    : LineStyle(
+                        color: MyTheme.medium_grey,
+                        thickness: 4,
+                      ))
+                : (_stepIndex >= 1
+                    ? LineStyle(
+                        color: Colors.green,
+                        thickness: 5,
+                      )
+                    : LineStyle(
+                        color: MyTheme.medium_grey,
+                        thickness: 4,
+                      )),
           ),
           TimelineTile(
             axis: TimelineAxis.horizontal,
@@ -475,7 +511,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                   Padding(
                     padding: const EdgeInsets.all(4.0),
                     child: Text(
-                      "On Delivery",
+                      S.of(context).onDelivery,
                       textAlign: TextAlign.center,
                       style: TextStyle(color: MyTheme.font_grey),
                     ),
@@ -491,29 +527,49 @@ class _OrderDetailsState extends State<OrderDetails> {
                       color: Colors.white, iconData: Icons.check, fontSize: 16)
                   : null,
             ),
-            beforeLineStyle: _stepIndex >= 2
-                ? LineStyle(
-                    color: Colors.green,
-                    thickness: 5,
-                  )
-                : LineStyle(
-                    color: MyTheme.medium_grey,
-                    thickness: 4,
-                  ),
-            afterLineStyle: _stepIndex >= 3
-                ? LineStyle(
-                    color: Colors.green,
-                    thickness: 5,
-                  )
-                : LineStyle(
-                    color: MyTheme.medium_grey,
-                    thickness: 4,
-                  ),
+            beforeLineStyle: langCode.$ == "en"
+                ? (_stepIndex >= 2
+                    ? LineStyle(
+                        color: Colors.green,
+                        thickness: 5,
+                      )
+                    : LineStyle(
+                        color: MyTheme.medium_grey,
+                        thickness: 4,
+                      ))
+                : (_stepIndex >= 3
+                    ? LineStyle(
+                        color: Colors.green,
+                        thickness: 5,
+                      )
+                    : LineStyle(
+                        color: MyTheme.medium_grey,
+                        thickness: 4,
+                      )),
+            afterLineStyle: langCode.$ == "en"
+                ? (_stepIndex >= 3
+                    ? LineStyle(
+                        color: Colors.green,
+                        thickness: 5,
+                      )
+                    : LineStyle(
+                        color: MyTheme.medium_grey,
+                        thickness: 4,
+                      ))
+                : (_stepIndex >= 2
+                    ? LineStyle(
+                        color: Colors.green,
+                        thickness: 5,
+                      )
+                    : LineStyle(
+                        color: MyTheme.medium_grey,
+                        thickness: 4,
+                      )),
           ),
           TimelineTile(
             axis: TimelineAxis.horizontal,
             alignment: TimelineAlign.end,
-            isLast: true,
+            isLast: langCode.$ == 'en' ? true : false,
             startChild: Container(
               width: (MediaQuery.of(context).size.width - 32) / 4,
               child: Column(
@@ -537,7 +593,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                   Padding(
                     padding: const EdgeInsets.all(4.0),
                     child: Text(
-                      "Delivered",
+                      S.of(context).delivered,
                       textAlign: TextAlign.center,
                       style: TextStyle(color: MyTheme.font_grey),
                     ),
@@ -553,15 +609,28 @@ class _OrderDetailsState extends State<OrderDetails> {
                       color: Colors.white, iconData: Icons.check, fontSize: 16)
                   : null,
             ),
-            beforeLineStyle: _stepIndex >= 4
-                ? LineStyle(
-                    color: Colors.green,
-                    thickness: 5,
-                  )
-                : LineStyle(
-                    color: MyTheme.medium_grey,
-                    thickness: 4,
-                  ),
+            beforeLineStyle: langCode.$ == "en"
+                ? (_stepIndex >= 4
+                    ? LineStyle(
+                        color: Colors.green,
+                        thickness: 5,
+                      )
+                    : LineStyle(
+                        color: MyTheme.medium_grey,
+                        thickness: 4,
+                      ))
+                : LineStyle(color: MyTheme.white),
+            afterLineStyle: langCode.$ == "ar"
+                ? (_stepIndex >= 4
+                    ? LineStyle(
+                        color: Colors.green,
+                        thickness: 5,
+                      )
+                    : LineStyle(
+                        color: MyTheme.medium_grey,
+                        thickness: 4,
+                      ))
+                : LineStyle(color: MyTheme.white),
           ),
         ],
       ),
@@ -583,7 +652,7 @@ class _OrderDetailsState extends State<OrderDetails> {
             Row(
               children: [
                 Text(
-                  "Order Code",
+                  S.of(context).orderCode,
                   style: TextStyle(
                       color: MyTheme.font_grey,
                       fontSize: 13,
@@ -591,7 +660,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                 ),
                 Spacer(),
                 Text(
-                  "Shipping Method",
+                  S.of(context).shippingMethod,
                   style: TextStyle(
                       color: MyTheme.font_grey,
                       fontSize: 13,
@@ -623,7 +692,7 @@ class _OrderDetailsState extends State<OrderDetails> {
             Row(
               children: [
                 Text(
-                  "Order Date",
+                  S.of(context).orderDate,
                   style: TextStyle(
                       color: MyTheme.font_grey,
                       fontSize: 13,
@@ -631,7 +700,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                 ),
                 Spacer(),
                 Text(
-                  "Payment Method",
+                  S.of(context).paymentMethod,
                   style: TextStyle(
                       color: MyTheme.font_grey,
                       fontSize: 13,
@@ -662,7 +731,7 @@ class _OrderDetailsState extends State<OrderDetails> {
             Row(
               children: [
                 Text(
-                  "Payment Status",
+                  S.of(context).paymentStatus,
                   style: TextStyle(
                       color: MyTheme.font_grey,
                       fontSize: 13,
@@ -670,7 +739,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                 ),
                 Spacer(),
                 Text(
-                  "Delivery Status",
+                  S.of(context).deliveryStatus,
                   style: TextStyle(
                       color: MyTheme.font_grey,
                       fontSize: 13,
@@ -706,7 +775,7 @@ class _OrderDetailsState extends State<OrderDetails> {
             Row(
               children: [
                 Text(
-                  "Shipping Address",
+                  S.of(context).shippingAddress,
                   style: TextStyle(
                       color: MyTheme.font_grey,
                       fontSize: 13,
@@ -714,7 +783,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                 ),
                 Spacer(),
                 Text(
-                  "Total Amount",
+                  S.of(context).totalAmount,
                   style: TextStyle(
                       color: MyTheme.font_grey,
                       fontSize: 13,
@@ -726,16 +795,16 @@ class _OrderDetailsState extends State<OrderDetails> {
               padding: const EdgeInsets.only(bottom: 8.0),
               child: Row(
                 children: [
-                  Container(
-                    width: (MediaQuery.of(context).size.width - (32.0)) / 2,
-                    // (total_screen_width - padding)/2
+                  Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _orderDetails.shipping_address.name != null
                             ? Text(
-                                "Name: ${_orderDetails.shipping_address.name}",
-                                maxLines: 3,
+                                S.of(context).name +
+                                    ": " +
+                                    _orderDetails.shipping_address.name,
+                                maxLines: 1,
                                 style: TextStyle(
                                   color: MyTheme.grey_153,
                                 ),
@@ -743,7 +812,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                             : Container(),
                         _orderDetails.shipping_address.email != null
                             ? Text(
-                                "Email: ${_orderDetails.shipping_address.email}",
+                                S.of(context).email +
+                                    ": " +
+                                    _orderDetails.shipping_address.email,
                                 maxLines: 3,
                                 style: TextStyle(
                                   color: MyTheme.grey_153,
@@ -751,36 +822,46 @@ class _OrderDetailsState extends State<OrderDetails> {
                               )
                             : Container(),
                         Text(
-                          "Address: ${_orderDetails.shipping_address.address}",
-                          maxLines: 3,
+                          S.of(context).address +
+                              ": " +
+                              _orderDetails.shipping_address.address,
+                          maxLines: 2,
                           style: TextStyle(
                             color: MyTheme.grey_153,
                           ),
                         ),
                         Text(
-                          "City: ${_orderDetails.shipping_address.city}",
-                          maxLines: 3,
+                          S.of(context).city +
+                              ": " +
+                              _orderDetails.shipping_address.city,
+                          maxLines: 1,
                           style: TextStyle(
                             color: MyTheme.grey_153,
                           ),
                         ),
                         Text(
-                          "Country: ${_orderDetails.shipping_address.country}",
-                          maxLines: 3,
+                          S.of(context).country +
+                              ": " +
+                              _orderDetails.shipping_address.country,
+                          maxLines: 1,
                           style: TextStyle(
                             color: MyTheme.grey_153,
                           ),
                         ),
                         Text(
-                          "Phone: ${_orderDetails.shipping_address.phone}",
-                          maxLines: 3,
+                          S.of(context).phone +
+                              ": " +
+                              _orderDetails.shipping_address.phone,
+                          maxLines: 1,
                           style: TextStyle(
                             color: MyTheme.grey_153,
                           ),
                         ),
                         Text(
-                          "Postal code: ${_orderDetails.shipping_address.postal_code}",
-                          maxLines: 3,
+                          S.of(context).postalCode +
+                              ": " +
+                              _orderDetails.shipping_address.postal_code,
+                          maxLines: 1,
                           style: TextStyle(
                             color: MyTheme.grey_153,
                           ),
@@ -788,7 +869,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                       ],
                     ),
                   ),
-                  Spacer(),
+                  SizedBox(
+                    width: 4,
+                  ),
                   Text(
                     _orderDetails.grand_total,
                     style: TextStyle(
@@ -848,7 +931,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                               fontWeight: FontWeight.w600),
                         )
                       : Text(
-                          "item",
+                          S.of(context).item,
                           style: TextStyle(
                               color: MyTheme.font_grey,
                               fontSize: 13,
@@ -869,7 +952,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                 ? InkWell(
                     onTap: () {
                       ToastComponent.showDialog(
-                        "Coming soon",
+                        S.of(context).comingSoon,
                       );
                     },
                     child: Padding(
@@ -878,7 +961,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Text(
-                            "Ask For Refund",
+                            S.of(context).askForRefund,
                             style: TextStyle(
                                 color: MyTheme.accent_color,
                                 fontWeight: FontWeight.w600,
@@ -930,7 +1013,7 @@ class _OrderDetailsState extends State<OrderDetails> {
         ),
       ),
       title: Text(
-        "Order Details",
+        S.of(context).orderDetails,
         style: TextStyle(fontSize: 16, color: MyTheme.accent_color),
       ),
       elevation: 0.0,

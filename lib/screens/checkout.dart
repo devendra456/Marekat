@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:marekat/custom/toast_component.dart';
@@ -549,17 +550,36 @@ class _CheckoutState extends State<Checkout> {
                 enabledBorder: OutlineInputBorder(
                   borderSide:
                       BorderSide(color: MyTheme.textfield_grey, width: 0.5),
-                  borderRadius: const BorderRadius.only(
-                    topLeft: const Radius.circular(8.0),
-                    bottomLeft: const Radius.circular(8.0),
+                  borderRadius: BorderRadius.only(
+                    topLeft: langCode.$ == "en"
+                        ? const Radius.circular(8.0)
+                        : Radius.circular(0),
+                    bottomLeft: langCode.$ == "en"
+                        ? Radius.circular(8.0)
+                        : Radius.circular(0),
+                    topRight: langCode.$ == "ar"
+                        ? Radius.circular(8.0)
+                        : Radius.circular(0),
+                    bottomRight: langCode.$ == "ar"
+                        ? Radius.circular(8.0)
+                        : Radius.circular(0),
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(color: MyTheme.medium_grey, width: 0.5),
-                  borderRadius: const BorderRadius.only(
-                    topLeft: const Radius.circular(8.0),
-                    bottomLeft: const Radius.circular(8.0),
+                  borderSide: BorderSide(color: MyTheme.medium_grey, width: 1),
+                  borderRadius: BorderRadius.only(
+                    topLeft: langCode.$ == "en"
+                        ? const Radius.circular(8.0)
+                        : Radius.circular(0),
+                    bottomLeft: langCode.$ == "en"
+                        ? Radius.circular(8.0)
+                        : Radius.circular(0),
+                    topRight: langCode.$ == "ar"
+                        ? Radius.circular(8.0)
+                        : Radius.circular(0),
+                    bottomRight: langCode.$ == "ar"
+                        ? Radius.circular(8.0)
+                        : Radius.circular(0),
                   ),
                 ),
                 contentPadding: EdgeInsets.only(left: 16.0, right: 16)),
@@ -574,9 +594,19 @@ class _CheckoutState extends State<Checkout> {
                   //height: 50,
                   color: MyTheme.accent_color,
                   shape: RoundedRectangleBorder(
-                      borderRadius: const BorderRadius.only(
-                    topRight: const Radius.circular(8.0),
-                    bottomRight: const Radius.circular(8.0),
+                      borderRadius: BorderRadius.only(
+                    topRight: langCode.$ == "en"
+                        ? Radius.circular(8.0)
+                        : Radius.circular(0),
+                    bottomRight: langCode.$ == "en"
+                        ? Radius.circular(8.0)
+                        : Radius.circular(0),
+                    topLeft: langCode.$ == "ar"
+                        ? Radius.circular(8.0)
+                        : Radius.circular(0),
+                    bottomLeft: langCode.$ == "ar"
+                        ? Radius.circular(8.0)
+                        : Radius.circular(0),
                   )),
                   child: Text(
                     S.of(context).applyCoupon,
@@ -598,9 +628,13 @@ class _CheckoutState extends State<Checkout> {
                   //height: 50,
                   color: MyTheme.accent_color,
                   shape: RoundedRectangleBorder(
-                      borderRadius: const BorderRadius.only(
-                    topRight: const Radius.circular(8.0),
-                    bottomRight: const Radius.circular(8.0),
+                      borderRadius: BorderRadius.only(
+                    topRight: langCode.$ == "en"
+                        ? Radius.circular(8.0)
+                        : Radius.circular(0),
+                    bottomRight: langCode.$ == "en"
+                        ? Radius.circular(8.0)
+                        : Radius.circular(0),
                   )),
                   child: Text(
                     S.of(context).remove,
@@ -687,27 +721,29 @@ class _CheckoutState extends State<Checkout> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                      width: 100,
-                      height: 100,
-                      child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child:
-                              /*Image.asset(
+                    width: 100,
+                    height: 100,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child:
+                          /*Image.asset(
                           _paymentTypeList[index].image,
                           fit: BoxFit.fitWidth,
                         ),*/
-                              FadeInImage.assetNetwork(
-                            placeholder: 'assets/placeholder.png',
-                            image: _paymentTypeList[index].image,
-                            fit: BoxFit.fitWidth,
-                            imageErrorBuilder: (BuildContext context,
-                                Object exception, StackTrace stackTrace) {
-                              return Image.asset(
-                                "assets/placeholder.png",
-                                fit: BoxFit.cover,
-                              );
-                            },
-                          ))),
+                          FadeInImage.assetNetwork(
+                        placeholder: 'assets/placeholder.png',
+                        image: _paymentTypeList[index].image,
+                        fit: BoxFit.fitWidth,
+                        imageErrorBuilder: (BuildContext context,
+                            Object exception, StackTrace stackTrace) {
+                          return Image.asset(
+                            "assets/placeholder.png",
+                            fit: BoxFit.cover,
+                          );
+                        },
+                      ),
+                    ),
+                  ),
                   Container(
                     width: 150,
                     child: Column(

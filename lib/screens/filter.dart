@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:marekat/custom/data_not_found.dart';
 import 'package:marekat/custom/toast_component.dart';
 import 'package:marekat/generated/l10n.dart';
 import 'package:marekat/helpers/reg_ex_inpur_formatter.dart';
@@ -458,25 +459,26 @@ class _FilterState extends State<Filter> {
             height: 36,
             width: MediaQuery.of(context).size.width * .33,
             child: Center(
-                child: Container(
-              width: 50,
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.filter_alt_outlined,
-                    size: 13,
-                  ),
-                  SizedBox(width: 2),
-                  Text(
-                    S.of(context).filter,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 13,
+              child: Container(
+                width: 50,
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.filter_alt_outlined,
+                      size: 13,
                     ),
-                  ),
-                ],
+                    SizedBox(width: 2),
+                    Text(
+                      S.of(context).filter,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            )),
+            ),
           ),
         ),
         GestureDetector(
@@ -653,51 +655,44 @@ class _FilterState extends State<Filter> {
   }
 
   Row buildTopAppbar(BuildContext context) {
-    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <
-        Widget>[
-      IconButton(
-        icon: Icon(Icons.arrow_back, color: MyTheme.accent_color),
-        onPressed: () => Navigator.of(context).pop(),
-      ),
-      Container(
-        width: MediaQuery.of(context).size.width * .6,
-        child: Container(
-          child: Padding(
-              padding: MediaQuery.of(context).viewPadding.top >
-                      30 //MediaQuery.of(context).viewPadding.top is the statusbar height, with a notch phone it results almost 50, without a notch it shows 24.0.For safety we have checked if its greater than thirty
-                  ? const EdgeInsets.symmetric(vertical: 36.0, horizontal: 0.0)
-                  : const EdgeInsets.symmetric(vertical: 14.0, horizontal: 0.0),
-              child: TextField(
-                onTap: () {},
-                autofocus: true,
-                controller: _searchController,
-                onSubmitted: (txt) {
-                  _searchKey = txt;
-                  setState(() {});
-                  _onSearchSubmit();
-                },
-                decoration: InputDecoration(
-                    hintText: S.of(context).searchHere,
-                    hintStyle: TextStyle(
-                        fontSize: 12.0, color: MyTheme.textfield_grey),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: MyTheme.white, width: 0.0),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: MyTheme.white, width: 0.0),
-                    ),
-                    contentPadding: EdgeInsets.all(0.0)),
-              )),
-        ),
-      ),
-      IconButton(
-          icon: Icon(Icons.search, color: MyTheme.accent_color),
-          onPressed: () {
-            _searchKey = _searchController.text.toString();
-            setState(() {});
-            _onSearchSubmit();
-          }),
-    ]);
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          IconButton(
+            icon: Icon(Icons.arrow_back, color: MyTheme.accent_color),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          Expanded(
+            child: TextField(
+              onTap: () {},
+              autofocus: true,
+              controller: _searchController,
+              onSubmitted: (txt) {
+                _searchKey = txt;
+                setState(() {});
+                _onSearchSubmit();
+              },
+              decoration: InputDecoration(
+                  hintText: S.of(context).searchHere,
+                  hintStyle:
+                      TextStyle(fontSize: 12.0, color: MyTheme.textfield_grey),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: MyTheme.white, width: 0.0),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: MyTheme.white, width: 0.0),
+                  ),
+                  contentPadding: EdgeInsets.all(0.0)),
+            ),
+          ),
+          IconButton(
+              icon: Icon(Icons.search, color: MyTheme.accent_color),
+              onPressed: () {
+                _searchKey = _searchController.text.toString();
+                setState(() {});
+                _onSearchSubmit();
+              }),
+        ]);
   }
 
   Drawer buildFilterDrawer() {
@@ -997,9 +992,8 @@ class _FilterState extends State<Filter> {
               parent: AlwaysScrollableScrollPhysics()),
           child: Column(
             children: [
-              SizedBox(
-                  height:
-                      MediaQuery.of(context).viewPadding.top > 40 ? 180 : 135
+              SizedBox(height: 112
+                  //MediaQuery.of(context).viewPadding.top > 40 ? 180 : 135
                   //MediaQuery.of(context).viewPadding.top is the statusbar height, with a notch phone it results almost 50, without a notch it shows 24.0.For safety we have checked if its greater than thirty
                   ),
               GridView.builder(
@@ -1064,9 +1058,8 @@ class _FilterState extends State<Filter> {
               parent: AlwaysScrollableScrollPhysics()),
           child: Column(
             children: [
-              SizedBox(
-                  height:
-                      MediaQuery.of(context).viewPadding.top > 40 ? 180 : 135
+              SizedBox(height: 116
+                  //MediaQuery.of(context).viewPadding.top > 40 ? 180 : 135
                   //MediaQuery.of(context).viewPadding.top is the statusbar height, with a notch phone it results almost 50, without a notch it shows 24.0.For safety we have checked if its greater than thirty
                   ),
               GridView.builder(
@@ -1131,9 +1124,8 @@ class _FilterState extends State<Filter> {
               parent: AlwaysScrollableScrollPhysics()),
           child: Column(
             children: [
-              SizedBox(
-                  height:
-                      MediaQuery.of(context).viewPadding.top > 40 ? 180 : 135
+              SizedBox(height: 116
+                  // MediaQuery.of(context).viewPadding.top > 40 ? 180 : 135
                   //MediaQuery.of(context).viewPadding.top is the statusbar height, with a notch phone it results almost 50, without a notch it shows 24.0.For safety we have checked if its greater than thirty
                   ),
               GridView.builder(
@@ -1161,7 +1153,9 @@ class _FilterState extends State<Filter> {
                     child: ShopSquareCard(
                       id: _shopList[index].id,
                       image: _shopList[index].logo,
-                      name: _shopList[index].name,
+                      name: _shopList[index].name == null
+                          ? ""
+                          : _shopList[index].name,
                     ),
                   );
                 },
@@ -1171,7 +1165,7 @@ class _FilterState extends State<Filter> {
         ),
       );
     } else if (_totalShopData == 0) {
-      return Center(child: Text(S.of(context).noShopIsAvailable));
+      return Center(child: DataNotFound());
     } else {
       return Container(); // should never be happening
     }

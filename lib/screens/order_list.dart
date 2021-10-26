@@ -1,11 +1,12 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
+import 'package:marekat/custom/data_not_found.dart';
 import 'package:marekat/generated/l10n.dart';
 import 'package:marekat/helpers/shared_value_helper.dart';
 import 'package:marekat/my_theme.dart';
 import 'package:marekat/repositories/order_repository.dart';
 import 'package:marekat/screens/main_screen.dart';
 import 'package:marekat/screens/order_details.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:shimmer/shimmer.dart';
 
 class PaymentStatus {
@@ -454,7 +455,10 @@ class _OrderListState extends State<OrderList> {
         ),
       );
     } else if (_totalData == 0) {
-      return Center(child: Text(S.of(context).noDataIsAvailable));
+      return Center(
+          child: /*Text(S.of(context).noDataIsAvailable)
+      */
+              DataNotFound());
     } else {
       return Container(); // should never be happening
     }

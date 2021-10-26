@@ -274,6 +274,16 @@ class _AddressState extends State<Address> {
       ToastComponent.showDialog(S.of(context).selectACountry);
       return;
     }
+
+    if (postal_code == "" || postal_code == null) {
+      ToastComponent.showDialog(S.of(context).pleaseEnterPostalCode);
+      return;
+    }
+
+    if (phone == "" || phone == null) {
+      ToastComponent.showDialog(S.of(context).pleaseEnterPhoneNumber);
+      return;
+    }
     Loader.showLoaderDialog(context);
     var addressAddResponse = await AddressRepository().getAddressAddResponse(
         address,
@@ -292,6 +302,11 @@ class _AddressState extends State<Address> {
 
     Navigator.of(context).pop();
     afterAddingAnAddress();
+    _addressController.text = "";
+    _postalCodeController.text = "";
+    _phoneController.text = "";
+    _selected_country = null;
+    _selected_city = null;
   }
 
   onAddressUpdate(context, index, id) async {
@@ -397,7 +412,7 @@ class _AddressState extends State<Address> {
                           size: 16,
                         ),
                         label: Text(
-                          "GET MY LOCATION",
+                          S.of(context).getMyLocation,
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 14),
                         ),
@@ -422,251 +437,222 @@ class _AddressState extends State<Address> {
 
   Future buildShowAddFormDialog(BuildContext context) {
     return showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-              insetPadding: EdgeInsets.symmetric(horizontal: 10),
-              contentPadding: EdgeInsets.only(
-                  top: 36.0, left: 36.0, right: 36.0, bottom: 2.0),
-              content: Container(
-                width: 400,
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Text(S.of(context).address,
-                            style: TextStyle(
-                                color: MyTheme.font_grey, fontSize: 12)),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: Container(
-                          height: 55,
-                          child: TextField(
-                            controller: _addressController,
-                            autofocus: false,
-                            maxLines: null,
-                            keyboardType: TextInputType.multiline,
-                            decoration: InputDecoration(
-                                hintText: S.of(context).enterAddress,
-                                hintStyle: TextStyle(
-                                    fontSize: 12.0,
-                                    color: MyTheme.textfield_grey),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: MyTheme.textfield_grey,
-                                      width: 0.5),
-                                  borderRadius: const BorderRadius.all(
-                                    const Radius.circular(8.0),
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: MyTheme.textfield_grey,
-                                      width: 1.0),
-                                  borderRadius: const BorderRadius.all(
-                                    const Radius.circular(8.0),
-                                  ),
-                                ),
-                                contentPadding: EdgeInsets.only(
-                                    left: 8.0,
-                                    top: 16.0,
-                                    bottom: 16.0,
-                                    right: 8)),
+      context: context,
+      builder: (_) => AlertDialog(
+        insetPadding: EdgeInsets.symmetric(horizontal: 10),
+        contentPadding:
+            EdgeInsets.only(top: 16.0, left: 36.0, right: 36.0, bottom: 16.0),
+        content: Container(
+          width: 400,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Text(S.of(context).address,
+                      style: TextStyle(color: MyTheme.font_grey, fontSize: 12)),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: Container(
+                    height: 55,
+                    child: TextField(
+                      controller: _addressController,
+                      autofocus: false,
+                      maxLines: null,
+                      keyboardType: TextInputType.multiline,
+                      decoration: InputDecoration(
+                          hintText: S.of(context).enterAddress,
+                          hintStyle: TextStyle(
+                              fontSize: 12.0, color: MyTheme.textfield_grey),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: MyTheme.textfield_grey, width: 0.5),
+                            borderRadius: const BorderRadius.all(
+                              const Radius.circular(8.0),
+                            ),
                           ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Text(S.of(context).city,
-                            style: TextStyle(
-                                color: MyTheme.font_grey, fontSize: 12)),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: Container(
-                          height: 40,
-                          child: DropdownSearch<City>(
-                            items: _cityList,
-                            maxHeight: 300,
-                            label: S.of(context).selectACity,
-                            showSearchBox: true,
-                            selectedItem: _selected_city,
-                            dropdownSearchDecoration: InputDecoration(
-                                hintText: S.of(context).enterCity,
-                                hintStyle: TextStyle(
-                                    fontSize: 12.0,
-                                    color: MyTheme.textfield_grey),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: MyTheme.textfield_grey,
-                                      width: 0.5),
-                                  borderRadius: const BorderRadius.all(
-                                    const Radius.circular(8.0),
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: MyTheme.textfield_grey,
-                                      width: 1.0),
-                                  borderRadius: const BorderRadius.all(
-                                    const Radius.circular(8.0),
-                                  ),
-                                ),
-                                contentPadding:
-                                    EdgeInsets.only(left: 8.0, right: 8)),
-                            onChanged: (City city) {
-                              setState(() {
-                                _selected_city = city;
-                                _selected_city_name = city.name;
-                              });
-                            },
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: MyTheme.textfield_grey, width: 1.0),
+                            borderRadius: const BorderRadius.all(
+                              const Radius.circular(8.0),
+                            ),
                           ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Text(S.of(context).postalCode,
-                            style: TextStyle(
-                                color: MyTheme.font_grey, fontSize: 12)),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: Container(
-                          height: 40,
-                          child: TextField(
-                            controller: _postalCodeController,
-                            autofocus: false,
-                            keyboardType: TextInputType.number,
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                            decoration: InputDecoration(
-                                hintText: S.of(context).enterPostalCode,
-                                hintStyle: TextStyle(
-                                    fontSize: 12.0,
-                                    color: MyTheme.textfield_grey),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: MyTheme.textfield_grey,
-                                      width: 0.5),
-                                  borderRadius: const BorderRadius.all(
-                                    const Radius.circular(8.0),
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: MyTheme.textfield_grey,
-                                      width: 1.0),
-                                  borderRadius: const BorderRadius.all(
-                                    const Radius.circular(8.0),
-                                  ),
-                                ),
-                                contentPadding:
-                                    EdgeInsets.only(left: 8.0, right: 8)),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Text(S.of(context).country,
-                            style: TextStyle(
-                                color: MyTheme.font_grey, fontSize: 12)),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: Container(
-                          height: 40,
-                          child: DropdownSearch<Country>(
-                            items: _countryList,
-                            maxHeight: 300,
-                            label: S.of(context).selectACountry,
-                            showSearchBox: true,
-                            selectedItem: _selected_country,
-                            dropdownSearchDecoration: InputDecoration(
-                                hintText: S.of(context).enterPostalCode,
-                                hintStyle: TextStyle(
-                                    fontSize: 12.0,
-                                    color: MyTheme.textfield_grey),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: MyTheme.textfield_grey,
-                                      width: 0.5),
-                                  borderRadius: const BorderRadius.all(
-                                    const Radius.circular(8.0),
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: MyTheme.textfield_grey,
-                                      width: 1.0),
-                                  borderRadius: const BorderRadius.all(
-                                    const Radius.circular(8.0),
-                                  ),
-                                ),
-                                contentPadding:
-                                    EdgeInsets.only(left: 8.0, right: 8)),
-                            onChanged: (Country country) {
-                              setState(() {
-                                _selected_country = country;
-                                _selected_country_name = country.name;
-                              });
-                            },
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Text(S.of(context).phone,
-                            style: TextStyle(
-                                color: MyTheme.font_grey, fontSize: 12)),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Container(
-                          height: 40,
-                          child: TextField(
-                            keyboardType: TextInputType.number,
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                            controller: _phoneController,
-                            autofocus: false,
-                            decoration: InputDecoration(
-                                hintText: S.of(context).enterPhone,
-                                hintStyle: TextStyle(
-                                    fontSize: 12.0,
-                                    color: MyTheme.textfield_grey),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: MyTheme.textfield_grey,
-                                      width: 0.5),
-                                  borderRadius: const BorderRadius.all(
-                                    const Radius.circular(8.0),
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: MyTheme.textfield_grey,
-                                      width: 1.0),
-                                  borderRadius: const BorderRadius.all(
-                                    const Radius.circular(8.0),
-                                  ),
-                                ),
-                                contentPadding:
-                                    EdgeInsets.only(left: 8.0, right: 8)),
-                          ),
-                        ),
-                      )
-                    ],
+                          contentPadding: EdgeInsets.only(
+                              left: 8.0, top: 16.0, bottom: 16.0, right: 8)),
+                    ),
                   ),
                 ),
-              ),
-              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Text(S.of(context).country,
+                      style: TextStyle(color: MyTheme.font_grey, fontSize: 12)),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: Container(
+                    height: 40,
+                    child: DropdownSearch<Country>(
+                      items: _countryList,
+                      maxHeight: 300,
+                      label: S.of(context).selectACountry,
+                      showSearchBox: true,
+                      selectedItem: _selected_country,
+                      dropdownSearchDecoration: InputDecoration(
+                          hintText: S.of(context).enterPostalCode,
+                          hintStyle: TextStyle(
+                              fontSize: 12.0, color: MyTheme.textfield_grey),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: MyTheme.textfield_grey, width: 0.5),
+                            borderRadius: const BorderRadius.all(
+                              const Radius.circular(8.0),
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: MyTheme.textfield_grey, width: 1.0),
+                            borderRadius: const BorderRadius.all(
+                              const Radius.circular(8.0),
+                            ),
+                          ),
+                          contentPadding: EdgeInsets.only(left: 8.0, right: 8)),
+                      onChanged: (Country country) {
+                        setState(() {
+                          _selected_country = country;
+                          _selected_country_name = country.name;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Text(S.of(context).city,
+                      style: TextStyle(color: MyTheme.font_grey, fontSize: 12)),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: Container(
+                    height: 40,
+                    child: DropdownSearch<City>(
+                      items: _cityList,
+                      maxHeight: 300,
+                      label: S.of(context).selectACity,
+                      showSearchBox: true,
+                      selectedItem: _selected_city,
+                      dropdownSearchDecoration: InputDecoration(
+                          hintText: S.of(context).enterCity,
+                          hintStyle: TextStyle(
+                              fontSize: 12.0, color: MyTheme.textfield_grey),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: MyTheme.textfield_grey, width: 0.5),
+                            borderRadius: const BorderRadius.all(
+                              const Radius.circular(8.0),
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: MyTheme.textfield_grey, width: 1.0),
+                            borderRadius: const BorderRadius.all(
+                              const Radius.circular(8.0),
+                            ),
+                          ),
+                          contentPadding: EdgeInsets.only(left: 8.0, right: 8)),
+                      onChanged: (City city) {
+                        setState(() {
+                          _selected_city = city;
+                          _selected_city_name = city.name;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Text(S.of(context).postalCode,
+                      style: TextStyle(color: MyTheme.font_grey, fontSize: 12)),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: Container(
+                    height: 40,
+                    child: TextField(
+                      controller: _postalCodeController,
+                      autofocus: false,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly
+                      ],
+                      decoration: InputDecoration(
+                          hintText: S.of(context).enterPostalCode,
+                          hintStyle: TextStyle(
+                              fontSize: 12.0, color: MyTheme.textfield_grey),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: MyTheme.textfield_grey, width: 0.5),
+                            borderRadius: const BorderRadius.all(
+                              const Radius.circular(8.0),
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: MyTheme.textfield_grey, width: 1.0),
+                            borderRadius: const BorderRadius.all(
+                              const Radius.circular(8.0),
+                            ),
+                          ),
+                          contentPadding: EdgeInsets.only(left: 8.0, right: 8)),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Text(S.of(context).phone,
+                      style: TextStyle(color: MyTheme.font_grey, fontSize: 12)),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Container(
+                    height: 40,
+                    child: TextField(
+                      keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly
+                      ],
+                      controller: _phoneController,
+                      autofocus: false,
+                      decoration: InputDecoration(
+                          hintText: S.of(context).enterPhone,
+                          hintStyle: TextStyle(
+                              fontSize: 12.0, color: MyTheme.textfield_grey),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: MyTheme.textfield_grey, width: 0.5),
+                            borderRadius: const BorderRadius.all(
+                              const Radius.circular(8.0),
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: MyTheme.textfield_grey, width: 1.0),
+                            borderRadius: const BorderRadius.all(
+                              const Radius.circular(8.0),
+                            ),
+                          ),
+                          contentPadding: EdgeInsets.only(left: 8.0, right: 8)),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 16,
+                ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(right: 8.0),
@@ -675,7 +661,7 @@ class _AddressState extends State<Address> {
                         height: 30,
                         color: Color.fromRGBO(253, 253, 253, 1),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(9.0),
+                          borderRadius: BorderRadius.circular(4.0),
                         ),
                         child: Text(
                           S.of(context).close,
@@ -688,17 +674,14 @@ class _AddressState extends State<Address> {
                         },
                       ),
                     ),
-                    SizedBox(
-                      width: 1,
-                    ),
                     Padding(
-                      padding: const EdgeInsets.only(right: 28.0),
+                      padding: const EdgeInsets.only(right: 0.0),
                       child: MaterialButton(
                         minWidth: 75,
                         height: 30,
                         color: MyTheme.accent_color,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(9.0),
+                          borderRadius: BorderRadius.circular(4.0),
                         ),
                         child: Text(
                           S.of(context).add,
@@ -715,258 +698,233 @@ class _AddressState extends State<Address> {
                   ],
                 )
               ],
-            ));
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   Future buildShowUpdateFormDialog(BuildContext context, index) {
     return showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-              insetPadding: EdgeInsets.symmetric(horizontal: 10),
-              contentPadding: EdgeInsets.only(
-                  top: 36.0, left: 36.0, right: 36.0, bottom: 2.0),
-              content: Container(
-                width: 400,
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Text(S.of(context).address,
-                            style: TextStyle(
-                                color: MyTheme.font_grey, fontSize: 12)),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: Container(
-                          height: 55,
-                          child: TextField(
-                            controller: _addressControllerListForUpdate[index],
-                            autofocus: false,
-                            maxLines: null,
-                            keyboardType: TextInputType.multiline,
-                            decoration: InputDecoration(
-                                hintText: S.of(context).enterAddress,
-                                hintStyle: TextStyle(
-                                    fontSize: 12.0,
-                                    color: MyTheme.textfield_grey),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: MyTheme.textfield_grey,
-                                      width: 0.5),
-                                  borderRadius: const BorderRadius.all(
-                                    const Radius.circular(8.0),
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: MyTheme.textfield_grey,
-                                      width: 1.0),
-                                  borderRadius: const BorderRadius.all(
-                                    const Radius.circular(8.0),
-                                  ),
-                                ),
-                                contentPadding: EdgeInsets.only(
-                                    left: 8.0, top: 16.0, bottom: 16.0)),
+      context: context,
+      builder: (_) => AlertDialog(
+        insetPadding: EdgeInsets.symmetric(horizontal: 10),
+        contentPadding:
+            EdgeInsets.only(top: 16.0, left: 36.0, right: 36.0, bottom: 16.0),
+        content: Container(
+          width: 400,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Text(S.of(context).address,
+                      style: TextStyle(color: MyTheme.font_grey, fontSize: 12)),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: Container(
+                    height: 55,
+                    child: TextField(
+                      controller: _addressControllerListForUpdate[index],
+                      autofocus: false,
+                      maxLines: null,
+                      keyboardType: TextInputType.multiline,
+                      decoration: InputDecoration(
+                          hintText: S.of(context).enterAddress,
+                          hintStyle: TextStyle(
+                              fontSize: 12.0, color: MyTheme.textfield_grey),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: MyTheme.textfield_grey, width: 0.5),
+                            borderRadius: const BorderRadius.all(
+                              const Radius.circular(8.0),
+                            ),
                           ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Text(S.of(context).city,
-                            style: TextStyle(
-                                color: MyTheme.font_grey, fontSize: 12)),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: Container(
-                          height: 40,
-                          child: DropdownSearch<City>(
-                            items: _cityList,
-                            maxHeight: 300,
-                            label: S.of(context).selectACity,
-                            showSearchBox: true,
-                            selectedItem: _selected_city_list_for_update[index],
-                            dropdownSearchDecoration: InputDecoration(
-                                hintText: S.of(context).enterCity,
-                                hintStyle: TextStyle(
-                                    fontSize: 12.0,
-                                    color: MyTheme.textfield_grey),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: MyTheme.textfield_grey,
-                                      width: 0.5),
-                                  borderRadius: const BorderRadius.all(
-                                    const Radius.circular(8.0),
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: MyTheme.textfield_grey,
-                                      width: 1.0),
-                                  borderRadius: const BorderRadius.all(
-                                    const Radius.circular(8.0),
-                                  ),
-                                ),
-                                contentPadding:
-                                    EdgeInsets.only(left: 8.0, right: 8)),
-                            onChanged: (City city) {
-                              setState(() {
-                                _selected_city_list_for_update[index] = city;
-                                _selected_city_name_list_for_update[index] =
-                                    city.name;
-                              });
-                            },
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: MyTheme.textfield_grey, width: 1.0),
+                            borderRadius: const BorderRadius.all(
+                              const Radius.circular(8.0),
+                            ),
                           ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Text(S.of(context).postalCode,
-                            style: TextStyle(
-                                color: MyTheme.font_grey, fontSize: 12)),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: Container(
-                          height: 40,
-                          child: TextField(
-                            controller:
-                                _postalCodeControllerListForUpdate[index],
-                            autofocus: false,
-                            keyboardType: TextInputType.number,
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                            decoration: InputDecoration(
-                                hintText: S.of(context).enterPostalCode,
-                                hintStyle: TextStyle(
-                                    fontSize: 12.0,
-                                    color: MyTheme.textfield_grey),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: MyTheme.textfield_grey,
-                                      width: 0.5),
-                                  borderRadius: const BorderRadius.all(
-                                    const Radius.circular(8.0),
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: MyTheme.textfield_grey,
-                                      width: 1.0),
-                                  borderRadius: const BorderRadius.all(
-                                    const Radius.circular(8.0),
-                                  ),
-                                ),
-                                contentPadding:
-                                    EdgeInsets.only(left: 8.0, right: 8)),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Text(S.of(context).country,
-                            style: TextStyle(
-                                color: MyTheme.font_grey, fontSize: 12)),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: Container(
-                          height: 40,
-                          child: DropdownSearch<Country>(
-                            items: _countryList,
-                            maxHeight: 300,
-                            label: S.of(context).selectACountry,
-                            showSearchBox: true,
-                            selectedItem:
-                                _selected_country_list_for_update[index],
-                            dropdownSearchDecoration: InputDecoration(
-                                hintText: S.of(context).enterPostalCode,
-                                hintStyle: TextStyle(
-                                    fontSize: 12.0,
-                                    color: MyTheme.textfield_grey),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: MyTheme.textfield_grey,
-                                      width: 0.5),
-                                  borderRadius: const BorderRadius.all(
-                                    const Radius.circular(8.0),
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: MyTheme.textfield_grey,
-                                      width: 1.0),
-                                  borderRadius: const BorderRadius.all(
-                                    const Radius.circular(8.0),
-                                  ),
-                                ),
-                                contentPadding:
-                                    EdgeInsets.only(left: 8.0, right: 8)),
-                            onChanged: (Country country) {
-                              setState(() {
-                                _selected_country_list_for_update[index] =
-                                    country;
-                                _selected_country_name_list_for_update[index] =
-                                    country.name;
-                              });
-                            },
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Text(S.of(context).phone,
-                            style: TextStyle(
-                                color: MyTheme.font_grey, fontSize: 12)),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Container(
-                          height: 40,
-                          child: TextField(
-                            controller: _phoneControllerListForUpdate[index],
-                            autofocus: false,
-                            keyboardType: TextInputType.number,
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                            decoration: InputDecoration(
-                                hintText: S.of(context).enterPhone,
-                                hintStyle: TextStyle(
-                                    fontSize: 12.0,
-                                    color: MyTheme.textfield_grey),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: MyTheme.textfield_grey,
-                                      width: 0.5),
-                                  borderRadius: const BorderRadius.all(
-                                    const Radius.circular(8.0),
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: MyTheme.textfield_grey,
-                                      width: 1.0),
-                                  borderRadius: const BorderRadius.all(
-                                    const Radius.circular(8.0),
-                                  ),
-                                ),
-                                contentPadding:
-                                    EdgeInsets.only(left: 8.0, right: 8)),
-                          ),
-                        ),
-                      )
-                    ],
+                          contentPadding: EdgeInsets.only(
+                              left: 8.0, top: 16.0, bottom: 16.0)),
+                    ),
                   ),
                 ),
-              ),
-              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Text(S.of(context).country,
+                      style: TextStyle(color: MyTheme.font_grey, fontSize: 12)),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: Container(
+                    height: 40,
+                    child: DropdownSearch<Country>(
+                      items: _countryList,
+                      maxHeight: 300,
+                      label: S.of(context).selectACountry,
+                      showSearchBox: true,
+                      selectedItem: _selected_country_list_for_update[index],
+                      dropdownSearchDecoration: InputDecoration(
+                          hintText: S.of(context).enterPostalCode,
+                          hintStyle: TextStyle(
+                              fontSize: 12.0, color: MyTheme.textfield_grey),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: MyTheme.textfield_grey, width: 0.5),
+                            borderRadius: const BorderRadius.all(
+                              const Radius.circular(8.0),
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: MyTheme.textfield_grey, width: 1.0),
+                            borderRadius: const BorderRadius.all(
+                              const Radius.circular(8.0),
+                            ),
+                          ),
+                          contentPadding: EdgeInsets.only(left: 8.0, right: 8)),
+                      onChanged: (Country country) {
+                        setState(() {
+                          _selected_country_list_for_update[index] = country;
+                          _selected_country_name_list_for_update[index] =
+                              country.name;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Text(S.of(context).city,
+                      style: TextStyle(color: MyTheme.font_grey, fontSize: 12)),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: Container(
+                    height: 40,
+                    child: DropdownSearch<City>(
+                      items: _cityList,
+                      maxHeight: 300,
+                      label: S.of(context).selectACity,
+                      showSearchBox: true,
+                      selectedItem: _selected_city_list_for_update[index],
+                      dropdownSearchDecoration: InputDecoration(
+                          hintText: S.of(context).enterCity,
+                          hintStyle: TextStyle(
+                              fontSize: 12.0, color: MyTheme.textfield_grey),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: MyTheme.textfield_grey, width: 0.5),
+                            borderRadius: const BorderRadius.all(
+                              const Radius.circular(8.0),
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: MyTheme.textfield_grey, width: 1.0),
+                            borderRadius: const BorderRadius.all(
+                              const Radius.circular(8.0),
+                            ),
+                          ),
+                          contentPadding: EdgeInsets.only(left: 8.0, right: 8)),
+                      onChanged: (City city) {
+                        setState(() {
+                          _selected_city_list_for_update[index] = city;
+                          _selected_city_name_list_for_update[index] =
+                              city.name;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Text(S.of(context).postalCode,
+                      style: TextStyle(color: MyTheme.font_grey, fontSize: 12)),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: Container(
+                    height: 40,
+                    child: TextField(
+                      controller: _postalCodeControllerListForUpdate[index],
+                      autofocus: false,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly
+                      ],
+                      decoration: InputDecoration(
+                          hintText: S.of(context).enterPostalCode,
+                          hintStyle: TextStyle(
+                              fontSize: 12.0, color: MyTheme.textfield_grey),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: MyTheme.textfield_grey, width: 0.5),
+                            borderRadius: const BorderRadius.all(
+                              const Radius.circular(8.0),
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: MyTheme.textfield_grey, width: 1.0),
+                            borderRadius: const BorderRadius.all(
+                              const Radius.circular(8.0),
+                            ),
+                          ),
+                          contentPadding: EdgeInsets.only(left: 8.0, right: 8)),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Text(S.of(context).phone,
+                      style: TextStyle(color: MyTheme.font_grey, fontSize: 12)),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Container(
+                    height: 40,
+                    child: TextField(
+                      controller: _phoneControllerListForUpdate[index],
+                      autofocus: false,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly
+                      ],
+                      decoration: InputDecoration(
+                          hintText: S.of(context).enterPhone,
+                          hintStyle: TextStyle(
+                              fontSize: 12.0, color: MyTheme.textfield_grey),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: MyTheme.textfield_grey, width: 0.5),
+                            borderRadius: const BorderRadius.all(
+                              const Radius.circular(8.0),
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: MyTheme.textfield_grey, width: 1.0),
+                            borderRadius: const BorderRadius.all(
+                              const Radius.circular(8.0),
+                            ),
+                          ),
+                          contentPadding: EdgeInsets.only(left: 8.0, right: 8)),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 16,
+                ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(right: 8.0),
@@ -975,7 +933,7 @@ class _AddressState extends State<Address> {
                         height: 30,
                         color: Color.fromRGBO(253, 253, 253, 1),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(9.0),
+                          borderRadius: BorderRadius.circular(4.0),
                         ),
                         child: Text(
                           S.of(context).close,
@@ -988,17 +946,14 @@ class _AddressState extends State<Address> {
                         },
                       ),
                     ),
-                    SizedBox(
-                      width: 1,
-                    ),
                     Padding(
-                      padding: const EdgeInsets.only(right: 28.0),
+                      padding: const EdgeInsets.only(right: 0.0),
                       child: MaterialButton(
                         minWidth: 75,
                         height: 30,
                         color: MyTheme.accent_color,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(9.0),
+                          borderRadius: BorderRadius.circular(4.0),
                         ),
                         child: Text(
                           S.of(context).update,
@@ -1016,7 +971,11 @@ class _AddressState extends State<Address> {
                   ],
                 )
               ],
-            ));
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   AppBar buildAppBar(BuildContext context) {
@@ -1334,11 +1293,10 @@ class _AddressState extends State<Address> {
         return;
       }
     }
+    _locationData = await location.getLocation();
+    Loader.showLoaderDialog(context);
 
     var add = "";
-
-    Loader.showLoaderDialog(context);
-    _locationData = await location.getLocation();
     final address4 = await http.get(
         Uri.parse("https://maps.googleapis"
             ".com/maps/api/geocode/json?latlng=${_locationData.latitude},"
@@ -1350,8 +1308,9 @@ class _AddressState extends State<Address> {
         add = json["results"][0]["formatted_address"].toString();
       }
     }
-    Loader.dismissDialog(context);
+
     _addressController.text = add;
+    Loader.dismissDialog(context);
     buildShowAddFormDialog(context);
   }
 }

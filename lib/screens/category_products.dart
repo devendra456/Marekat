@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:marekat/custom/data_not_found.dart';
 import 'package:marekat/generated/l10n.dart';
 import 'package:marekat/helpers/shimmer_helper.dart';
 import 'package:marekat/my_theme.dart';
@@ -203,7 +204,7 @@ class _CategoryProductsState extends State<CategoryProducts> {
         ),
       );
     } else if (_totalData == 0) {
-      return Center(child: Text(S.of(context).noDataIsAvailable));
+      return Center(child: DataNotFound());
     } else {
       return Container(); // should never be happening
     }

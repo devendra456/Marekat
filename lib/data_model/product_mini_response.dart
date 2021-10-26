@@ -46,6 +46,7 @@ class Product {
     this.name,
     this.thumbnail_image,
     this.stroked_price,
+    this.main_price,
     this.rating,
     this.sales,
     this.links,
@@ -55,6 +56,7 @@ class Product {
   String name;
   String thumbnail_image;
   String stroked_price;
+  String main_price;
   int rating;
   int sales;
   Links links;
@@ -64,6 +66,7 @@ class Product {
         name: json["name"],
         thumbnail_image: json["thumbnail_image"],
         stroked_price: json["stroked_price"],
+        main_price: json["main_price"],
         rating: json["rating"].toInt(),
         sales: json["sales"],
         links: Links.fromJson(json["links"]),
@@ -74,6 +77,7 @@ class Product {
         "name": name,
         "thumbnail_image": thumbnail_image,
         "stroked_price": stroked_price,
+        "main_price": main_price,
         "rating": rating,
         "sales": sales,
         "links": links.toJson(),

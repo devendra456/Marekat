@@ -272,7 +272,7 @@ class _CategoryListState extends State<CategoryList> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.fromLTRB(25, 15, 8, 0),
+                    padding: EdgeInsets.fromLTRB(20, 15, 8, 0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

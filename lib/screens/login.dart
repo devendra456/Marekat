@@ -110,8 +110,7 @@ class _LoginState extends State<Login> {
                             fontWeight: FontWeight.w600),
                         children: [
                           TextSpan(
-                            text:
-                                "\nLorem Ipsum has been the industry's standard \ndummy text ever since the",
+                            text: S.of(context).nloginToBrowseThroughHugeAmountsnofHealthyGoods,
                             style: TextStyle(
                                 color: MyTheme.grey_153,
                                 fontSize: 12,

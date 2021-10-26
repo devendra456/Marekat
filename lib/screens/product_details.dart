@@ -13,6 +13,7 @@ import 'package:marekat/generated/l10n.dart';
 import 'package:marekat/helpers/color_helper.dart';
 import 'package:marekat/helpers/shared_value_helper.dart';
 import 'package:marekat/helpers/shimmer_helper.dart';
+import 'package:marekat/helpers/string_helper.dart';
 import 'package:marekat/my_theme.dart';
 import 'package:marekat/repositories/cart_repository.dart';
 import 'package:marekat/repositories/product_repository.dart';
@@ -22,6 +23,7 @@ import 'package:marekat/screens/common_webview_screen.dart';
 import 'package:marekat/screens/product_reviews.dart';
 import 'package:marekat/ui_elements/list_product_card.dart';
 import 'package:marekat/ui_elements/mini_product_card.dart';
+import 'package:marekat/ui_sections/loader.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -215,11 +217,13 @@ class _ProductDetailsState extends State<ProductDetails> {
         ? _colorList[_selectedColorIndex].toString().replaceAll("#", "")
         : "";
 
+    Loader.showLoaderDialog(context);
     var variantResponse = await ProductRepository().getVariantWiseInfo(
         id: widget.id, color: color_string, variants: _choiceString);
-
+    Loader.dismissDialog(context);
     _singlePrice = variantResponse.price;
     _stock = variantResponse.stock;
+    _appbarPriceString = variantResponse.price_string;
     if (_quantity > _stock) {
       _quantity = _stock;
       setState(() {});
@@ -268,6 +272,7 @@ class _ProductDetailsState extends State<ProductDetails> {
 
   calculateTotalPrice() {
     _totalPrice = _singlePrice * _quantity;
+    _totalPrice = StringHelper.getRealPrice(_totalPrice.toString());
     setState(() {});
   }
 
@@ -303,9 +308,10 @@ class _ProductDetailsState extends State<ProductDetails> {
       return;
     }
 
+    Loader.showLoaderDialog(context);
     var cartAddResponse = await CartRepository()
         .getCartAddResponse(widget.id, _variant, user_id.$, _quantity);
-
+    Loader.dismissDialog(context);
     if (cartAddResponse.result == false) {
       ToastComponent.showDialog(
         cartAddResponse.message,
@@ -515,7 +521,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   height: 24.0,
                 ),
               ])),
-              SliverList(
+              /*SliverList(
                   delegate: SliverChildListDelegate([
                 Padding(
                   padding: const EdgeInsets.fromLTRB(
@@ -533,7 +539,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 Divider(
                   height: 24,
                 ),
-              ])),
+              ])),*/
               SliverList(
                 delegate: SliverChildListDelegate([
                   Padding(
@@ -904,29 +910,30 @@ class _ProductDetailsState extends State<ProductDetails> {
         Visibility(
           visible: false,
           child: Container(
-              child: Row(
-            children: [
-              InkWell(
-                onTap: () {
-                  _launchURL(
-                      "https://api.whatsapp.com/send/?phone=+917897430432&text=hello seller&app_absent=0");
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 4.0),
-                  child: Text(
-                    S.of(context).chatWithSeller,
-                    style: TextStyle(
-                        decoration: TextDecoration.underline,
-                        color: Color.fromRGBO(7, 101, 136, 1),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600),
+            child: Row(
+              children: [
+                InkWell(
+                  onTap: () {
+                    _launchURL(
+                        "https://api.whatsapp.com/send/?phone=+917897430432&text=hello seller&app_absent=0");
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 4.0),
+                    child: Text(
+                      S.of(context).chatWithSeller,
+                      style: TextStyle(
+                          decoration: TextDecoration.underline,
+                          color: Color.fromRGBO(7, 101, 136, 1),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600),
+                    ),
                   ),
                 ),
-              ),
-              Icon(Icons.message,
-                  size: 16, color: Color.fromRGBO(7, 101, 136, 1))
-            ],
-          ),),
+                Icon(Icons.message,
+                    size: 16, color: Color.fromRGBO(7, 101, 136, 1))
+              ],
+            ),
+          ),
         )
       ],
     );
@@ -1351,14 +1358,15 @@ class _ProductDetailsState extends State<ProductDetails> {
             (MediaQuery.of(context).viewPadding.top > 40 ? 32.0 : 16.0),
         //MediaQuery.of(context).viewPadding.top is the statusbar height, with a notch phone it results almost 50, without a notch it shows 24.0.For safety we have checked if its greater than thirty
         child: Container(
-            width: 300,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 22.0),
-              child: Text(
-                _appbarPriceString,
-                style: TextStyle(fontSize: 16, color: MyTheme.font_grey),
-              ),
-            ),),
+          width: 300,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 22.0),
+            child: Text(
+              _appbarPriceString,
+              style: TextStyle(fontSize: 16, color: MyTheme.font_grey),
+            ),
+          ),
+        ),
       ),
       elevation: 0.0,
       titleSpacing: 0,
@@ -1625,7 +1633,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   id: _relatedProducts[index].id,
                   image: _relatedProducts[index].thumbnail_image,
                   name: _relatedProducts[index].name,
-                  price: _relatedProducts[index].base_price,
+                  price: _relatedProducts[index].main_price,
                 ),
               );
             },

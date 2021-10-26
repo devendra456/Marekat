@@ -143,7 +143,9 @@ class _RegistrationState extends State<Registration> {
                   padding:
                       const EdgeInsets.only(left: 24.0, bottom: 16, right: 24),
                   child: Text(
-                    "Lorem Ipsum has been the industry's standard \ndummy text ever since the",
+                    S
+                        .of(context)
+                        .signUpWithAppnameSmartStoreToContinuenshoppingHealthyAnd,
                     style: TextStyle(color: MyTheme.dark_grey),
                   ),
                 ),

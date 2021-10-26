@@ -84,12 +84,12 @@ class _HomeState extends State<Home> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.fromLTRB(
-                              8.0,
+                              0.0,
                               16.0,
-                              8.0,
+                              0.0,
                               0.0,
                             ),
-                            child: buildHomeMenuRow(context),
+                            child: buildHomeCategory(),
                           ),
                         ],
                       ),
@@ -101,7 +101,7 @@ class _HomeState extends State<Home> {
                         padding: const EdgeInsets.fromLTRB(
                           16.0,
                           16.0,
-                          8.0,
+                          16.0,
                           0.0,
                         ),
                         child: Column(
@@ -140,7 +140,7 @@ class _HomeState extends State<Home> {
                         padding: const EdgeInsets.fromLTRB(
                           16.0,
                           16.0,
-                          8.0,
+                          16.0,
                           0.0,
                         ),
                         child: Column(
@@ -163,7 +163,7 @@ class _HomeState extends State<Home> {
                               padding: const EdgeInsets.fromLTRB(
                                 4.0,
                                 4.0,
-                                8.0,
+                                4.0,
                                 0.0,
                               ),
                               child: buildHomeFeaturedProducts(context),
@@ -240,7 +240,7 @@ class _HomeState extends State<Home> {
                 itemExtent: 125,
                 controller: _scrollController,
                 shrinkWrap: true,
-                padding: EdgeInsets.only(left: 8),
+                padding: EdgeInsets.only(left: 8, right: 8),
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 3),
@@ -556,13 +556,13 @@ class _HomeState extends State<Home> {
               carouselImageList.add(slider.photo);
             });
             return SizedBox(
-              height: 148,
+              height: 176,
               child: Stack(
                 fit: StackFit.expand,
                 children: [
                   CarouselSlider(
                     options: CarouselOptions(
-                        aspectRatio: 2.67,
+                        height: 176,
                         viewportFraction: 1,
                         initialPage: 0,
                         enableInfiniteScroll: true,
@@ -570,8 +570,8 @@ class _HomeState extends State<Home> {
                         autoPlay: true,
                         autoPlayInterval: Duration(seconds: 5),
                         autoPlayAnimationDuration: Duration(milliseconds: 1000),
-                        autoPlayCurve: Curves.linear,
-                        enlargeCenterPage: true,
+                        //autoPlayCurve: Curves.linear,
+                        //enlargeCenterPage: true,
                         scrollDirection: Axis.horizontal,
                         onPageChanged: (index, reason) {
                           Timer(Duration(milliseconds: 500), () {
@@ -583,30 +583,19 @@ class _HomeState extends State<Home> {
                     items: carouselImageList.map((i) {
                       return Builder(
                         builder: (BuildContext context) {
-                          return Card(
-                            elevation: 2,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8)),
-                            margin: EdgeInsets.symmetric(horizontal: 16),
-                            child: Container(
-                              width: double.infinity,
-                              height: 140,
-                              child: ClipRRect(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(8)),
-                                child: FadeInImage.assetNetwork(
-                                  placeholder: 'assets/placeholder.png',
-                                  image: AppConfig.BASE_PATH + i,
-                                  fit: BoxFit.fill,
-                                  imageErrorBuilder: (BuildContext context,
-                                      Object exception, StackTrace stackTrace) {
-                                    return Image.asset(
-                                      "assets/placeholder.png",
-                                      fit: BoxFit.cover,
-                                    );
-                                  },
-                                ),
-                              ),
+                          return Container(
+                            width: double.infinity,
+                            child: FadeInImage.assetNetwork(
+                              placeholder: 'assets/placeholder.png',
+                              image: AppConfig.BASE_PATH + i,
+                              fit: BoxFit.cover,
+                              imageErrorBuilder: (BuildContext context,
+                                  Object exception, StackTrace stackTrace) {
+                                return Image.asset(
+                                  "assets/placeholder.png",
+                                  fit: BoxFit.cover,
+                                );
+                              },
                             ),
                           );
                         },
@@ -615,23 +604,28 @@ class _HomeState extends State<Home> {
                   ),
                   Align(
                     alignment: Alignment.bottomCenter,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: carouselImageList.map((url) {
-                        int index = carouselImageList.indexOf(url);
-                        return Container(
-                          width: 7.0,
-                          height: 7.0,
-                          margin: EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 4.0),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: _current_slider == index
-                                ? MyTheme.accent_color
-                                : Color.fromRGBO(112, 112, 112, .3),
-                          ),
-                        );
-                      }).toList(),
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 16.0, right: 16, bottom: 4),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: carouselImageList.map((url) {
+                          int index = carouselImageList.indexOf(url);
+                          return Container(
+                            width: _current_slider == index ? 12 : 7.0,
+                            height: 7.0,
+                            margin: EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 4.0),
+                            decoration: BoxDecoration(
+                              //shape: BoxShape.circle,
+                              borderRadius: BorderRadius.circular(4),
+                              color: _current_slider == index
+                                  ? MyTheme.accent_color
+                                  : Color.fromRGBO(112, 112, 112, .3),
+                            ),
+                          );
+                        }).toList(),
+                      ),
                     ),
                   ),
                 ],
@@ -767,5 +761,88 @@ class _HomeState extends State<Home> {
       ),
     );
     setState(() {});
+  }
+
+  buildHomeCategory() {
+    return FutureBuilder(
+        future: CategoryRepository().getCategories(parent_id: 0),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Container();
+          } else if (snapshot.hasData) {
+            var categoryResponse = snapshot.data;
+            return SizedBox(
+              height: 80,
+              child: ListView.builder(
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 16.0),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: ClipOval(
+                            child: FadeInImage.assetNetwork(
+                              height: 64,
+                              placeholder: 'assets/placeholder.png',
+                              image: AppConfig.BASE_PATH +
+                                  categoryResponse.categories[index].banner,
+                              fit: BoxFit.cover,
+                              imageErrorBuilder: (BuildContext context,
+                                  Object exception, StackTrace stackTrace) {
+                                return Image.asset(
+                                  "assets/placeholder.png",
+                                  fit: BoxFit.cover,
+                                  height: 64,
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 6,
+                        ),
+                        SizedBox(
+                          width: 58,
+                          child: Text(
+                            categoryResponse.categories[index].name,
+                            style: TextStyle(fontSize: 12),
+                            maxLines: 1,
+                            textAlign: TextAlign.center,
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                },
+                itemCount: categoryResponse.categories.length,
+                scrollDirection: Axis.horizontal,
+                padding: EdgeInsets.only(left: 16),
+              ),
+            );
+          } else {
+            return SizedBox(
+              height: 80,
+              child: ListView.builder(
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 16.0),
+                    child: Shimmer.fromColors(
+                      baseColor: MyTheme.shimmer_base,
+                      highlightColor: MyTheme.shimmer_highlighted,
+                      child: Container(
+                        height: 60,
+                        width: 60,
+                        color: Colors.white,
+                      ),
+                    ),
+                  );
+                },
+                itemCount: 6,
+                scrollDirection: Axis.horizontal,
+                padding: EdgeInsets.only(left: 16),
+              ),
+            );
+          }
+        });
   }
 }

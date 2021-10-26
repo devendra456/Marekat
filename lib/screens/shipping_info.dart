@@ -1,3 +1,11 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:dropdown_search/dropdown_search.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
+import 'package:http/http.dart' as http;
+import 'package:location/location.dart';
 import 'package:marekat/custom/toast_component.dart';
 import 'package:marekat/data_model/city_response.dart';
 import 'package:marekat/data_model/country_response.dart';
@@ -7,9 +15,9 @@ import 'package:marekat/helpers/shimmer_helper.dart';
 import 'package:marekat/my_theme.dart';
 import 'package:marekat/repositories/address_repositories.dart';
 import 'package:marekat/screens/checkout.dart';
-import 'package:dropdown_search/dropdown_search.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import 'package:marekat/ui_sections/loader.dart';
+
+import '../app_config.dart';
 
 class ShippingInfo extends StatefulWidget {
   int owner_id;
@@ -38,17 +46,22 @@ class _ShippingInfoState extends State<ShippingInfo> {
   String _selected_address_city_name = "";
   String _shipping_cost_string = ". . .";
 
-  Country getCountryById(String id) => _countryList.firstWhere((country) => country.id == id);
+  Country getCountryById(String id) =>
+      _countryList.firstWhere((country) => country.id == id);
 
-  Country getCountryByPartialName(String partial_name) => _countryList.firstWhere((country) => country.name == partial_name);
+  Country getCountryByPartialName(String partial_name) =>
+      _countryList.firstWhere((country) => country.name == partial_name);
 
-  List<Country> getCountriesByPartialName(String partial_name) => _countryList.where((country) => country.name == partial_name).toList();
+  List<Country> getCountriesByPartialName(String partial_name) =>
+      _countryList.where((country) => country.name == partial_name).toList();
 
   City getCityById(String id) => _cityList.firstWhere((city) => city.id == id);
 
-  City getCityByPartialName(String partial_name) => _cityList.firstWhere((city) => city.name == partial_name);
+  City getCityByPartialName(String partial_name) =>
+      _cityList.firstWhere((city) => city.name == partial_name);
 
-  List<City> getCitiesByPartialName(String partial_name) => _cityList.where((city) => city.name == partial_name).toList();
+  List<City> getCitiesByPartialName(String partial_name) =>
+      _cityList.where((city) => city.name == partial_name).toList();
 
   //controllers
   TextEditingController _addressController = TextEditingController();
@@ -94,7 +107,9 @@ class _ShippingInfoState extends State<ShippingInfo> {
   }
 
   getSetShippingCost() async {
-    var shippingCostResponse = await AddressRepository().getShippingCostResponse(widget.owner_id, user_id.$, _selected_address_city_name);
+    var shippingCostResponse = await AddressRepository()
+        .getShippingCostResponse(
+            widget.owner_id, user_id.$, _selected_address_city_name);
 
     if (shippingCostResponse.result == true) {
       _shipping_cost_string = shippingCostResponse.value_string;
@@ -156,64 +171,70 @@ class _ShippingInfoState extends State<ShippingInfo> {
     var phone = _phoneController.text.toString();
 
     if (address == "") {
-      /*ToastComponent.showDialog("Enter Address", context,
-          gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);*/
       ToastComponent.showDialog(S.of(context).enterAddress);
       return;
     }
 
     if (_selected_city_name == "") {
-      /*ToastComponent.showDialog("Select a city", context,
-          gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);*/
       ToastComponent.showDialog(S.of(context).selectACity);
       return;
     }
 
     if (_selected_country_name == "") {
-      /* ToastComponent.showDialog("Select a country", context,
-          gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);*/
       ToastComponent.showDialog(S.of(context).selectACountry);
       return;
     }
 
-    var addressAddResponse = await AddressRepository().getAddressAddResponse(address, _selected_country_name, _selected_city_name, postal_code, phone);
-
-    if (addressAddResponse.result == false) {
-      /* ToastComponent.showDialog(addressAddResponse.message, context,
-          gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);*/
-      ToastComponent.showDialog(addressAddResponse.message);
+    if (postal_code == "" || postal_code == null) {
+      ToastComponent.showDialog(S.of(context).pleaseEnterPostalCode);
+      return;
+    }
+    if (phone == "" || phone == null) {
+      ToastComponent.showDialog(S.of(context).pleaseEnterPhoneNumber);
       return;
     }
 
-    /* ToastComponent.showDialog(addressAddResponse.message, context,
-        gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);*/
+    Loader.showLoaderDialog(context);
+
+    var addressAddResponse = await AddressRepository().getAddressAddResponse(
+        address,
+        _selected_country_name,
+        _selected_city_name,
+        postal_code,
+        phone);
+
+    Loader.dismissDialog(context);
+    if (addressAddResponse.result == false) {
+      ToastComponent.showDialog(addressAddResponse.message);
+      return;
+    }
 
     ToastComponent.showDialog(addressAddResponse.message);
 
     Navigator.of(context).pop();
     reset();
     fetchAll();
+    _addressController.text = "";
+    _postalCodeController.text = "";
+    _phoneController.text = "";
+    _selected_country = null;
+    _selected_city = null;
   }
 
   onPressProceed(context) async {
     if (_seleted_shipping_address == 0) {
-      /*ToastComponent.showDialog("Select a country", context,
-          gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);*/
       ToastComponent.showDialog(S.of(context).selectACountry);
       return;
     }
 
-    var addressUpdateInCartResponse = await AddressRepository().getAddressUpdateInCartResponse(_seleted_shipping_address);
+    var addressUpdateInCartResponse = await AddressRepository()
+        .getAddressUpdateInCartResponse(_seleted_shipping_address);
 
     if (addressUpdateInCartResponse.result == false) {
-      /*ToastComponent.showDialog(addressUpdateInCartResponse.message, context,
-          gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);*/
       ToastComponent.showDialog(addressUpdateInCartResponse.message);
       return;
     }
 
-    /*ToastComponent.showDialog(addressUpdateInCartResponse.message, context,
-        gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);*/
     ToastComponent.showDialog(addressUpdateInCartResponse.message);
 
     Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -231,6 +252,49 @@ class _ShippingInfoState extends State<ShippingInfo> {
     _mainScrollController.dispose();
   }
 
+  _getMyCurrentLocation() async {
+    Location location = new Location();
+
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+    LocationData _locationData;
+
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+    _locationData = await location.getLocation();
+    Loader.showLoaderDialog(context);
+
+    var add = "";
+    final address4 = await http.get(
+        Uri.parse("https://maps.googleapis"
+            ".com/maps/api/geocode/json?latlng=${_locationData.latitude},"
+            "${_locationData.longitude}&key=${AppConfig.GOOGLE_API_KEY}"),
+        headers: {"Accept-Language": langCode.$});
+    if (address4.statusCode == HttpStatus.ok) {
+      final json = jsonDecode(address4.body);
+      if (json["results"].length > 0) {
+        add = json["results"][0]["formatted_address"].toString();
+      }
+    }
+
+    _addressController.text = add;
+    Loader.dismissDialog(context);
+    buildShowAddFormDialog(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -244,7 +308,8 @@ class _ShippingInfoState extends State<ShippingInfo> {
           displacement: 0,
           child: CustomScrollView(
             controller: _mainScrollController,
-            physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+            physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics()),
             slivers: [
               SliverList(
                   delegate: SliverChildListDelegate([
@@ -254,19 +319,53 @@ class _ShippingInfoState extends State<ShippingInfo> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: MaterialButton(
-                    minWidth: MediaQuery.of(context).size.width - 16,
-                    height: 60,
-                    color: Color.fromRGBO(252, 252, 252, 1),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0), side: BorderSide(color: MyTheme.light_grey, width: 1.0)),
-                    child: Icon(
-                      FontAwesome.plus,
-                      color: MyTheme.dark_grey,
-                      size: 16,
-                    ),
-                    onPressed: () {
-                      buildShowAddFormDialog(context);
-                    },
+                  child: Column(
+                    children: [
+                      MaterialButton(
+                        minWidth: MediaQuery.of(context).size.width - 16,
+                        height: 48,
+                        color: Color.fromRGBO(252, 252, 252, 1),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            side: BorderSide(
+                                color: MyTheme.light_grey, width: 1.0)),
+                        child: Icon(
+                          FontAwesome.plus,
+                          color: MyTheme.dark_grey,
+                          size: 16,
+                        ),
+                        onPressed: () {
+                          buildShowAddFormDialog(context);
+                        },
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Container(
+                        height: 48,
+                        width: MediaQuery.of(context).size.width - 16,
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            _getMyCurrentLocation();
+                          },
+                          icon: Icon(
+                            Icons.my_location,
+                            size: 16,
+                          ),
+                          label: Text(
+                            S.of(context).getMyLocation,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 14),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            primary: MyTheme.accent_color,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                 ),
                 SizedBox(
@@ -283,7 +382,8 @@ class _ShippingInfoState extends State<ShippingInfo> {
         context: context,
         builder: (_) => AlertDialog(
               insetPadding: EdgeInsets.symmetric(horizontal: 10),
-              contentPadding: EdgeInsets.only(top: 36.0, left: 36.0, right: 36.0, bottom: 2.0),
+              contentPadding: EdgeInsets.only(
+                  top: 16.0, left: 36.0, right: 36.0, bottom: 16.0),
               content: Container(
                 width: 400,
                 child: SingleChildScrollView(
@@ -293,7 +393,9 @@ class _ShippingInfoState extends State<ShippingInfo> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Text(S.of(context).address, style: TextStyle(color: MyTheme.font_grey, fontSize: 12)),
+                        child: Text(S.of(context).address,
+                            style: TextStyle(
+                                color: MyTheme.font_grey, fontSize: 12)),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 16.0),
@@ -306,95 +408,35 @@ class _ShippingInfoState extends State<ShippingInfo> {
                             keyboardType: TextInputType.multiline,
                             decoration: InputDecoration(
                                 hintText: S.of(context).enterAddress,
-                                hintStyle: TextStyle(fontSize: 12.0, color: MyTheme.textfield_grey),
+                                hintStyle: TextStyle(
+                                    fontSize: 12.0,
+                                    color: MyTheme.textfield_grey),
                                 enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: MyTheme.textfield_grey, width: 0.5),
+                                  borderSide: BorderSide(
+                                      color: MyTheme.textfield_grey,
+                                      width: 0.5),
                                   borderRadius: const BorderRadius.all(
                                     const Radius.circular(8.0),
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: MyTheme.textfield_grey, width: 1.0),
+                                  borderSide: BorderSide(
+                                      color: MyTheme.textfield_grey,
+                                      width: 1.0),
                                   borderRadius: const BorderRadius.all(
                                     const Radius.circular(8.0),
                                   ),
                                 ),
-                                contentPadding: EdgeInsets.only(left: 8.0, top: 16.0, bottom: 16.0)),
+                                contentPadding: EdgeInsets.only(
+                                    left: 8.0, top: 16.0, bottom: 16.0)),
                           ),
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Text(S.of(context).city, style: TextStyle(color: MyTheme.font_grey, fontSize: 12)),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: Container(
-                          height: 40,
-                          child: DropdownSearch<City>(
-                            items: _cityList,
-                            maxHeight: 300,
-                            label: S.of(context).selectACity,
-                            showSearchBox: true,
-                            selectedItem: _selected_city,
-                            dropdownSearchDecoration: InputDecoration(
-                                hintText: S.of(context).enterCity,
-                                hintStyle: TextStyle(fontSize: 12.0, color: MyTheme.textfield_grey),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: MyTheme.textfield_grey, width: 0.5),
-                                  borderRadius: const BorderRadius.all(
-                                    const Radius.circular(8.0),
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: MyTheme.textfield_grey, width: 1.0),
-                                  borderRadius: const BorderRadius.all(
-                                    const Radius.circular(8.0),
-                                  ),
-                                ),
-                                contentPadding: EdgeInsets.only(left: 8.0)),
-                            onChanged: (City city) {
-                              setState(() {
-                                _selected_city = city;
-                                _selected_city_name = city.name;
-                              });
-                            },
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Text(S.of(context).postalCode, style: TextStyle(color: MyTheme.font_grey, fontSize: 12)),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: Container(
-                          height: 40,
-                          child: TextField(
-                            controller: _postalCodeController,
-                            autofocus: false,
-                            decoration: InputDecoration(
-                                hintText: S.of(context).enterPostalCode,
-                                hintStyle: TextStyle(fontSize: 12.0, color: MyTheme.textfield_grey),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: MyTheme.textfield_grey, width: 0.5),
-                                  borderRadius: const BorderRadius.all(
-                                    const Radius.circular(8.0),
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: MyTheme.textfield_grey, width: 1.0),
-                                  borderRadius: const BorderRadius.all(
-                                    const Radius.circular(8.0),
-                                  ),
-                                ),
-                                contentPadding: EdgeInsets.only(left: 8.0)),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Text(S.of(context).country, style: TextStyle(color: MyTheme.font_grey, fontSize: 12)),
+                        child: Text(S.of(context).country,
+                            style: TextStyle(
+                                color: MyTheme.font_grey, fontSize: 12)),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 16.0),
@@ -408,15 +450,21 @@ class _ShippingInfoState extends State<ShippingInfo> {
                             selectedItem: _selected_country,
                             dropdownSearchDecoration: InputDecoration(
                                 hintText: S.of(context).enterPostalCode,
-                                hintStyle: TextStyle(fontSize: 12.0, color: MyTheme.textfield_grey),
+                                hintStyle: TextStyle(
+                                    fontSize: 12.0,
+                                    color: MyTheme.textfield_grey),
                                 enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: MyTheme.textfield_grey, width: 0.5),
+                                  borderSide: BorderSide(
+                                      color: MyTheme.textfield_grey,
+                                      width: 0.5),
                                   borderRadius: const BorderRadius.all(
                                     const Radius.circular(8.0),
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: MyTheme.textfield_grey, width: 1.0),
+                                  borderSide: BorderSide(
+                                      color: MyTheme.textfield_grey,
+                                      width: 1.0),
                                   borderRadius: const BorderRadius.all(
                                     const Radius.circular(8.0),
                                   ),
@@ -433,7 +481,95 @@ class _ShippingInfoState extends State<ShippingInfo> {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Text(S.of(context).phone, style: TextStyle(color: MyTheme.font_grey, fontSize: 12)),
+                        child: Text(S.of(context).city,
+                            style: TextStyle(
+                                color: MyTheme.font_grey, fontSize: 12)),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 16.0),
+                        child: Container(
+                          height: 40,
+                          child: DropdownSearch<City>(
+                            items: _cityList,
+                            maxHeight: 300,
+                            label: S.of(context).selectACity,
+                            showSearchBox: true,
+                            selectedItem: _selected_city,
+                            dropdownSearchDecoration: InputDecoration(
+                                hintText: S.of(context).enterCity,
+                                hintStyle: TextStyle(
+                                    fontSize: 12.0,
+                                    color: MyTheme.textfield_grey),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: MyTheme.textfield_grey,
+                                      width: 0.5),
+                                  borderRadius: const BorderRadius.all(
+                                    const Radius.circular(8.0),
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: MyTheme.textfield_grey,
+                                      width: 1.0),
+                                  borderRadius: const BorderRadius.all(
+                                    const Radius.circular(8.0),
+                                  ),
+                                ),
+                                contentPadding: EdgeInsets.only(left: 8.0)),
+                            onChanged: (City city) {
+                              setState(() {
+                                _selected_city = city;
+                                _selected_city_name = city.name;
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Text(S.of(context).postalCode,
+                            style: TextStyle(
+                                color: MyTheme.font_grey, fontSize: 12)),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 16.0),
+                        child: Container(
+                          height: 40,
+                          child: TextField(
+                            controller: _postalCodeController,
+                            autofocus: false,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                                hintText: S.of(context).enterPostalCode,
+                                hintStyle: TextStyle(
+                                    fontSize: 12.0,
+                                    color: MyTheme.textfield_grey),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: MyTheme.textfield_grey,
+                                      width: 0.5),
+                                  borderRadius: const BorderRadius.all(
+                                    const Radius.circular(8.0),
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: MyTheme.textfield_grey,
+                                      width: 1.0),
+                                  borderRadius: const BorderRadius.all(
+                                    const Radius.circular(8.0),
+                                  ),
+                                ),
+                                contentPadding: EdgeInsets.only(left: 8.0)),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Text(S.of(context).phone,
+                            style: TextStyle(
+                                color: MyTheme.font_grey, fontSize: 12)),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),
@@ -442,17 +578,24 @@ class _ShippingInfoState extends State<ShippingInfo> {
                           child: TextField(
                             controller: _phoneController,
                             autofocus: false,
+                            keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                                 hintText: S.of(context).enterPhone,
-                                hintStyle: TextStyle(fontSize: 12.0, color: MyTheme.textfield_grey),
+                                hintStyle: TextStyle(
+                                    fontSize: 12.0,
+                                    color: MyTheme.textfield_grey),
                                 enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: MyTheme.textfield_grey, width: 0.5),
+                                  borderSide: BorderSide(
+                                      color: MyTheme.textfield_grey,
+                                      width: 0.5),
                                   borderRadius: const BorderRadius.all(
                                     const Radius.circular(8.0),
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: MyTheme.textfield_grey, width: 1.0),
+                                  borderSide: BorderSide(
+                                      color: MyTheme.textfield_grey,
+                                      width: 1.0),
                                   borderRadius: const BorderRadius.all(
                                     const Radius.circular(8.0),
                                   ),
@@ -460,55 +603,62 @@ class _ShippingInfoState extends State<ShippingInfo> {
                                 contentPadding: EdgeInsets.only(left: 8.0)),
                           ),
                         ),
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: MaterialButton(
+                              minWidth: 75,
+                              height: 30,
+                              color: Color.fromRGBO(253, 253, 253, 1),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4.0),
+                                  side: BorderSide(
+                                      color: MyTheme.light_grey, width: 1.0)),
+                              child: Text(
+                                S.of(context).close,
+                                style: TextStyle(
+                                  color: MyTheme.font_grey,
+                                ),
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 0.0),
+                            child: MaterialButton(
+                              minWidth: 75,
+                              height: 30,
+                              color: MyTheme.accent_color,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4.0),
+                                  side: BorderSide(
+                                      color: MyTheme.light_grey, width: 1.0)),
+                              child: Text(
+                                S.of(context).add,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              onPressed: () {
+                                onAddressAdd(context);
+                              },
+                            ),
+                          )
+                        ],
                       )
                     ],
                   ),
                 ),
               ),
-              actions: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: MaterialButton(
-                        minWidth: 75,
-                        height: 30,
-                        color: Color.fromRGBO(253, 253, 253, 1),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9.0), side: BorderSide(color: MyTheme.light_grey, width: 1.0)),
-                        child: Text(
-                          S.of(context).close,
-                          style: TextStyle(
-                            color: MyTheme.font_grey,
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ),
-                    SizedBox(
-                      width: 1,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 28.0),
-                      child: MaterialButton(
-                        minWidth: 75,
-                        height: 30,
-                        color: MyTheme.accent_color,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9.0), side: BorderSide(color: MyTheme.light_grey, width: 1.0)),
-                        child: Text(
-                          S.of(context).add,
-                          style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
-                        ),
-                        onPressed: () {
-                          onAddressAdd(context);
-                        },
-                      ),
-                    )
-                  ],
-                )
-              ],
             ));
   }
 
@@ -540,7 +690,9 @@ class _ShippingInfoState extends State<ShippingInfo> {
             style: TextStyle(color: MyTheme.font_grey),
           )));
     } else if (_isInitial && _shippingAddressList.length == 0) {
-      return SingleChildScrollView(child: ShimmerHelper().buildListShimmer(item_count: 5, item_height: 100.0));
+      return SingleChildScrollView(
+          child: ShimmerHelper()
+              .buildListShimmer(item_count: 5, item_height: 100.0));
     } else if (_shippingAddressList.length > 0) {
       return SingleChildScrollView(
         child: ListView.builder(
@@ -580,8 +732,9 @@ class _ShippingInfoState extends State<ShippingInfo> {
       },
       child: Card(
         shape: RoundedRectangleBorder(
-          side:
-              _seleted_shipping_address == _shippingAddressList[index].id ? BorderSide(color: MyTheme.accent_color, width: 2.0) : BorderSide(color: MyTheme.light_grey, width: 1.0),
+          side: _seleted_shipping_address == _shippingAddressList[index].id
+              ? BorderSide(color: MyTheme.accent_color, width: 2.0)
+              : BorderSide(color: MyTheme.light_grey, width: 1.0),
           borderRadius: BorderRadius.circular(8.0),
         ),
         elevation: 0.0,
@@ -609,12 +762,16 @@ class _ShippingInfoState extends State<ShippingInfo> {
                         child: Text(
                           _shippingAddressList[index].address,
                           maxLines: 2,
-                          style: TextStyle(color: MyTheme.dark_grey, fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                              color: MyTheme.dark_grey,
+                              fontWeight: FontWeight.w600),
                         ),
                       ),
                     ),
                     Spacer(),
-                    buildShippingOptionsCheckContainer(_seleted_shipping_address == _shippingAddressList[index].id)
+                    buildShippingOptionsCheckContainer(
+                        _seleted_shipping_address ==
+                            _shippingAddressList[index].id)
                   ],
                 ),
               ),
@@ -637,7 +794,9 @@ class _ShippingInfoState extends State<ShippingInfo> {
                         child: Text(
                           _shippingAddressList[index].city,
                           maxLines: 2,
-                          style: TextStyle(color: MyTheme.dark_grey, fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                              color: MyTheme.dark_grey,
+                              fontWeight: FontWeight.w600),
                         ),
                       ),
                     ),
@@ -663,7 +822,9 @@ class _ShippingInfoState extends State<ShippingInfo> {
                         child: Text(
                           _shippingAddressList[index].postal_code,
                           maxLines: 2,
-                          style: TextStyle(color: MyTheme.dark_grey, fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                              color: MyTheme.dark_grey,
+                              fontWeight: FontWeight.w600),
                         ),
                       ),
                     ),
@@ -689,7 +850,9 @@ class _ShippingInfoState extends State<ShippingInfo> {
                         child: Text(
                           _shippingAddressList[index].country,
                           maxLines: 2,
-                          style: TextStyle(color: MyTheme.dark_grey, fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                              color: MyTheme.dark_grey,
+                              fontWeight: FontWeight.w600),
                         ),
                       ),
                     ),
@@ -715,7 +878,9 @@ class _ShippingInfoState extends State<ShippingInfo> {
                         child: Text(
                           _shippingAddressList[index].phone,
                           maxLines: 2,
-                          style: TextStyle(color: MyTheme.dark_grey, fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                              color: MyTheme.dark_grey,
+                              fontWeight: FontWeight.w600),
                         ),
                       ),
                     ),
@@ -734,7 +899,8 @@ class _ShippingInfoState extends State<ShippingInfo> {
         ? Container(
             height: 16,
             width: 16,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(16.0), color: Colors.green),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16.0), color: Colors.green),
             child: Padding(
               padding: const EdgeInsets.all(3),
               child: Icon(FontAwesome.check, color: Colors.white, size: 10),
@@ -760,7 +926,10 @@ class _ShippingInfoState extends State<ShippingInfo> {
               ),
               child: Text(
                 S.of(context).proceedToCheckout,
-                style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600),
               ),
               onPressed: () {
                 onPressProceed(context);
