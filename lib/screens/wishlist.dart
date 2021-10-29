@@ -8,18 +8,24 @@ import 'package:marekat/helpers/shared_value_helper.dart';
 import 'package:marekat/helpers/shimmer_helper.dart';
 import 'package:marekat/my_theme.dart';
 import 'package:marekat/repositories/wishlist_repository.dart';
+import 'package:marekat/screens/login.dart';
 import 'package:marekat/screens/product_details.dart';
+import 'package:marekat/ui_sections/main_drawer.dart';
 
 import 'main_screen.dart';
 
 class Wishlist extends StatefulWidget {
+  final bool hasBottomNav;
+
+  Wishlist({this.hasBottomNav = false});
+
   @override
   _WishlistState createState() => _WishlistState();
 }
 
 class _WishlistState extends State<Wishlist> {
   ScrollController _mainScrollController = ScrollController();
-
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   //init
   bool _wishlistInit = true;
   List<dynamic> _wishlistItems = [];
@@ -73,7 +79,9 @@ class _WishlistState extends State<Wishlist> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.white,
+      drawer: widget.hasBottomNav ? MainDrawer() : null,
       appBar: buildAppBar(context),
       body: RefreshIndicator(
         color: MyTheme.accent_color,
@@ -100,12 +108,31 @@ class _WishlistState extends State<Wishlist> {
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
       centerTitle: true,
-      leading: Builder(
-        builder: (context) => IconButton(
-          icon: Icon(Icons.arrow_back, color: MyTheme.accent_color),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-      ),
+      leading: widget.hasBottomNav
+          ? Builder(
+              builder: (context) => GestureDetector(
+                onTap: () {
+                  _scaffoldKey.currentState.openDrawer();
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 18.0, horizontal: 0.0),
+                  child: Container(
+                    child: Image.asset(
+                      'assets/hamburger.png',
+                      height: 16,
+                      color: MyTheme.accent_color,
+                    ),
+                  ),
+                ),
+              ),
+            )
+          : Builder(
+              builder: (context) => IconButton(
+                icon: Icon(Icons.arrow_back, color: MyTheme.accent_color),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ),
       title: Text(
         S.of(context).myWishlist,
         style: TextStyle(fontSize: 16, color: MyTheme.accent_color),
@@ -118,12 +145,39 @@ class _WishlistState extends State<Wishlist> {
   buildWishlist() {
     if (is_logged_in.$ == false) {
       return Container(
-          height: 100,
-          child: Center(
-              child: Text(
-            S.of(context).pleaseLogInToSeeTheWishlistItems,
-            style: TextStyle(color: MyTheme.font_grey),
-          )));
+        height: 500,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16.0),
+                child: SvgPicture.asset("assets/wishlist_empty.svg"),
+              ),
+              Text(
+                S.of(context).pleaseLogInToSeeTheWishlistItems,
+                style: TextStyle(color: MyTheme.font_grey),
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              MaterialButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (builder) {
+                      return Login();
+                    }),
+                  );
+                },
+                child: Text("Login"),
+                color: MyTheme.accent_color,
+                textColor: MyTheme.white,
+              )
+            ],
+          ),
+        ),
+      );
     } else if (_wishlistInit == true && _wishlistItems.length == 0) {
       return SingleChildScrollView(
         child: ShimmerHelper().buildListShimmer(item_count: 10),
@@ -145,9 +199,9 @@ class _WishlistState extends State<Wishlist> {
       );
     } else {
       return Container(
-          height: 500,
-          child: Center(
-              child: Column(
+        height: 500,
+        child: Center(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
@@ -176,7 +230,9 @@ class _WishlistState extends State<Wishlist> {
                 ),
               )
             ],
-          )));
+          ),
+        ),
+      );
     }
   }
 

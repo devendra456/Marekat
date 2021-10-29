@@ -119,7 +119,7 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      drawer: MainDrawer(),
+      drawer: widget.show_back_button ? null : MainDrawer(),
       backgroundColor: Colors.white,
       appBar: buildAppBar(context),
       body: buildBody(context),

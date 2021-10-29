@@ -112,8 +112,16 @@ class _HomeState extends State<Home> {
                               );
                             },
                           ),*/
-                          Image.network(
-                              "https://demo.marekat.com/public/uploads/all/mT97RVRjqnv7w0rBMwH4qSxIApL3YhTUy8Gk8eiA.jpg")
+                          SizedBox(
+                            height: 176,
+                            width: double.infinity,
+                            child: Image.network(
+                              "https://demo.marekat.com/public/uploads/all/"
+                              "mT97RVRjqnv7w0rBMwH4qSxIApL3YhTUy8Gk8eiA"
+                              ".jpg",
+                              fit: BoxFit.cover,
+                            ),
+                          )
                         ],
                       ),
                     ]),
@@ -176,9 +184,13 @@ class _HomeState extends State<Home> {
                             );
                           },
                         ),*/
-                        Image.network(
-                          "https://demo.marekat.com/public/uploads/all/V9"
-                          "jNUWSRI3EEGhPOJojadCShDRV6xwpklN84ph6X.jpg",
+                        SizedBox(
+                          height: 176,
+                          child: Image.network(
+                            "https://demo.marekat.com/public/uploads/all/V9"
+                            "jNUWSRI3EEGhPOJojadCShDRV6xwpklN84ph6X.jpg",
+                            fit: BoxFit.cover,
+                          ),
                         )
                       ],
                     ),
@@ -236,8 +248,15 @@ class _HomeState extends State<Home> {
                                 );
                               },
                             ),*/
-                            Image.network(
-                                "https://demo.marekat.com/public/uploads/all/ziGlq4gl7xvgUUpGxO7ok71DbJx1ZuA4dfJmuWHt.jpg"),
+                            SizedBox(
+                              height: 176,
+                              child: Image.network(
+                                "https://demo.marekat.com/public/uploads"
+                                "/all/ziGlq4gl7xvgUUpGx"
+                                "O7ok71DbJx1ZuA4dfJmuWHt.jpg",
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                             SizedBox(
                               height: 16,
                             ),

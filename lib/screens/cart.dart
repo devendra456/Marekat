@@ -254,7 +254,7 @@ class _CartState extends State<Cart> {
     //print(widget.has_bottomnav);
     return Scaffold(
         key: _scaffoldKey,
-        drawer: MainDrawer(),
+        drawer: widget.has_bottomnav ? MainDrawer() : null,
         backgroundColor: Colors.white,
         resizeToAvoidBottomInset: true,
         appBar: buildAppBar(context),
@@ -456,24 +456,31 @@ class _CartState extends State<Cart> {
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
       centerTitle: true,
-      leading: GestureDetector(
-        onTap: () {
-          _scaffoldKey.currentState.openDrawer();
-        },
-        child: Builder(
-          builder: (context) => Padding(
-            padding:
-                const EdgeInsets.symmetric(vertical: 18.0, horizontal: 0.0),
-            child: Container(
-              child: Image.asset(
-                'assets/hamburger.png',
-                height: 16,
-                color: MyTheme.accent_color,
+      leading: widget.has_bottomnav
+          ? GestureDetector(
+              onTap: () {
+                _scaffoldKey.currentState.openDrawer();
+              },
+              child: Builder(
+                builder: (context) => Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 18.0, horizontal: 0.0),
+                  child: Container(
+                    child: Image.asset(
+                      'assets/hamburger.png',
+                      height: 16,
+                      color: MyTheme.accent_color,
+                    ),
+                  ),
+                ),
+              ),
+            )
+          : Builder(
+              builder: (context) => IconButton(
+                icon: Icon(Icons.arrow_back, color: MyTheme.accent_color),
+                onPressed: () => Navigator.of(context).pop(),
               ),
             ),
-          ),
-        ),
-      ),
       title: Text(
         S.of(context).shoppingCart,
         style: TextStyle(fontSize: 16, color: MyTheme.accent_color),

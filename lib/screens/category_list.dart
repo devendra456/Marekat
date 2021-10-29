@@ -5,7 +5,6 @@ import 'package:marekat/generated/l10n.dart';
 import 'package:marekat/my_theme.dart';
 import 'package:marekat/repositories/category_repository.dart';
 import 'package:marekat/screens/category_products.dart';
-import 'package:marekat/screens/home_category_products.dart';
 import 'package:marekat/ui_sections/main_drawer.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -218,12 +217,10 @@ class _CategoryListState extends State<CategoryList> {
       child: GestureDetector(
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return HomeCategoryProducts(categoryResponse.categories[
-                    index]) /*CategoryProducts(
-              category_id: categoryResponse.categories[index].id,
-              category_name: categoryResponse.categories[index].name,
-            )*/
-                ;
+            return CategoryList(
+              parent_category_id: categoryResponse.categories[index].id,
+              parent_category_name: categoryResponse.categories[index].name,
+            );
           }));
         },
         child: Row(
@@ -331,15 +328,12 @@ class _CategoryListState extends State<CategoryList> {
                               onTap: () {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
-                                  return HomeCategoryProducts(categoryResponse
-                                              .categories[
-                                          index]) /*CategoryProducts(
-                                  category_id:
-                                      categoryResponse.categories[index].id,
-                                  category_name:
-                                      categoryResponse.categories[index].name,
-                                )*/
-                                      ;
+                                  return CategoryList(
+                                    parent_category_id:
+                                        categoryResponse.categories[index].id,
+                                    parent_category_name:
+                                        categoryResponse.categories[index].name,
+                                  );
                                 }));
                               },
                               child: Container(

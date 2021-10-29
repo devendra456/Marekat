@@ -10,8 +10,7 @@ import 'package:marekat/screens/cart.dart';
 import 'package:marekat/screens/category_list.dart';
 import 'package:marekat/screens/home.dart';
 import 'package:marekat/screens/profile.dart';
-
-import 'filter.dart';
+import 'package:marekat/screens/wishlist.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -26,7 +25,10 @@ class _MainScreenState extends State<MainScreen> {
       is_base_category: true,
     ),
     Home(),
-    Cart(has_bottomnav: true),
+    /*Cart(has_bottomnav: true),*/
+    Wishlist(
+      hasBottomNav: true,
+    ),
     Profile()
   ];
 
@@ -64,9 +66,11 @@ class _MainScreenState extends State<MainScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) {
-                  return Filter(
+                  return Cart(
+                    has_bottomnav: false,
+                  ); /*Filter(
                     selected_filter: "sellers",
-                  );
+                  );*/
                 }),
               );
             },
@@ -156,10 +160,15 @@ class _MainScreenState extends State<MainScreen> {
               BottomNavigationBarItem(
                   icon: Column(
                     children: [
-                      SvgPicture.asset(
-                        "assets/cart.svg",
+                      /*SvgPicture.asset(
+                        "assets/favicon.svg",
                         color: Colors.white,
                         height: 20,
+                      ),*/
+                      Icon(
+                        Icons.favorite_border_outlined,
+                        color: Colors.white,
+                        size: 24,
                       ),
                       SizedBox(
                         height: 8,
