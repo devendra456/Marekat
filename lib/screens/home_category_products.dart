@@ -300,20 +300,19 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
                 setState(() {
                   _selectedIndex = index;
                 });
-                /*_selectedCategories.clear();
+                _selectedCategories.clear();
                 _selectedCategories.add(index == 0
                     ? widget.category.id
                     : _categoryList[index - 1].id);
                 resetProductList();
                 fetchProductData();
-                fetchSubCategory(index == 0
-                    ? widget.category.id
-                    : _categoryList[index - 1].id);
-                _selectedIndex=0;*/
                 if (index != 0) {
                   Navigator.push(context, MaterialPageRoute(builder: (builder) {
                     return HomeCategoryProducts(_categoryList[index - 1]);
                   }));
+                } else if (index == 0) {
+                  resetProductList();
+                  fetchProductData();
                 }
               },
               child: Container(
