@@ -1,17 +1,22 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:marekat/app_config.dart';
 import 'package:marekat/custom/toast_component.dart';
+import 'package:marekat/data_model/brand_response.dart';
+import 'package:marekat/data_model/category_response.dart';
 import 'package:marekat/generated/l10n.dart';
 import 'package:marekat/helpers/shimmer_helper.dart';
 import 'package:marekat/my_theme.dart';
+import 'package:marekat/repositories/brand_repository.dart';
 import 'package:marekat/repositories/category_repository.dart';
 import 'package:marekat/repositories/product_repository.dart';
 import 'package:marekat/repositories/sliders_repository.dart';
 import 'package:marekat/screens/category_list.dart';
+import 'package:marekat/screens/home_category_products.dart';
 import 'package:marekat/screens/main_screen.dart';
 import 'package:marekat/screens/todays_deal_products.dart';
 import 'package:marekat/screens/top_selling_products.dart';
@@ -19,6 +24,7 @@ import 'package:marekat/ui_elements/product_card.dart';
 import 'package:marekat/ui_sections/main_drawer.dart';
 import 'package:shimmer/shimmer.dart';
 
+import 'brand_products.dart';
 import 'filter.dart';
 import 'flash_deal_list.dart';
 
@@ -80,17 +86,34 @@ class _HomeState extends State<Home> {
                         child: buildHomeCarouselSlider(context),
                       ),
                       Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
                             padding: const EdgeInsets.fromLTRB(
-                              0.0,
+                              8.0,
                               16.0,
-                              0.0,
+                              8.0,
                               0.0,
                             ),
                             child: buildHomeCategory(),
                           ),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          /*FadeInImage.assetNetwork(
+                            placeholder: 'assets/placeholder.png',
+                            image:
+                                "https://demo.marekat.com/public/uploads/all/mT97RVRjqnv7w0rBMwH4qSxIApL3YhTUy8Gk8eiA.jpg",
+                            fit: BoxFit.cover,
+                            imageErrorBuilder: (BuildContext context,
+                                Object exception, StackTrace stackTrace) {
+                              return Image.asset(
+                                "assets/placeholder.png",
+                                fit: BoxFit.cover,
+                              );
+                            },
+                          ),*/
+                          Image.network(
+                              "https://demo.marekat.com/public/uploads/all/mT97RVRjqnv7w0rBMwH4qSxIApL3YhTUy8Gk8eiA.jpg")
                         ],
                       ),
                     ]),
@@ -121,17 +144,43 @@ class _HomeState extends State<Home> {
                     ]),
                   ),
                   SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                        0.0,
-                        8.0,
-                        0.0,
-                        0.0,
-                      ),
-                      child: SizedBox(
-                        height: 164,
-                        child: buildHomeFeaturedCategories(context),
-                      ),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(
+                            0.0,
+                            4.0,
+                            0.0,
+                            0.0,
+                          ),
+                          child: SizedBox(
+                            height: 164,
+                            child: buildHomeFeaturedCategories(context),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 14,
+                        ),
+                        /*FadeInImage.assetNetwork(
+                          //height: 64,
+                          placeholder: 'assets/placeholder.png',
+                          image:
+                              "https://demo.marekat.com/public/uploads/all/V9jNUWSRI3EEGhPOJojadCShDRV6xwpklN84ph6X.jpg",
+                          fit: BoxFit.cover,
+                          imageErrorBuilder: (BuildContext context,
+                              Object exception, StackTrace stackTrace) {
+                            return Image.asset(
+                              "assets/placeholder.png",
+                              fit: BoxFit.cover,
+                              //height: 64,
+                            );
+                          },
+                        ),*/
+                        Image.network(
+                          "https://demo.marekat.com/public/uploads/all/V9"
+                          "jNUWSRI3EEGhPOJojadCShDRV6xwpklN84ph6X.jpg",
+                        )
+                      ],
                     ),
                   ),
                   SliverList(
@@ -158,21 +207,64 @@ class _HomeState extends State<Home> {
                       ),
                       SingleChildScrollView(
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
                               padding: const EdgeInsets.fromLTRB(
                                 4.0,
-                                4.0,
+                                0.0,
                                 4.0,
                                 0.0,
                               ),
                               child: buildHomeFeaturedProducts(context),
                             ),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            /*FadeInImage.assetNetwork(
+                              //height: 64,
+                              placeholder: 'assets/placeholder.png',
+                              image:
+                                  "https://demo.marekat.com/public/uploads/all/ziGlq4gl7xvgUUpGxO7ok71DbJx1ZuA4dfJmuWHt.jpg",
+                              fit: BoxFit.cover,
+                              imageErrorBuilder: (BuildContext context,
+                                  Object exception, StackTrace stackTrace) {
+                                return Image.asset(
+                                  "assets/placeholder.png",
+                                  fit: BoxFit.cover,
+                                  //height: 64,
+                                );
+                              },
+                            ),*/
+                            Image.network(
+                                "https://demo.marekat.com/public/uploads/all/ziGlq4gl7xvgUUpGxO7ok71DbJx1ZuA4dfJmuWHt.jpg"),
+                            SizedBox(
+                              height: 16,
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: Text(
+                                S.of(context).topTenBrands,
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w600,
+                                  color: MyTheme.accent_color,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 4,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 14),
+                              child: buildBrandCard(),
+                            )
                           ],
                         ),
                       ),
                       Container(
-                        height: 80,
+                        height: 104,
                       )
                     ]),
                   ),
@@ -183,20 +275,105 @@ class _HomeState extends State<Home> {
         ));
   }
 
+  buildBrandCard() {
+    return FutureBuilder(
+        future: BrandRepository().getBrands(page: "1", name: ""),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Container();
+          } else if (snapshot.hasData) {
+            var brandResponse = snapshot.data as BrandResponse;
+            return GridView.builder(
+              shrinkWrap: true,
+              padding: EdgeInsets.all(0),
+              physics: NeverScrollableScrollPhysics(),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 24,
+                  crossAxisSpacing: 24,
+                  childAspectRatio: 1),
+              itemBuilder: (BuildContext context, int index) {
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return BrandProducts(
+                            id: brandResponse.brands[index].id,
+                            brand_name: brandResponse.brands[index].name,
+                          );
+                        },
+                      ),
+                    );
+                  },
+                  child: Card(
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      side: BorderSide(
+                        width: 0.3,
+                        color: Color.fromARGB(255, 221, 221, 221),
+                      ),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: FadeInImage.assetNetwork(
+                        placeholder: 'assets/placeholder.png',
+                        image: AppConfig.BASE_PATH +
+                            brandResponse.brands[index].logo,
+                        fit: BoxFit.cover,
+                        imageErrorBuilder: (BuildContext context,
+                            Object exception, StackTrace stackTrace) {
+                          return Image.asset(
+                            "assets/placeholder.png",
+                            fit: BoxFit.cover,
+                            //height: 64,
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                );
+              },
+              itemCount: brandResponse.brands.length,
+            );
+          } else {
+            return SizedBox(
+              height: 80,
+              child: ListView.builder(
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 16.0),
+                    child: Shimmer.fromColors(
+                      baseColor: MyTheme.shimmer_base,
+                      highlightColor: MyTheme.shimmer_highlighted,
+                      child: Container(
+                        height: 60,
+                        width: 60,
+                        color: Colors.white,
+                      ),
+                    ),
+                  );
+                },
+                itemCount: 6,
+                scrollDirection: Axis.horizontal,
+                padding: EdgeInsets.only(left: 16),
+              ),
+            );
+          }
+        });
+  }
+
   buildHomeFeaturedProducts(context) {
     return FutureBuilder(
         future: ProductRepository().getFeaturedProducts(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            /*print("product error");
-            print(snapshot.error.toString());*/
             return Container();
           } else if (snapshot.hasData) {
-            //snapshot.hasData
             var featuredProductResponse = snapshot.data;
             return GridView.builder(
-              // 2
-              //addAutomaticKeepAlives: true,
               itemCount: featuredProductResponse.products.length,
               controller: _featuredProductScrollController,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -638,7 +815,7 @@ class _HomeState extends State<Home> {
                 baseColor: MyTheme.shimmer_base,
                 highlightColor: MyTheme.shimmer_highlighted,
                 child: Container(
-                  height: 120,
+                  height: 176,
                   width: double.infinity,
                   color: Colors.white,
                 ),
@@ -770,77 +947,88 @@ class _HomeState extends State<Home> {
           if (snapshot.hasError) {
             return Container();
           } else if (snapshot.hasData) {
-            var categoryResponse = snapshot.data;
-            return SizedBox(
-              height: 80,
-              child: ListView.builder(
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(right: 16.0),
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: ClipOval(
-                            child: FadeInImage.assetNetwork(
-                              height: 64,
-                              placeholder: 'assets/placeholder.png',
-                              image: AppConfig.BASE_PATH +
-                                  categoryResponse.categories[index].banner,
-                              fit: BoxFit.cover,
-                              imageErrorBuilder: (BuildContext context,
-                                  Object exception, StackTrace stackTrace) {
-                                return Image.asset(
-                                  "assets/placeholder.png",
-                                  fit: BoxFit.cover,
-                                  height: 64,
-                                );
-                              },
-                            ),
+            var categoryResponse = snapshot.data as CategoryResponse;
+            return GridView.builder(
+              shrinkWrap: true,
+              padding: EdgeInsets.all(0),
+              physics: NeverScrollableScrollPhysics(),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4,
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 8,
+                  childAspectRatio: 1),
+              itemBuilder: (BuildContext context, int index) {
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (builder) {
+                        return HomeCategoryProducts(
+                            categoryResponse.categories[index]);
+                      }),
+                    );
+                  },
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: ClipOval(
+                          child: FadeInImage.assetNetwork(
+                            //height: 64,
+                            placeholder: 'assets/placeholder.png',
+                            image: AppConfig.BASE_PATH +
+                                categoryResponse.categories[index].banner,
+                            fit: BoxFit.cover,
+                            imageErrorBuilder: (BuildContext context,
+                                Object exception, StackTrace stackTrace) {
+                              return Image.asset(
+                                "assets/placeholder.png",
+                                fit: BoxFit.cover,
+                                //height: 64,
+                              );
+                            },
                           ),
                         ),
-                        SizedBox(
-                          height: 6,
+                      ),
+                      SizedBox(
+                        height: 6,
+                      ),
+                      SizedBox(
+                        width: 58,
+                        child: Text(
+                          categoryResponse.categories[index].name,
+                          style: TextStyle(fontSize: 12),
+                          maxLines: 1,
+                          textAlign: TextAlign.center,
                         ),
-                        SizedBox(
-                          width: 58,
-                          child: Text(
-                            categoryResponse.categories[index].name,
-                            style: TextStyle(fontSize: 12),
-                            maxLines: 1,
-                            textAlign: TextAlign.center,
-                          ),
-                        )
-                      ],
-                    ),
-                  );
-                },
-                itemCount: categoryResponse.categories.length,
-                scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.only(left: 16),
-              ),
+                      )
+                    ],
+                  ),
+                );
+              },
+              itemCount: categoryResponse.categories.length,
             );
           } else {
-            return SizedBox(
-              height: 80,
-              child: ListView.builder(
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(right: 16.0),
-                    child: Shimmer.fromColors(
-                      baseColor: MyTheme.shimmer_base,
-                      highlightColor: MyTheme.shimmer_highlighted,
-                      child: Container(
-                        height: 60,
-                        width: 60,
-                        color: Colors.white,
-                      ),
-                    ),
-                  );
-                },
-                itemCount: 6,
-                scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.only(left: 16),
-              ),
+            return GridView.builder(
+              shrinkWrap: true,
+              padding: EdgeInsets.all(0),
+              physics: NeverScrollableScrollPhysics(),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4,
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 8,
+                  childAspectRatio: 1),
+              itemBuilder: (BuildContext context, int index) {
+                return Shimmer.fromColors(
+                  baseColor: MyTheme.shimmer_base,
+                  highlightColor: MyTheme.shimmer_highlighted,
+                  child: Container(
+                    height: 60,
+                    width: 60,
+                    color: Colors.white,
+                  ),
+                );
+              },
+              itemCount: 8,
             );
           }
         });

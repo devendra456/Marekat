@@ -261,6 +261,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "topSellers" : MessageLookupByLibrary.simpleMessage("Top Sellers"),
     "topSellingProducts" : MessageLookupByLibrary.simpleMessage("Top Selling Products"),
     "topSellingProductsFromThisSeller" : MessageLookupByLibrary.simpleMessage("Top Selling Products from this seller"),
+    "topTenBrands" : MessageLookupByLibrary.simpleMessage("Top Ten Brands"),
     "top_categories" : MessageLookupByLibrary.simpleMessage("Top Categories"),
     "top_sellers" : MessageLookupByLibrary.simpleMessage("Top Sellers"),
     "totalAmount" : MessageLookupByLibrary.simpleMessage("Total Amount"),

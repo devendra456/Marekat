@@ -2694,6 +2694,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Top Ten Brands`
+  String get topTenBrands {
+    return Intl.message(
+      'Top Ten Brands',
+      name: 'topTenBrands',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

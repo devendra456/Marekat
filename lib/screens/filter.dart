@@ -359,7 +359,6 @@ class _FilterState extends State<Filter> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //resizeToAvoidBottomInset: false,
       endDrawer: buildFilterDrawer(),
       key: _scaffoldKey,
       backgroundColor: Colors.white,
@@ -389,9 +388,7 @@ class _FilterState extends State<Filter> {
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
         automaticallyImplyLeading: false,
-        actions: [
-          new Container(),
-        ],
+        actions: [Container()],
         backgroundColor: Colors.white.withOpacity(0.95),
         centerTitle: false,
         flexibleSpace: Padding(
@@ -629,70 +626,74 @@ class _FilterState extends State<Filter> {
             height: 36,
             width: MediaQuery.of(context).size.width * .33,
             child: Center(
-                child: Container(
-              width: 50,
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.swap_vert,
-                    size: 13,
-                  ),
-                  SizedBox(width: 2),
-                  Text(
-                    S.of(context).sort,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 13,
+              child: Container(
+                width: 50,
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.swap_vert,
+                      size: 13,
                     ),
-                  ),
-                ],
+                    SizedBox(width: 2),
+                    Text(
+                      S.of(context).sort,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            )),
+            ),
           ),
         )
       ],
     );
   }
 
-  Row buildTopAppbar(BuildContext context) {
-    return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          IconButton(
-            icon: Icon(Icons.arrow_back, color: MyTheme.accent_color),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          Expanded(
-            child: TextField(
-              onTap: () {},
-              autofocus: true,
-              controller: _searchController,
-              onSubmitted: (txt) {
-                _searchKey = txt;
-                setState(() {});
-                _onSearchSubmit();
-              },
-              decoration: InputDecoration(
-                  hintText: S.of(context).searchHere,
-                  hintStyle:
-                      TextStyle(fontSize: 12.0, color: MyTheme.textfield_grey),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: MyTheme.white, width: 0.0),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: MyTheme.white, width: 0.0),
-                  ),
-                  contentPadding: EdgeInsets.all(0.0)),
+  buildTopAppbar(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            IconButton(
+              icon: Icon(Icons.arrow_back, color: MyTheme.accent_color),
+              onPressed: () => Navigator.of(context).pop(),
             ),
-          ),
-          IconButton(
-              icon: Icon(Icons.search, color: MyTheme.accent_color),
-              onPressed: () {
-                _searchKey = _searchController.text.toString();
-                setState(() {});
-                _onSearchSubmit();
-              }),
-        ]);
+            Expanded(
+              child: TextField(
+                onTap: () {},
+                autofocus: true,
+                controller: _searchController,
+                onSubmitted: (txt) {
+                  _searchKey = txt;
+                  setState(() {});
+                  _onSearchSubmit();
+                },
+                decoration: InputDecoration(
+                    hintText: S.of(context).searchHere,
+                    hintStyle: TextStyle(
+                        fontSize: 12.0, color: MyTheme.textfield_grey),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: MyTheme.white, width: 0.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: MyTheme.white, width: 0.0),
+                    ),
+                    contentPadding: EdgeInsets.all(0.0)),
+              ),
+            ),
+            IconButton(
+                icon: Icon(Icons.search, color: MyTheme.accent_color),
+                onPressed: () {
+                  _searchKey = _searchController.text.toString();
+                  setState(() {});
+                  _onSearchSubmit();
+                }),
+          ]),
+    );
   }
 
   Drawer buildFilterDrawer() {

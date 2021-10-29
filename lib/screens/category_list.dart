@@ -5,6 +5,7 @@ import 'package:marekat/generated/l10n.dart';
 import 'package:marekat/my_theme.dart';
 import 'package:marekat/repositories/category_repository.dart';
 import 'package:marekat/screens/category_products.dart';
+import 'package:marekat/screens/home_category_products.dart';
 import 'package:marekat/ui_sections/main_drawer.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -211,125 +212,134 @@ class _CategoryListState extends State<CategoryList> {
   buildCategoryItemCard(categoryResponse, index) {
     return Card(
       shape: RoundedRectangleBorder(
-        //side: new BorderSide(color: MyTheme.light_grey, width: 1.0),
         borderRadius: BorderRadius.circular(8.0),
       ),
       elevation: 1.5,
       child: GestureDetector(
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return CategoryProducts(
+            return HomeCategoryProducts(categoryResponse.categories[
+                    index]) /*CategoryProducts(
               category_id: categoryResponse.categories[index].id,
               category_name: categoryResponse.categories[index].name,
-            );
+            )*/
+                ;
           }));
         },
-        child:
-            Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
-          Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Container(
               width: 116,
               height: 100,
               child: ClipRRect(
-                  borderRadius: BorderRadius.horizontal(
-                      left: Radius.circular(16), right: Radius.zero),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 8.0, right: 8),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                      child: FadeInImage.assetNetwork(
-                        placeholder: 'assets/placeholder.png',
-                        image: AppConfig.BASE_PATH +
-                            categoryResponse.categories[index].banner,
-                        fit: BoxFit.cover,
-                        imageErrorBuilder: (BuildContext context,
-                            Object exception, StackTrace stackTrace) {
-                          return Image.asset(
-                            "assets/placeholder.png",
-                            fit: BoxFit.cover,
-                          );
-                        },
-                      ),
-                    ),
-                  ))),
-          Expanded(
-            child: Container(
-              height: 115,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(20, 8, 8, 0),
-                    child: Text(
-                      categoryResponse.categories[index].name,
-                      textAlign: TextAlign.left,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      style: TextStyle(
-                          color: MyTheme.font_grey,
-                          fontSize: 14,
-                          height: 1.6,
-                          fontWeight: FontWeight.w600),
+                borderRadius: BorderRadius.horizontal(
+                    left: Radius.circular(16), right: Radius.zero),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8.0, right: 8),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    child: FadeInImage.assetNetwork(
+                      placeholder: 'assets/placeholder.png',
+                      image: AppConfig.BASE_PATH +
+                          categoryResponse.categories[index].banner,
+                      fit: BoxFit.cover,
+                      imageErrorBuilder: (BuildContext context,
+                          Object exception, StackTrace stackTrace) {
+                        return Image.asset(
+                          "assets/placeholder.png",
+                          fit: BoxFit.cover,
+                        );
+                      },
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(20, 15, 8, 0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        categoryResponse.categories[index].number_of_children >
-                                0
-                            ? GestureDetector(
-                                onTap: () {
-                                  if (categoryResponse.categories[index]
-                                          .number_of_children >
-                                      0) {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) {
-                                      return CategoryList(
-                                        parent_category_id: categoryResponse
-                                            .categories[index].id,
-                                        parent_category_name: categoryResponse
-                                            .categories[index].name,
-                                      );
-                                    }));
-                                  } else {
-                                    ToastComponent.showDialog(
-                                        S.of(context).noSubCategoriesAvailable);
-                                  }
-                                },
-                                child: Text(
-                                  S.of(context).viewSubcategories,
-                                  textAlign: TextAlign.left,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: categoryResponse.categories[index]
-                                                .number_of_children >
-                                            0
-                                        ? MyTheme.accent_color
-                                        : MyTheme.accent_color,
+                ),
+              ),
+            ),
+            Expanded(
+              child: Container(
+                height: 115,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(20, 8, 8, 0),
+                      child: Text(
+                        categoryResponse.categories[index].name,
+                        textAlign: TextAlign.left,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: TextStyle(
+                            color: MyTheme.font_grey,
+                            fontSize: 14,
+                            height: 1.6,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(20, 15, 8, 0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          categoryResponse
+                                      .categories[index].number_of_children >
+                                  0
+                              ? GestureDetector(
+                                  onTap: () {
+                                    if (categoryResponse.categories[index]
+                                            .number_of_children >
+                                        0) {
+                                      Navigator.push(context,
+                                          MaterialPageRoute(builder: (context) {
+                                        return CategoryList(
+                                          parent_category_id: categoryResponse
+                                              .categories[index].id,
+                                          parent_category_name: categoryResponse
+                                              .categories[index].name,
+                                        );
+                                      }));
+                                    } else {
+                                      ToastComponent.showDialog(S
+                                          .of(context)
+                                          .noSubCategoriesAvailable);
+                                    }
+                                  },
+                                  child: Text(
+                                    S.of(context).viewSubcategories,
+                                    textAlign: TextAlign.left,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: categoryResponse.categories[index]
+                                                  .number_of_children >
+                                              0
+                                          ? MyTheme.accent_color
+                                          : MyTheme.accent_color,
+                                    ),
+                                  ),
+                                )
+                              : Container(
+                                  child: Text(
+                                    S.of(context).noSubCategoriesAvailable,
+                                    style: TextStyle(color: Colors.grey),
                                   ),
                                 ),
-                              )
-                            : Container(
-                                child: Text(
-                                  S.of(context).noSubCategoriesAvailable,
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                              ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 12, 0, 0),
-                          child: GestureDetector(
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 12, 0, 0),
+                            child: GestureDetector(
                               onTap: () {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
-                                  return CategoryProducts(
-                                    category_id:
-                                        categoryResponse.categories[index].id,
-                                    category_name:
-                                        categoryResponse.categories[index].name,
-                                  );
+                                  return HomeCategoryProducts(categoryResponse
+                                              .categories[
+                                          index]) /*CategoryProducts(
+                                  category_id:
+                                      categoryResponse.categories[index].id,
+                                  category_name:
+                                      categoryResponse.categories[index].name,
+                                )*/
+                                      ;
                                 }));
                               },
                               child: Container(
@@ -340,20 +350,23 @@ class _CategoryListState extends State<CategoryList> {
                                 height: 30,
                                 width: 100,
                                 child: Center(
-                                    child: Text(
-                                  S.of(context).viewProducts,
-                                  style: TextStyle(color: Colors.white),
-                                )),
-                              )),
-                        ),
-                      ],
+                                  child: Text(
+                                    S.of(context).viewProducts,
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ]),
+          ],
+        ),
       ),
     );
   }

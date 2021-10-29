@@ -21,8 +21,6 @@ class _ProductCardState extends State<ProductCard> {
 
   @override
   Widget build(BuildContext context) {
-    final TextDirection currentDirection = Directionality.of(context);
-    final bool isRTL = currentDirection == TextDirection.rtl;
     return InkWell(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -34,10 +32,10 @@ class _ProductCardState extends State<ProductCard> {
       child: Card(
         shape: RoundedRectangleBorder(
           side: new BorderSide(
-              color: Color.fromARGB(255, 232, 232, 232), width: 1.0),
+              color: Color.fromARGB(255, 232, 232, 232), width: 0.7),
           borderRadius: BorderRadius.circular(8.0),
         ),
-        elevation: 1.5,
+        elevation: 0,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -52,7 +50,7 @@ class _ProductCardState extends State<ProductCard> {
                       child: FadeInImage.assetNetwork(
                         placeholder: 'assets/placeholder.png',
                         image: AppConfig.BASE_PATH + widget.image,
-                        fit: BoxFit.cover,
+                        fit: BoxFit.fitHeight,
                         imageErrorBuilder: (BuildContext context,
                             Object exception, StackTrace stackTrace) {
                           return Image.asset(
@@ -81,7 +79,7 @@ class _ProductCardState extends State<ProductCard> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 16),
                     child: Text(
                       widget.price,
                       textAlign: TextAlign.center,

@@ -377,15 +377,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             slivers: <Widget>[
               SliverList(
                   delegate: SliverChildListDelegate([
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                    16.0,
-                    0.0,
-                    16.0,
-                    0.0,
-                  ),
-                  child: buildProductImageCarouselSlider(),
-                ),
+                buildProductImageCarouselSlider(),
               ])),
               SliverList(
                   delegate: SliverChildListDelegate([
@@ -1519,27 +1511,31 @@ class _ProductDetailsState extends State<ProductDetails> {
                               ? ""
                               : _productDetails.description))),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                Builder(
-                  builder: (context) {
-                    var controller = ExpandableController.of(context);
-                    return MaterialButton(
-                      child: Text(
-                        !controller.expanded
-                            ? S.of(context).viewMore
-                            : S.of(context).showLess,
-                        style:
-                            TextStyle(color: MyTheme.font_grey, fontSize: 11),
-                      ),
-                      onPressed: () {
-                        controller.toggle();
-                      },
-                    );
-                  },
-                ),
-              ],
+            SizedBox(
+              height: 24,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Builder(
+                    builder: (context) {
+                      var controller = ExpandableController.of(context);
+                      return MaterialButton(
+                        height: 24,
+                        child: Text(
+                          !controller.expanded
+                              ? S.of(context).viewMore
+                              : S.of(context).showLess,
+                          style:
+                              TextStyle(color: MyTheme.font_grey, fontSize: 11),
+                        ),
+                        onPressed: () {
+                          controller.toggle();
+                        },
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -1719,7 +1715,7 @@ class _ProductDetailsState extends State<ProductDetails> {
       );
     } else {
       return Container(
-        height: 250,
+        height: MediaQuery.of(context).size.height * .5,
         width: double.infinity,
         child: Stack(
           fit: StackFit.expand,
@@ -1760,52 +1756,55 @@ class _ProductDetailsState extends State<ProductDetails> {
                 );
               }).toList(),
             ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: _carouselImageList.map((url) {
-                  int index = _carouselImageList.indexOf(url);
-                  return Flexible(
-                    child: GestureDetector(
-                      onTap: () {
-                        //print(index);
-                        return _imageCarouselController.animateToPage(index,
-                            curve: Curves.elasticOut);
-                      },
-                      child: Container(
-                        width: 50,
-                        height: 50,
-                        margin: EdgeInsets.symmetric(
-                            vertical: 4.0, horizontal: 2.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
-                              color: _currentImage == index
-                                  ? MyTheme.accent_color
-                                  : Color.fromRGBO(112, 112, 112, .3),
-                              width: _currentImage == index ? 2 : 1),
-                          //shape: BoxShape.rectangle,
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: FadeInImage.assetNetwork(
-                            placeholder: 'assets/placeholder.png',
-                            image: AppConfig.BASE_PATH + url,
-                            fit: BoxFit.contain,
-                            imageErrorBuilder: (BuildContext context,
-                                Object exception, StackTrace stackTrace) {
-                              return Image.asset(
-                                "assets/placeholder.png",
-                                fit: BoxFit.cover,
-                              );
-                            },
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: _carouselImageList.map((url) {
+                    int index = _carouselImageList.indexOf(url);
+                    return Flexible(
+                      child: GestureDetector(
+                        onTap: () {
+                          //print(index);
+                          return _imageCarouselController.animateToPage(index,
+                              curve: Curves.elasticOut);
+                        },
+                        child: Container(
+                          width: 50,
+                          height: 50,
+                          margin: EdgeInsets.symmetric(
+                              vertical: 4.0, horizontal: 2.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                                color: _currentImage == index
+                                    ? MyTheme.accent_color
+                                    : Color.fromRGBO(112, 112, 112, .3),
+                                width: _currentImage == index ? 2 : 1),
+                            //shape: BoxShape.rectangle,
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: FadeInImage.assetNetwork(
+                              placeholder: 'assets/placeholder.png',
+                              image: AppConfig.BASE_PATH + url,
+                              fit: BoxFit.contain,
+                              imageErrorBuilder: (BuildContext context,
+                                  Object exception, StackTrace stackTrace) {
+                                return Image.asset(
+                                  "assets/placeholder.png",
+                                  fit: BoxFit.cover,
+                                );
+                              },
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                }).toList(),
+                    );
+                  }).toList(),
+                ),
               ),
             ),
           ],

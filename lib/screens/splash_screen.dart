@@ -8,9 +8,6 @@ import 'package:marekat/helpers/shared_value_helper.dart';
 import 'package:marekat/repositories/auth_repository.dart';
 import 'package:marekat/screens/main_screen.dart';
 import 'package:marekat/screens/offline_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'intro_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key key}) : super(key: key);
@@ -46,29 +43,29 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   navigateToScreens() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    bool isNotFirstTime = preferences.getBool("isNotFirstTime");
     Timer(Duration(seconds: 3), () {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-        return OfflineBuilder(
-          connectivityBuilder: (
-            BuildContext context,
-            ConnectivityResult value,
-            Widget child,
-          ) {
-            if (value == ConnectivityResult.none) {
-              return OfflineScreen();
-            } else {
-              access_token.load().whenComplete(() {
-                fetch_user();
-              });
-              return isNotFirstTime == true ? MainScreen() : IntroScreen();
-            }
-          },
-          builder: (context) =>
-              isNotFirstTime == true ? MainScreen() : IntroScreen(),
-        );
-      }));
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) {
+          return OfflineBuilder(
+            connectivityBuilder: (
+              BuildContext context,
+              ConnectivityResult value,
+              Widget child,
+            ) {
+              if (value == ConnectivityResult.none) {
+                return OfflineScreen();
+              } else {
+                access_token.load().whenComplete(() {
+                  fetch_user();
+                });
+                return MainScreen();
+              }
+            },
+            builder: (context) => MainScreen(),
+          );
+        }),
+      );
     });
   }
 
@@ -78,34 +75,15 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: Colors.white,
       body: SafeArea(
         bottom: true,
-        child: Stack(
-          children: [
-            Positioned(
-              right: -90,
-              top: -150,
-              child: SizedBox(
-                height: 300,
-                child: Image(
-                  image: AssetImage("assets/splash_top.png"),
-                ),
-              ),
-            ),
-            Positioned(
-              left: -70,
-              right: -80,
-              bottom: -135,
-              child: SizedBox(
-                child: Image(
-                  image: AssetImage("assets/splash_bottom.png"),
-                ),
-              ),
-            ),
-            Center(
-              child: Image(
-                image: AssetImage("assets/splash_logo.jpg"),
-              ),
-            )
-          ],
+        right: true,
+        top: true,
+        left: true,
+        maintainBottomViewPadding: true,
+        child: Center(
+          child: Image.asset(
+            "assets/splash_logo.png",
+            width: MediaQuery.of(context).size.width * .6,
+          ),
         ),
       ),
     );
