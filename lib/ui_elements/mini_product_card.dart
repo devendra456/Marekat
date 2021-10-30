@@ -60,7 +60,7 @@ class _MiniProductCardState extends State<MiniProductCard> {
                   widget.name,
                   textAlign: TextAlign.left,
                   overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
+                  maxLines: 1,
                   style: TextStyle(
                       color: MyTheme.font_grey,
                       fontSize: 11,
@@ -69,7 +69,7 @@ class _MiniProductCardState extends State<MiniProductCard> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
+                padding: EdgeInsets.fromLTRB(8, 4, 8, 8),
                 child: Text(
                   widget.price,
                   textAlign: TextAlign.left,

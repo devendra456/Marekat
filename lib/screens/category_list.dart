@@ -8,6 +8,8 @@ import 'package:marekat/screens/category_products.dart';
 import 'package:marekat/ui_sections/main_drawer.dart';
 import 'package:shimmer/shimmer.dart';
 
+import 'home_category_products.dart';
+
 class CategoryList extends StatefulWidget {
   CategoryList(
       {Key key,
@@ -328,12 +330,8 @@ class _CategoryListState extends State<CategoryList> {
                               onTap: () {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
-                                  return CategoryList(
-                                    parent_category_id:
-                                        categoryResponse.categories[index].id,
-                                    parent_category_name:
-                                        categoryResponse.categories[index].name,
-                                  );
+                                  return HomeCategoryProducts(
+                                      categoryResponse.categories[index]);
                                 }));
                               },
                               child: Container(
