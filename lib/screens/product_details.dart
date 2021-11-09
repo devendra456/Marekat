@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -20,6 +21,7 @@ import 'package:marekat/repositories/product_repository.dart';
 import 'package:marekat/repositories/wishlist_repository.dart';
 import 'package:marekat/screens/cart.dart';
 import 'package:marekat/screens/common_webview_screen.dart';
+import 'package:marekat/screens/full_screen_image.dart';
 import 'package:marekat/screens/product_reviews.dart';
 import 'package:marekat/ui_elements/list_product_card.dart';
 import 'package:marekat/ui_elements/mini_product_card.dart';
@@ -63,6 +65,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   var _pName;
   var _video_link;
   var unit;
+  var viewMore = true;
 
   //var _currentColorIndex = 0;
   //var _currentChoiceIndex = 0;
@@ -71,6 +74,8 @@ class _ProductDetailsState extends State<ProductDetails> {
   bool _relatedProductInit = false;
   List<dynamic> _topProducts = [];
   bool _topProductInit = false;
+
+  var _relatedProductLength = 2;
 
   @override
   void initState() {
@@ -365,23 +370,56 @@ class _ProductDetailsState extends State<ProductDetails> {
     return Scaffold(
         bottomNavigationBar: buildBottomAppBar(context, _addedToCartSnackbar),
         backgroundColor: Colors.white,
-        appBar: buildAppBar(statusBarHeight, context),
-        body: RefreshIndicator(
-          color: MyTheme.accent_color,
-          backgroundColor: Colors.white,
-          onRefresh: _onPageRefresh,
-          child: CustomScrollView(
-            controller: _mainScrollController,
-            physics: const BouncingScrollPhysics(
-                parent: AlwaysScrollableScrollPhysics()),
-            slivers: <Widget>[
-              SliverList(
-                  delegate: SliverChildListDelegate([
-                buildProductImageCarouselSlider(),
-              ])),
-              SliverList(
-                  delegate: SliverChildListDelegate([
-                Padding(
+        //appBar: buildAppBar(context),
+        body: SafeArea(
+          child: RefreshIndicator(
+            color: MyTheme.accent_color,
+            backgroundColor: Colors.white,
+            onRefresh: _onPageRefresh,
+            child: CustomScrollView(
+              controller: _mainScrollController,
+              physics: const BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics()),
+              slivers: <Widget>[
+                SliverList(
+                    delegate: SliverChildListDelegate([
+                  Container(
+                    height: MediaQuery.of(context).size.height * .64,
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        buildProductImageCarouselSlider(),
+                        buildAppBarCustom(context),
+                        //buildAppBar(context)
+                      ],
+                    ),
+                  )
+                ])),
+                SliverList(
+                    delegate: SliverChildListDelegate([
+                  Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        16.0,
+                        8.0,
+                        16.0,
+                        0.0,
+                      ),
+                      child: _productDetails != null
+                          ? Text(
+                              _productDetails.name,
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: MyTheme.font_grey,
+                                  fontWeight: FontWeight.w600),
+                              maxLines: 2,
+                            )
+                          : ShimmerHelper().buildBasicShimmer(
+                              height: 30.0,
+                            )),
+                ])),
+                SliverList(
+                    delegate: SliverChildListDelegate([
+                  Padding(
                     padding: const EdgeInsets.fromLTRB(
                       16.0,
                       8.0,
@@ -389,449 +427,93 @@ class _ProductDetailsState extends State<ProductDetails> {
                       0.0,
                     ),
                     child: _productDetails != null
-                        ? Text(
-                            _productDetails.name,
-                            style: TextStyle(
-                                fontSize: 16,
-                                color: MyTheme.font_grey,
-                                fontWeight: FontWeight.w600),
-                            maxLines: 2,
-                          )
+                        ? buildRatingAndWishButtonRow()
                         : ShimmerHelper().buildBasicShimmer(
                             height: 30.0,
-                          )),
-              ])),
-              SliverList(
-                  delegate: SliverChildListDelegate([
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                    16.0,
-                    8.0,
-                    16.0,
-                    0.0,
+                          ),
                   ),
-                  child: _productDetails != null
-                      ? buildRatingAndWishButtonRow()
-                      : ShimmerHelper().buildBasicShimmer(
-                          height: 30.0,
-                        ),
-                ),
-                Divider(
-                  height: 24.0,
-                ),
-              ])),
-              SliverList(
-                  delegate: SliverChildListDelegate([
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                    16.0,
-                    8.0,
-                    16.0,
-                    0.0,
+                  Divider(
+                    height: 24.0,
                   ),
-                  child: _productDetails != null
-                      ? buildMainPriceRow()
-                      : ShimmerHelper().buildBasicShimmer(
-                          height: 30.0,
-                        ),
-                ),
-              ])),
-              SliverList(
-                  delegate: SliverChildListDelegate([
-                AddonConfig.club_point_addon_installed
-                    ? Padding(
-                        padding: const EdgeInsets.fromLTRB(
-                          16.0,
-                          8.0,
-                          16.0,
-                          0.0,
-                        ),
-                        child: _productDetails != null
-                            ? buildClubPointRow()
-                            : ShimmerHelper().buildBasicShimmer(
-                                height: 30.0,
-                              ),
-                      )
-                    : Container(),
-                Divider(
-                  height: 24.0,
-                ),
-              ])),
-              SliverList(
-                  delegate: SliverChildListDelegate([
-                _productDetails != null
-                    ? buildChoiceOptionList()
-                    : buildVariantShimmers(),
-              ])),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                    16.0,
-                    16.0,
-                    16.0,
-                    0.0,
-                  ),
-                  child: _productDetails != null
-                      ? (_colorList.length > 0 ? buildColorRow() : Container())
-                      : ShimmerHelper().buildBasicShimmer(
-                          height: 30.0,
-                        ),
-                ),
-              ),
-              SliverList(
-                  delegate: SliverChildListDelegate([
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                    16.0,
-                    8.0,
-                    16.0,
-                    0.0,
-                  ),
-                  child: _productDetails != null
-                      ? buildQuantityRow()
-                      : ShimmerHelper().buildBasicShimmer(
-                          height: 30.0,
-                        ),
-                ),
-              ])),
-              SliverList(
-                  delegate: SliverChildListDelegate([
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                    16.0,
-                    16.0,
-                    16.0,
-                    0.0,
-                  ),
-                  child: _productDetails != null
-                      ? buildTotalPriceRow()
-                      : ShimmerHelper().buildBasicShimmer(
-                          height: 30.0,
-                        ),
-                ),
-                Divider(
-                  height: 24.0,
-                ),
-              ])),
-              /*SliverList(
-                  delegate: SliverChildListDelegate([
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                    16.0,
-                    0.0,
-                    16.0,
-                    0.0,
-                  ),
-                  child: _productDetails != null
-                      ? buildSellerRow(context)
-                      : ShimmerHelper().buildBasicShimmer(
-                          height: 50.0,
-                        ),
-                ),
-                Divider(
-                  height: 24,
-                ),
-              ])),*/
-              SliverList(
-                delegate: SliverChildListDelegate([
+                ])),
+                SliverList(
+                    delegate: SliverChildListDelegate([
                   Padding(
                     padding: const EdgeInsets.fromLTRB(
                       16.0,
-                      0.0,
+                      8.0,
                       16.0,
                       0.0,
-                    ),
-                    child: Text(
-                      S.of(context).description,
-                      style: TextStyle(
-                          color: MyTheme.font_grey,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                      8.0,
-                      0.0,
-                      8.0,
-                      8.0,
                     ),
                     child: _productDetails != null
-                        ? buildExpandableDescription()
-                        : Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8.0, vertical: 8.0),
-                            child: ShimmerHelper().buildBasicShimmer(
-                              height: 60.0,
-                            )),
+                        ? buildMainPriceRow()
+                        : ShimmerHelper().buildBasicShimmer(
+                            height: 30.0,
+                          ),
                   ),
+                ])),
+                SliverList(
+                    delegate: SliverChildListDelegate([
+                  AddonConfig.club_point_addon_installed
+                      ? Padding(
+                          padding: const EdgeInsets.fromLTRB(
+                            16.0,
+                            8.0,
+                            16.0,
+                            0.0,
+                          ),
+                          child: _productDetails != null
+                              ? buildClubPointRow()
+                              : ShimmerHelper().buildBasicShimmer(
+                                  height: 30.0,
+                                ),
+                        )
+                      : Container(),
                   Divider(
-                    height: 1,
+                    height: 24.0,
                   ),
-                  InkWell(
-                    onTap: () {
-                      if (_video_link == null || _video_link == "") {
-                        ToastComponent.showDialog(
-                            S.of(context).videoNotAvailable);
-                        return;
-                      }
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return CommonWebviewScreen(
-                          url: _video_link,
-                          page_name: "Video",
-                        );
-                      }));
-                    },
-                    child: Container(
-                      height: 40,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(
-                          16.0,
-                          0.0,
-                          8.0,
-                          0.0,
-                        ),
-                        child: Row(
-                          children: [
-                            Text(
-                              S.of(context).video,
-                              style: TextStyle(
-                                  color: MyTheme.font_grey,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            Spacer(),
-                            Icon(
-                              Ionicons.ios_add,
-                              color: MyTheme.font_grey,
-                              size: 24,
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Divider(
-                    height: 1,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return ProductReviews(id: widget.id);
-                      })).then((value) {
-                        onPopped(value);
-                      });
-                    },
-                    child: Container(
-                      height: 40,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(
-                          16.0,
-                          0.0,
-                          8.0,
-                          0.0,
-                        ),
-                        child: Row(
-                          children: [
-                            Text(
-                              S.of(context).reviews,
-                              style: TextStyle(
-                                  color: MyTheme.font_grey,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            Spacer(),
-                            Icon(
-                              Ionicons.ios_add,
-                              color: MyTheme.font_grey,
-                              size: 24,
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Divider(
-                    height: 1,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return CommonWebviewScreen(
-                          url:
-                              "${AppConfig.RAW_BASE_URL}/mobile-page/sellerpolicy",
-                          page_name: "Seller Policy",
-                        );
-                      }));
-                    },
-                    child: Container(
-                      height: 40,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(
-                          16.0,
-                          0.0,
-                          8.0,
-                          0.0,
-                        ),
-                        child: Row(
-                          children: [
-                            Text(
-                              S.of(context).sellerPolicy,
-                              style: TextStyle(
-                                  color: MyTheme.font_grey,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            Spacer(),
-                            Icon(
-                              Ionicons.ios_add,
-                              color: MyTheme.font_grey,
-                              size: 24,
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Divider(
-                    height: 1,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return CommonWebviewScreen(
-                          url:
-                              "${AppConfig.RAW_BASE_URL}/mobile-page/returnpolicy",
-                          page_name: "Return Policy",
-                        );
-                      }));
-                    },
-                    child: Container(
-                      height: 40,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(
-                          16.0,
-                          0.0,
-                          8.0,
-                          0.0,
-                        ),
-                        child: Row(
-                          children: [
-                            Text(
-                              S.of(context).returnPolicy,
-                              style: TextStyle(
-                                  color: MyTheme.font_grey,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            Spacer(),
-                            Icon(
-                              Ionicons.ios_add,
-                              color: MyTheme.font_grey,
-                              size: 24,
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Divider(
-                    height: 1,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return CommonWebviewScreen(
-                          url:
-                              "${AppConfig.RAW_BASE_URL}/mobile-page/supportpolicy",
-                          page_name: "Support Policy",
-                        );
-                      }));
-                    },
-                    child: Container(
-                      height: 40,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(
-                          16.0,
-                          0.0,
-                          8.0,
-                          0.0,
-                        ),
-                        child: Row(
-                          children: [
-                            Text(
-                              S.of(context).supportPolicy,
-                              style: TextStyle(
-                                  color: MyTheme.font_grey,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            Spacer(),
-                            Icon(
-                              Ionicons.ios_add,
-                              color: MyTheme.font_grey,
-                              size: 24,
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Divider(
-                    height: 1,
-                  ),
-                ]),
-              ),
-              SliverList(
-                delegate: SliverChildListDelegate([
-                  Padding(
+                ])),
+                SliverList(
+                    delegate: SliverChildListDelegate([
+                  _productDetails != null
+                      ? buildChoiceOptionList()
+                      : buildVariantShimmers(),
+                ])),
+                SliverToBoxAdapter(
+                  child: Padding(
                     padding: const EdgeInsets.fromLTRB(
                       16.0,
                       16.0,
                       16.0,
                       0.0,
                     ),
-                    child: Text(
-                      S.of(context).productsYouMayAlsoLike,
-                      style: TextStyle(
-                          color: MyTheme.font_grey,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600),
-                    ),
+                    child: _productDetails != null
+                        ? (_colorList.length > 0
+                            ? buildColorRow()
+                            : Container())
+                        : ShimmerHelper().buildBasicShimmer(
+                            height: 30.0,
+                          ),
                   ),
+                ),
+                SliverList(
+                    delegate: SliverChildListDelegate([
                   Padding(
                     padding: const EdgeInsets.fromLTRB(
+                      16.0,
                       8.0,
                       16.0,
                       0.0,
-                      0.0,
                     ),
-                    child: buildProductsMayLikeList(),
-                  )
-                ]),
-              ),
-              SliverList(
-                delegate: SliverChildListDelegate([
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                      16.0,
-                      16.0,
-                      16.0,
-                      0.0,
-                    ),
-                    child: Text(
-                      S.of(context).topSellingProductsFromThisSeller,
-                      style: TextStyle(
-                          color: MyTheme.font_grey,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600),
-                    ),
+                    child: _productDetails != null
+                        ? buildQuantityRow()
+                        : ShimmerHelper().buildBasicShimmer(
+                            height: 30.0,
+                          ),
                   ),
+                ])),
+                SliverList(
+                    delegate: SliverChildListDelegate([
                   Padding(
                     padding: const EdgeInsets.fromLTRB(
                       16.0,
@@ -839,11 +521,390 @@ class _ProductDetailsState extends State<ProductDetails> {
                       16.0,
                       0.0,
                     ),
-                    child: buildTopSellingProductList(),
-                  )
-                ]),
-              )
-            ],
+                    child: _productDetails != null
+                        ? buildTotalPriceRow()
+                        : ShimmerHelper().buildBasicShimmer(
+                            height: 30.0,
+                          ),
+                  ),
+                  Divider(
+                    height: 24.0,
+                  ),
+                ])),
+                /*SliverList(
+                    delegate: SliverChildListDelegate([
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(
+                      16.0,
+                      0.0,
+                      16.0,
+                      0.0,
+                    ),
+                    child: _productDetails != null
+                        ? buildSellerRow(context)
+                        : ShimmerHelper().buildBasicShimmer(
+                            height: 50.0,
+                          ),
+                  ),
+                  Divider(
+                    height: 24,
+                  ),
+                ])),*/
+                SliverList(
+                  delegate: SliverChildListDelegate([
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        16.0,
+                        0.0,
+                        16.0,
+                        0.0,
+                      ),
+                      child: Text(
+                        S.of(context).description,
+                        style: TextStyle(
+                            color: MyTheme.font_grey,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        8.0,
+                        0.0,
+                        8.0,
+                        8.0,
+                      ),
+                      child: _productDetails != null
+                          ? buildExpandableDescription()
+                          : Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8.0, vertical: 8.0),
+                              child: ShimmerHelper().buildBasicShimmer(
+                                height: 60.0,
+                              )),
+                    ),
+                    Divider(
+                      height: 1,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        if (_video_link == null || _video_link == "") {
+                          ToastComponent.showDialog(
+                              S.of(context).videoNotAvailable);
+                          return;
+                        }
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return CommonWebviewScreen(
+                            url: _video_link,
+                            page_name: "Video",
+                          );
+                        }));
+                      },
+                      child: Container(
+                        height: 40,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(
+                            16.0,
+                            0.0,
+                            8.0,
+                            0.0,
+                          ),
+                          child: Row(
+                            children: [
+                              Text(
+                                S.of(context).video,
+                                style: TextStyle(
+                                    color: MyTheme.font_grey,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              Spacer(),
+                              Icon(
+                                Ionicons.ios_add,
+                                color: MyTheme.font_grey,
+                                size: 24,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Divider(
+                      height: 1,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return ProductReviews(id: widget.id);
+                        })).then((value) {
+                          onPopped(value);
+                        });
+                      },
+                      child: Container(
+                        height: 40,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(
+                            16.0,
+                            0.0,
+                            8.0,
+                            0.0,
+                          ),
+                          child: Row(
+                            children: [
+                              Text(
+                                S.of(context).reviews,
+                                style: TextStyle(
+                                    color: MyTheme.font_grey,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              Spacer(),
+                              Icon(
+                                Ionicons.ios_add,
+                                color: MyTheme.font_grey,
+                                size: 24,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Divider(
+                      height: 1,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return CommonWebviewScreen(
+                            url:
+                                "${AppConfig.RAW_BASE_URL}/mobile-page/sellerpolicy",
+                            page_name: "Seller Policy",
+                          );
+                        }));
+                      },
+                      child: Container(
+                        height: 40,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(
+                            16.0,
+                            0.0,
+                            8.0,
+                            0.0,
+                          ),
+                          child: Row(
+                            children: [
+                              Text(
+                                S.of(context).sellerPolicy,
+                                style: TextStyle(
+                                    color: MyTheme.font_grey,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              Spacer(),
+                              Icon(
+                                Ionicons.ios_add,
+                                color: MyTheme.font_grey,
+                                size: 24,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Divider(
+                      height: 1,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return CommonWebviewScreen(
+                            url:
+                                "${AppConfig.RAW_BASE_URL}/mobile-page/returnpolicy",
+                            page_name: "Return Policy",
+                          );
+                        }));
+                      },
+                      child: Container(
+                        height: 40,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(
+                            16.0,
+                            0.0,
+                            8.0,
+                            0.0,
+                          ),
+                          child: Row(
+                            children: [
+                              Text(
+                                S.of(context).returnPolicy,
+                                style: TextStyle(
+                                    color: MyTheme.font_grey,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              Spacer(),
+                              Icon(
+                                Ionicons.ios_add,
+                                color: MyTheme.font_grey,
+                                size: 24,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Divider(
+                      height: 1,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return CommonWebviewScreen(
+                            url:
+                                "${AppConfig.RAW_BASE_URL}/mobile-page/supportpolicy",
+                            page_name: "Support Policy",
+                          );
+                        }));
+                      },
+                      child: Container(
+                        height: 40,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(
+                            16.0,
+                            0.0,
+                            8.0,
+                            0.0,
+                          ),
+                          child: Row(
+                            children: [
+                              Text(
+                                S.of(context).supportPolicy,
+                                style: TextStyle(
+                                    color: MyTheme.font_grey,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              Spacer(),
+                              Icon(
+                                Ionicons.ios_add,
+                                color: MyTheme.font_grey,
+                                size: 24,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Divider(
+                      height: 1,
+                    ),
+                  ]),
+                ),
+                SliverList(
+                  delegate: SliverChildListDelegate([
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        16.0,
+                        16.0,
+                        16.0,
+                        0.0,
+                      ),
+                      child: Text(
+                        S.of(context).productsYouMayAlsoLike,
+                        style: TextStyle(
+                            color: MyTheme.font_grey,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        0.0,
+                        16.0,
+                        0.0,
+                        0.0,
+                      ),
+                      child: buildProductsMayLikeList(),
+                    ),
+                    _relatedProducts.length > 2
+                        ? Center(
+                            child: InkWell(
+                              onTap: () {
+                                setState(() {
+                                  if (viewMore) {
+                                    viewMore = false;
+                                    _relatedProductLength =
+                                        _relatedProducts.length;
+                                  } else {
+                                    viewMore = true;
+                                    _relatedProductLength = 2;
+                                  }
+                                });
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 8, horizontal: 32),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(4),
+                                    border: Border.all(
+                                        color: MyTheme.grey_153, width: 0.3)),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      viewMore ? "View More" : "Collapse",
+                                      style: TextStyle(
+                                          color: MyTheme.dark_grey,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Icon(
+                                        viewMore
+                                            ? Icons.keyboard_arrow_down_rounded
+                                            : Icons.keyboard_arrow_up_rounded,
+                                        color: MyTheme.dark_grey)
+                                  ],
+                                ),
+                              ),
+                            ),
+                          )
+                        : Container(),
+                  ]),
+                ),
+                SliverList(
+                  delegate: SliverChildListDelegate([
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        16.0,
+                        16.0,
+                        16.0,
+                        0.0,
+                      ),
+                      child: Text(
+                        S.of(context).topSellingProductsFromThisSeller,
+                        style: TextStyle(
+                            color: MyTheme.font_grey,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        16.0,
+                        16.0,
+                        16.0,
+                        0.0,
+                      ),
+                      child: buildTopSellingProductList(),
+                    )
+                  ]),
+                )
+              ],
+            ),
           ),
         ));
   }
@@ -1336,37 +1397,30 @@ class _ProductDetailsState extends State<ProductDetails> {
     );
   }
 
-  AppBar buildAppBar(double statusBarHeight, BuildContext context) {
+  AppBar buildAppBar(BuildContext context) {
     return AppBar(
       leading: Builder(
-        builder: (context) => IconButton(
-          icon: Icon(Icons.arrow_back, color: MyTheme.dark_grey),
-          onPressed: () => Navigator.of(context).pop(),
+        builder: (context) => InkWell(
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+          child: Icon(Icons.arrow_back, color: MyTheme.accent_color),
         ),
       ),
-      title: Container(
-        height: kToolbarHeight +
-            statusBarHeight -
-            (MediaQuery.of(context).viewPadding.top > 40 ? 32.0 : 16.0),
-        //MediaQuery.of(context).viewPadding.top is the statusbar height, with a notch phone it results almost 50, without a notch it shows 24.0.For safety we have checked if its greater than thirty
-        child: Container(
-          width: 300,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 22.0),
-            child: Text(
-              _appbarPriceString,
-              style: TextStyle(fontSize: 16, color: MyTheme.font_grey),
-            ),
-          ),
-        ),
-      ),
+      backgroundColor: Colors.transparent,
+      systemOverlayStyle: SystemUiOverlayStyle.dark,
+      /*title: Text(
+        _appbarPriceString,
+        maxLines: 1,
+        style: TextStyle(fontSize: 16, color: MyTheme.accent_color),
+      ),*/
       elevation: 0.0,
       titleSpacing: 0,
       actions: <Widget>[
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
           child: IconButton(
-            icon: Icon(Icons.share_outlined, color: MyTheme.dark_grey),
+            icon: Icon(Icons.share_outlined, color: MyTheme.accent_color),
             onPressed: () {
               Share.share(_pName + "\n" + _link);
               //ToastComponent.showDialog(widget.id.toString());
@@ -1615,26 +1669,26 @@ class _ProductDetailsState extends State<ProductDetails> {
         ],
       );
     } else if (_relatedProducts.length > 0) {
-      return SingleChildScrollView(
-        child: SizedBox(
-          height: 175,
-          child: ListView.builder(
-            itemCount: _relatedProducts.length,
-            scrollDirection: Axis.horizontal,
-            itemExtent: 120,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.only(right: 3.0),
-                child: MiniProductCard(
-                  id: _relatedProducts[index].id,
-                  image: _relatedProducts[index].thumbnail_image,
-                  name: _relatedProducts[index].name,
-                  price: _relatedProducts[index].main_price,
-                ),
-              );
-            },
-          ),
-        ),
+      return GridView.builder(
+        itemCount: _relatedProducts.length > 2
+            ? _relatedProductLength
+            : _relatedProducts.length,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 8,
+            mainAxisSpacing: 8,
+            childAspectRatio: 0.52),
+        padding: EdgeInsets.all(8),
+        physics: NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          return MiniProductCard(
+            id: _relatedProducts[index].id,
+            image: _relatedProducts[index].thumbnail_image,
+            name: _relatedProducts[index].name,
+            price: _relatedProducts[index].main_price,
+          );
+        },
       );
     } else {
       return Container(
@@ -1672,140 +1726,143 @@ class _ProductDetailsState extends State<ProductDetails> {
             }
           }));
 
-  buildProductImageCarouselSlider() {
-    if (_carouselImageList.length == 0) {
-      return Row(
-        children: [
-          Container(
-            width: 40,
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 10.0),
-                  child: ShimmerHelper()
-                      .buildBasicShimmer(height: 40.0, width: 40.0),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 10.0),
-                  child: ShimmerHelper()
-                      .buildBasicShimmer(height: 40.0, width: 40.0),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 10.0),
-                  child: ShimmerHelper()
-                      .buildBasicShimmer(height: 40.0, width: 40.0),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 10.0),
-                  child: ShimmerHelper()
-                      .buildBasicShimmer(height: 40.0, width: 40.0),
-                ),
-              ],
-            ),
-          ),
-          Flexible(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: ShimmerHelper().buildBasicShimmer(
-                height: 190.0,
+  buildAppBarCustom(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 16.0, left: 16, right: 16),
+          child: InkWell(
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: CircleAvatar(
+              radius: 16,
+              backgroundColor: Color.fromARGB(102, 255, 255, 255),
+              child: Icon(
+                Icons.arrow_back,
+                color: MyTheme.accent_color,
+                size: 20,
               ),
             ),
           ),
-        ],
+        ),
+        Spacer(),
+        Padding(
+          padding: const EdgeInsets.only(top: 16.0, left: 16, right: 16),
+          child: InkWell(
+            onTap: () {
+              Share.share(_pName + "\n" + _link);
+            },
+            child: CircleAvatar(
+              radius: 16,
+              backgroundColor: Color.fromARGB(102, 255, 255, 255),
+              child: Icon(
+                Icons.share_outlined,
+                color: MyTheme.accent_color,
+                size: 20,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  buildProductImageCarouselSlider() {
+    if (_carouselImageList.length == 0) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: ShimmerHelper().buildBasicShimmer(
+          height: 190.0,
+        ),
       );
     } else {
       return Container(
-        height: MediaQuery.of(context).size.height * .5,
-        width: double.infinity,
-        child: Stack(
-          fit: StackFit.expand,
+        child: Column(
           children: [
-            CarouselSlider(
-              carouselController: _imageCarouselController,
-              options: CarouselOptions(
-                  aspectRatio: 1,
-                  viewportFraction: 1,
-                  initialPage: 0,
-                  enableInfiniteScroll: false,
-                  reverse: false,
-                  autoPlay: false,
-                  scrollDirection: Axis.horizontal,
-                  onPageChanged: (index, reason) {
-                    setState(() {
-                      _currentImage = index;
-                    });
-                  }),
-              items: _carouselImageList.map((i) {
-                return Builder(
-                  builder: (BuildContext context) {
-                    return Container(
-                        width: double.infinity,
-                        child: FadeInImage.assetNetwork(
-                          placeholder: 'assets/placeholder_rectangle.png',
-                          image: AppConfig.BASE_PATH + i,
-                          fit: BoxFit.scaleDown,
-                          imageErrorBuilder: (BuildContext context,
-                              Object exception, StackTrace stackTrace) {
-                            return Image.asset(
-                              "assets/placeholder.png",
-                              fit: BoxFit.cover,
-                            );
-                          },
-                        ));
-                  },
-                );
-              }).toList(),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: _carouselImageList.map((url) {
-                    int index = _carouselImageList.indexOf(url);
-                    return Flexible(
-                      child: GestureDetector(
+            Expanded(
+              child: CarouselSlider(
+                carouselController: _imageCarouselController,
+                options: CarouselOptions(
+                    aspectRatio: 0.77,
+                    viewportFraction: 1,
+                    initialPage: 0,
+                    enableInfiniteScroll: false,
+                    reverse: false,
+                    autoPlay: false,
+                    scrollDirection: Axis.horizontal,
+                    onPageChanged: (index, reason) {
+                      setState(() {
+                        _currentImage = index;
+                      });
+                    }),
+                items: _carouselImageList.map((i) {
+                  return Builder(
+                    builder: (BuildContext context) {
+                      return InkWell(
                         onTap: () {
-                          //print(index);
-                          return _imageCarouselController.animateToPage(index,
-                              curve: Curves.elasticOut);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (builder) {
+                              return FullScreenImage(
+                                  _carouselImageList, _currentImage);
+                            }),
+                          );
                         },
                         child: Container(
-                          width: 50,
-                          height: 50,
-                          margin: EdgeInsets.symmetric(
-                              vertical: 4.0, horizontal: 2.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                                color: _currentImage == index
-                                    ? MyTheme.accent_color
-                                    : Color.fromRGBO(112, 112, 112, .3),
-                                width: _currentImage == index ? 2 : 1),
-                            //shape: BoxShape.rectangle,
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: FadeInImage.assetNetwork(
-                              placeholder: 'assets/placeholder.png',
-                              image: AppConfig.BASE_PATH + url,
-                              fit: BoxFit.contain,
-                              imageErrorBuilder: (BuildContext context,
-                                  Object exception, StackTrace stackTrace) {
-                                return Image.asset(
-                                  "assets/placeholder.png",
-                                  fit: BoxFit.cover,
-                                );
-                              },
-                            ),
+                          width: double.infinity,
+                          height: double.infinity,
+                          child: FadeInImage.assetNetwork(
+                            placeholder: 'assets/placeholder.png',
+                            image: AppConfig.BASE_PATH + i,
+                            fit: BoxFit.cover,
+                            imageErrorBuilder: (BuildContext context,
+                                Object exception, StackTrace stackTrace) {
+                              return Image.asset(
+                                "assets/placeholder.png",
+                                fit: BoxFit.cover,
+                              );
+                            },
                           ),
                         ),
-                      ),
-                    );
-                  }).toList(),
-                ),
+                      );
+                    },
+                  );
+                }).toList(),
               ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: _carouselImageList.map((url) {
+                int index = _carouselImageList.indexOf(url);
+                return Flexible(
+                  child: GestureDetector(
+                    onTap: () {
+                      return _imageCarouselController.animateToPage(index,
+                          curve: Curves.elasticOut);
+                    },
+                    child: Container(
+                      width: 8,
+                      height: 8,
+                      margin:
+                          EdgeInsets.symmetric(vertical: 4.0, horizontal: 2.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: _currentImage == index
+                            ? MyTheme.accent_color
+                            : Color.fromRGBO(112, 112, 112, .3),
+                        border: Border.all(
+                            color: _currentImage == index
+                                ? MyTheme.accent_color
+                                : Color.fromRGBO(112, 112, 112, .3),
+                            width: _currentImage == index ? 2 : 1),
+                        //shape: BoxShape.rectangle,
+                      ),
+                    ),
+                  ),
+                );
+              }).toList(),
             ),
           ],
         ),

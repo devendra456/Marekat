@@ -128,23 +128,30 @@ class _CategoryListState extends State<CategoryList> {
               height: 10,
             );
           } else if (snapshot.hasData) {
-            //snapshot.hasData
             var categoryResponse = snapshot.data;
-            return SingleChildScrollView(
-              child: ListView.builder(
-                itemCount: categoryResponse.categories.length,
-                scrollDirection: Axis.vertical,
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(
-                        top: 4.0, bottom: 4.0, left: 12.0, right: 12.0),
-                    child: buildCategoryItemCard(categoryResponse, index),
-                  );
-                },
-              ),
-            );
+            if (categoryResponse.categories.length > 0)
+              return SingleChildScrollView(
+                child: ListView.builder(
+                  itemCount: categoryResponse.categories.length,
+                  scrollDirection: Axis.vertical,
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(
+                          top: 4.0, bottom: 4.0, left: 12.0, right: 12.0),
+                      child: buildCategoryItemCard(categoryResponse, index),
+                    );
+                  },
+                ),
+              );
+            else
+              return SizedBox(
+                height: MediaQuery.of(context).size.height - 80,
+                child: Center(
+                  child: Text("Categories not available"),
+                ),
+              );
           } else {
             return SingleChildScrollView(
               child: ListView.builder(
@@ -388,7 +395,9 @@ class _CategoryListState extends State<CategoryList> {
                       borderRadius:
                           const BorderRadius.all(Radius.circular(9.0))),
                   child: Text(
-                    S.of(context).allProductsOf + widget.parent_category_name,
+                    S.of(context).allProductsOf +
+                        " " +
+                        widget.parent_category_name,
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 13,

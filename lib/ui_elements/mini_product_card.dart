@@ -28,7 +28,7 @@ class _MiniProductCardState extends State<MiniProductCard> {
       child: Card(
         shape: RoundedRectangleBorder(
           //side: new BorderSide(color: MyTheme.light_grey, width: 1.0),
-          borderRadius: BorderRadius.circular(16.0),
+          borderRadius: BorderRadius.circular(0.0),
         ),
         elevation: 1.5,
         child: Column(
@@ -40,7 +40,7 @@ class _MiniProductCardState extends State<MiniProductCard> {
                     width: double.infinity,
                     child: ClipRRect(
                         borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(16), bottom: Radius.zero),
+                            top: Radius.circular(0), bottom: Radius.zero),
                         child: FadeInImage.assetNetwork(
                           placeholder: 'assets/placeholder.png',
                           image: AppConfig.BASE_PATH + widget.image,

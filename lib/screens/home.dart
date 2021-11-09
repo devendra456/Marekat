@@ -89,9 +89,9 @@ class _HomeState extends State<Home> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.fromLTRB(
-                              8.0,
+                              0.0,
                               16.0,
-                              8.0,
+                              0.0,
                               0.0,
                             ),
                             child: buildHomeCategory(),
@@ -99,29 +99,15 @@ class _HomeState extends State<Home> {
                           SizedBox(
                             height: 16,
                           ),
-                          /*FadeInImage.assetNetwork(
-                            placeholder: 'assets/placeholder.png',
-                            image:
-                                "https://demo.marekat.com/public/uploads/all/mT97RVRjqnv7w0rBMwH4qSxIApL3YhTUy8Gk8eiA.jpg",
-                            fit: BoxFit.cover,
-                            imageErrorBuilder: (BuildContext context,
-                                Object exception, StackTrace stackTrace) {
-                              return Image.asset(
-                                "assets/placeholder.png",
-                                fit: BoxFit.cover,
-                              );
-                            },
-                          ),*/
                           SizedBox(
-                            height: 176,
-                            width: double.infinity,
+                            height: 250,
                             child: Image.network(
                               "https://demo.marekat.com/public/uploads/all/"
                               "mT97RVRjqnv7w0rBMwH4qSxIApL3YhTUy8Gk8eiA"
                               ".jpg",
                               fit: BoxFit.cover,
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ]),
@@ -169,29 +155,14 @@ class _HomeState extends State<Home> {
                         SizedBox(
                           height: 14,
                         ),
-                        /*FadeInImage.assetNetwork(
-                          //height: 64,
-                          placeholder: 'assets/placeholder.png',
-                          image:
-                              "https://demo.marekat.com/public/uploads/all/V9jNUWSRI3EEGhPOJojadCShDRV6xwpklN84ph6X.jpg",
-                          fit: BoxFit.cover,
-                          imageErrorBuilder: (BuildContext context,
-                              Object exception, StackTrace stackTrace) {
-                            return Image.asset(
-                              "assets/placeholder.png",
-                              fit: BoxFit.cover,
-                              //height: 64,
-                            );
-                          },
-                        ),*/
                         SizedBox(
-                          height: 176,
+                          height: 250,
                           child: Image.network(
                             "https://demo.marekat.com/public/uploads/all/V9"
                             "jNUWSRI3EEGhPOJojadCShDRV6xwpklN84ph6X.jpg",
                             fit: BoxFit.cover,
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -233,23 +204,8 @@ class _HomeState extends State<Home> {
                             SizedBox(
                               height: 8,
                             ),
-                            /*FadeInImage.assetNetwork(
-                              //height: 64,
-                              placeholder: 'assets/placeholder.png',
-                              image:
-                                  "https://demo.marekat.com/public/uploads/all/ziGlq4gl7xvgUUpGxO7ok71DbJx1ZuA4dfJmuWHt.jpg",
-                              fit: BoxFit.cover,
-                              imageErrorBuilder: (BuildContext context,
-                                  Object exception, StackTrace stackTrace) {
-                                return Image.asset(
-                                  "assets/placeholder.png",
-                                  fit: BoxFit.cover,
-                                  //height: 64,
-                                );
-                              },
-                            ),*/
                             SizedBox(
-                              height: 176,
+                              height: 275,
                               child: Image.network(
                                 "https://demo.marekat.com/public/uploads"
                                 "/all/ziGlq4gl7xvgUUpGx"
@@ -397,14 +353,13 @@ class _HomeState extends State<Home> {
               controller: _featuredProductScrollController,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                  childAspectRatio: 0.618),
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 8,
+                  childAspectRatio: 0.52),
               padding: EdgeInsets.all(8),
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemBuilder: (context, index) {
-                // 3
                 return ProductCard(
                   id: featuredProductResponse.products[index].id,
                   image:
@@ -450,6 +405,8 @@ class _HomeState extends State<Home> {
                             return CategoryList(
                               parent_category_name: featuredCategoryResponse
                                   .categories[index].name,
+                              parent_category_id:
+                                  featuredCategoryResponse.categories[index].id,
                             );
                           }));
                         } else {
@@ -752,17 +709,17 @@ class _HomeState extends State<Home> {
               carouselImageList.add(slider.photo);
             });
             return SizedBox(
-              height: 176,
+              height: 250,
               child: Stack(
                 fit: StackFit.expand,
                 children: [
                   CarouselSlider(
                     options: CarouselOptions(
-                        height: 176,
                         viewportFraction: 1,
                         initialPage: 0,
                         enableInfiniteScroll: true,
                         reverse: false,
+                        aspectRatio: 1,
                         autoPlay: true,
                         autoPlayInterval: Duration(seconds: 5),
                         autoPlayAnimationDuration: Duration(milliseconds: 1000),
@@ -967,87 +924,90 @@ class _HomeState extends State<Home> {
             return Container();
           } else if (snapshot.hasData) {
             var categoryResponse = snapshot.data as CategoryResponse;
-            return GridView.builder(
-              shrinkWrap: true,
-              padding: EdgeInsets.all(0),
-              physics: NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
-                  mainAxisSpacing: 16,
-                  crossAxisSpacing: 8,
-                  childAspectRatio: 1),
-              itemBuilder: (BuildContext context, int index) {
-                return InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (builder) {
-                        return HomeCategoryProducts(
-                            categoryResponse.categories[index]);
-                      }),
-                    );
-                  },
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: ClipOval(
-                          child: FadeInImage.assetNetwork(
-                            //height: 64,
-                            placeholder: 'assets/placeholder.png',
-                            image: AppConfig.BASE_PATH +
-                                categoryResponse.categories[index].banner,
-                            fit: BoxFit.cover,
-                            imageErrorBuilder: (BuildContext context,
-                                Object exception, StackTrace stackTrace) {
-                              return Image.asset(
-                                "assets/placeholder.png",
+            return SizedBox(
+              height: 80,
+              width: double.infinity,
+              child: ListView.builder(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                padding: EdgeInsets.symmetric(horizontal: 8),
+                physics: BouncingScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (builder) {
+                          return HomeCategoryProducts(
+                              categoryResponse.categories[index]);
+                        }),
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: ClipOval(
+                              child: FadeInImage.assetNetwork(
+                                placeholder: 'assets/placeholder.png',
+                                image: AppConfig.BASE_PATH +
+                                    categoryResponse.categories[index].banner,
                                 fit: BoxFit.cover,
-                                //height: 64,
-                              );
-                            },
+                                imageErrorBuilder: (BuildContext context,
+                                    Object exception, StackTrace stackTrace) {
+                                  return Image.asset(
+                                    "assets/placeholder.png",
+                                    fit: BoxFit.cover,
+                                  );
+                                },
+                              ),
+                            ),
                           ),
-                        ),
+                          SizedBox(
+                            height: 6,
+                          ),
+                          SizedBox(
+                            width: 58,
+                            child: Text(
+                              categoryResponse.categories[index].name,
+                              style: TextStyle(fontSize: 12),
+                              maxLines: 1,
+                              textAlign: TextAlign.center,
+                            ),
+                          )
+                        ],
                       ),
-                      SizedBox(
-                        height: 6,
-                      ),
-                      SizedBox(
-                        width: 58,
-                        child: Text(
-                          categoryResponse.categories[index].name,
-                          style: TextStyle(fontSize: 12),
-                          maxLines: 1,
-                          textAlign: TextAlign.center,
-                        ),
-                      )
-                    ],
-                  ),
-                );
-              },
-              itemCount: categoryResponse.categories.length,
+                    ),
+                  );
+                },
+                itemCount: categoryResponse.categories.length,
+              ),
             );
           } else {
-            return GridView.builder(
-              shrinkWrap: true,
-              padding: EdgeInsets.all(0),
-              physics: NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
-                  mainAxisSpacing: 16,
-                  crossAxisSpacing: 8,
-                  childAspectRatio: 1),
-              itemBuilder: (BuildContext context, int index) {
-                return Shimmer.fromColors(
-                  baseColor: MyTheme.shimmer_base,
-                  highlightColor: MyTheme.shimmer_highlighted,
-                  child: Container(
-                    height: 60,
-                    width: 60,
-                    color: Colors.white,
-                  ),
-                );
-              },
-              itemCount: 8,
+            return SizedBox(
+              height: 80,
+              child: ListView.builder(
+                shrinkWrap: true,
+                padding: EdgeInsets.symmetric(horizontal: 8),
+                physics: NeverScrollableScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (BuildContext context, int index) {
+                  return Shimmer.fromColors(
+                    baseColor: MyTheme.shimmer_base,
+                    highlightColor: MyTheme.shimmer_highlighted,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Container(
+                        height: 60,
+                        width: 60,
+                        color: Colors.white,
+                      ),
+                    ),
+                  );
+                },
+                itemCount: 8,
+              ),
             );
           }
         });

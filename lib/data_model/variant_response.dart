@@ -21,7 +21,7 @@ class VariantResponse {
 
   int product_id;
   String variant;
-  double price;
+  dynamic price;
   String price_string;
   int stock;
 

@@ -67,6 +67,8 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
   List<Category> _categoryList = [];
   var _selectedIndex = 0;
 
+  String selectedCategoryRoute = "";
+
   //----------------------------------------
 
   fetchFilteredBrands() async {
@@ -290,58 +292,70 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
   subCategoriesList(BuildContext context) {
     return SizedBox(
       height: 40,
-      child: ListView.builder(
-        padding: EdgeInsets.symmetric(vertical: 4),
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.only(left: 4.0, right: 4),
-            child: InkWell(
-              onTap: () {
-                setState(() {
-                  _selectedIndex = index;
-                });
-                _selectedCategories.clear();
-                _selectedCategories.add(index == 0
-                    ? widget.category.id
-                    : _categoryList[index - 1].id);
-                resetProductList();
-                fetchProductData();
-                if (index != 0) {
-                  Navigator.push(context, MaterialPageRoute(builder: (builder) {
-                    return HomeCategoryProducts(_categoryList[index - 1]);
-                  }));
-                } else if (index == 0) {
-                  resetProductList();
-                  fetchProductData();
-                }
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Expanded(
+            child: ListView.builder(
+              padding: EdgeInsets.symmetric(vertical: 4),
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.only(left: 4.0, right: 4),
+                  child: InkWell(
+                    onTap: () {
+                      setState(() {
+                        _selectedIndex = index;
+                      });
+                      _selectedCategories.clear();
+                      _selectedCategories.add(index == 0
+                          ? widget.category.id
+                          : _categoryList[index - 1].id);
+                      resetProductList();
+                      fetchProductData();
+                      print(_categoryList[index - 1].number_of_children);
+                      if (index != 0) {
+                        if (_categoryList[index - 1].number_of_children > 0) {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (builder) {
+                            return HomeCategoryProducts(
+                                _categoryList[index - 1]);
+                          }));
+                        }
+                      } else if (index == 0) {
+                        resetProductList();
+                        fetchProductData();
+                      }
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 8),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          color: index == _selectedIndex
+                              ? Color.fromARGB(255, 0, 0, 0)
+                              : Colors.white,
+                          border: Border.all(
+                              color: index == _selectedIndex
+                                  ? Color.fromARGB(255, 0, 0, 0)
+                                  : Color.fromARGB(255, 182, 182, 182),
+                              width: index == _selectedIndex ? 1 : 0.5),
+                          borderRadius: BorderRadius.circular(6)),
+                      child: Text(
+                        index == 0 ? "ALL" : _categoryList[index - 1].name,
+                        style: TextStyle(
+                            color: _selectedIndex == index
+                                ? MyTheme.white
+                                : MyTheme.black,
+                            fontSize: 14),
+                      ),
+                    ),
+                  ),
+                );
               },
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    color: index == _selectedIndex
-                        ? Color.fromARGB(255, 0, 0, 0)
-                        : Colors.white,
-                    border: Border.all(
-                        color: index == _selectedIndex
-                            ? Color.fromARGB(255, 0, 0, 0)
-                            : Color.fromARGB(255, 182, 182, 182),
-                        width: index == _selectedIndex ? 1 : 0.5),
-                    borderRadius: BorderRadius.circular(6)),
-                child: Text(
-                  index == 0 ? "ALL" : _categoryList[index - 1].name,
-                  style: TextStyle(
-                      color: _selectedIndex == index
-                          ? MyTheme.white
-                          : MyTheme.black,
-                      fontSize: 14),
-                ),
-              ),
+              itemCount: _categoryList.length + 1,
+              scrollDirection: Axis.horizontal,
             ),
-          );
-        },
-        itemCount: _categoryList.length + 1,
-        scrollDirection: Axis.horizontal,
+          ),
+        ],
       ),
     );
   }
@@ -558,7 +572,9 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
           children: <Widget>[
             IconButton(
               icon: Icon(Icons.arrow_back, color: MyTheme.accent_color),
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
             ),
             Expanded(
               child: TextField(
@@ -875,9 +891,9 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
                 controller: _scrollController,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    childAspectRatio: 0.618),
+                    crossAxisSpacing: 8,
+                    mainAxisSpacing: 8,
+                    childAspectRatio: 0.52),
                 padding: EdgeInsets.all(16),
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,

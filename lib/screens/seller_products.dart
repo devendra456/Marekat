@@ -175,9 +175,9 @@ class _SellerProductsState extends State<SellerProducts> {
             controller: _scrollController,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                childAspectRatio: 0.618),
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 8,
+                childAspectRatio: 0.52),
             padding: EdgeInsets.all(16),
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,

@@ -33,7 +33,7 @@ class _ProductCardState extends State<ProductCard> {
         shape: RoundedRectangleBorder(
           side: new BorderSide(
               color: Color.fromARGB(255, 232, 232, 232), width: 0.7),
-          borderRadius: BorderRadius.circular(8.0),
+          borderRadius: BorderRadius.circular(0.0),
         ),
         elevation: 0,
         child: Column(
@@ -46,7 +46,7 @@ class _ProductCardState extends State<ProductCard> {
                   child: ClipRRect(
                       clipBehavior: Clip.hardEdge,
                       borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(8), bottom: Radius.zero),
+                          top: Radius.circular(0), bottom: Radius.zero),
                       child: FadeInImage.assetNetwork(
                         placeholder: 'assets/placeholder.png',
                         image: AppConfig.BASE_PATH + widget.image,
@@ -70,7 +70,7 @@ class _ProductCardState extends State<ProductCard> {
                       widget.name,
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
+                      maxLines: 1,
                       style: TextStyle(
                           color: MyTheme.font_grey,
                           fontSize: 14,
