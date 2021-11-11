@@ -37,9 +37,7 @@ class _StripeScreenState extends State<StripeScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-
     if (widget.payment_type == "cart_payment") {
       createOrder();
     }

@@ -8,6 +8,7 @@ import 'package:marekat/app_config.dart';
 import 'package:marekat/custom/toast_component.dart';
 import 'package:marekat/data_model/brand_response.dart';
 import 'package:marekat/data_model/category_response.dart';
+import 'package:marekat/data_model/product_mini_response.dart';
 import 'package:marekat/generated/l10n.dart';
 import 'package:marekat/helpers/shimmer_helper.dart';
 import 'package:marekat/my_theme.dart';
@@ -25,6 +26,7 @@ import 'package:marekat/ui_sections/main_drawer.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'brand_products.dart';
+import 'category_products.dart';
 import 'filter.dart';
 import 'flash_deal_list.dart';
 
@@ -42,6 +44,7 @@ class _HomeState extends State<Home> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   int _current_slider = 0;
   ScrollController _featuredProductScrollController;
+  List<Category> categoryList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -101,138 +104,817 @@ class _HomeState extends State<Home> {
                           ),
                           SizedBox(
                             height: 250,
-                            child: Image.network(
-                              "https://demo.marekat.com/public/uploads/all/"
-                              "mT97RVRjqnv7w0rBMwH4qSxIApL3YhTUy8Gk8eiA"
-                              ".jpg",
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ]),
-                  ),
-                  SliverList(
-                    delegate: SliverChildListDelegate([
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(
-                          16.0,
-                          16.0,
-                          16.0,
-                          0.0,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              S.of(context).feature_categories,
-                              style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.w600,
-                                color: MyTheme.accent_color,
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (builder) {
+                                  return HomeCategoryProducts(categoryList[3]);
+                                }));
+                              },
+                              child: AspectRatio(
+                                aspectRatio: 1.5,
+                                child: Image.network(
+                                  "https://demo.marekat.com/public/uploads/all/mT97RVRjqnv7w0rBMwH4qSxIApL3YhTUy8Gk8eiA.jpg",
+                                  fit: BoxFit.cover,
+                                  loadingBuilder:
+                                      (context, child, loadingProgress) {
+                                    if (loadingProgress == null) return child;
+                                    return Center(
+                                      child: CircularProgressIndicator(
+                                        color: MyTheme.accent_color,
+                                        value: loadingProgress
+                                                    .expectedTotalBytes !=
+                                                null
+                                            ? loadingProgress
+                                                    .cumulativeBytesLoaded /
+                                                loadingProgress
+                                                    .expectedTotalBytes
+                                            : null,
+                                      ),
+                                    );
+                                  },
+                                  errorBuilder: (BuildContext context,
+                                      Object exception, StackTrace stackTrace) {
+                                    return Image.asset(
+                                      "assets/placeholder.png",
+                                      fit: BoxFit.cover,
+                                    );
+                                  },
+                                ),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                          SizedBox(
+                            height: 2,
+                          ),
+                          Text(
+                            "Men's Collections",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w600),
+                          ),
+                          Text(
+                            "Discover a wide range of high-quality\nMen "
+                            "Collection",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w500),
+                          ),
+                          SizedBox(
+                            height: 2,
+                          ),
+                          buildCategoryProduct(51),
+                          devider(),
+                        ],
                       ),
                     ]),
                   ),
                   SliverToBoxAdapter(
                     child: Column(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(
-                            0.0,
-                            4.0,
-                            0.0,
-                            0.0,
-                          ),
-                          child: SizedBox(
-                            height: 164,
-                            child: buildHomeFeaturedCategories(context),
-                          ),
-                        ),
                         SizedBox(
-                          height: 14,
-                        ),
-                        SizedBox(
-                          height: 250,
-                          child: Image.network(
-                            "https://demo.marekat.com/public/uploads/all/V9"
-                            "jNUWSRI3EEGhPOJojadCShDRV6xwpklN84ph6X.jpg",
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SliverList(
-                    delegate: SliverChildListDelegate([
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(
-                          16.0,
-                          16.0,
-                          16.0,
-                          0.0,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              S.of(context).products,
-                              style: TextStyle(
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w600,
-                                  color: MyTheme.accent_color),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                4.0,
-                                0.0,
-                                4.0,
-                                0.0,
-                              ),
-                              child: buildHomeFeaturedProducts(context),
-                            ),
-                            SizedBox(
-                              height: 8,
-                            ),
-                            SizedBox(
-                              height: 275,
+                          height: 275,
+                          child: AspectRatio(
+                            aspectRatio: 1.5,
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (builder) {
+                                  return HomeCategoryProducts(categoryList[1]);
+                                }));
+                              },
                               child: Image.network(
                                 "https://demo.marekat.com/public/uploads"
                                 "/all/ziGlq4gl7xvgUUpGx"
                                 "O7ok71DbJx1ZuA4dfJmuWHt.jpg",
                                 fit: BoxFit.cover,
+                                loadingBuilder:
+                                    (context, child, loadingProgress) {
+                                  if (loadingProgress == null) return child;
+                                  return Center(
+                                    child: CircularProgressIndicator(
+                                      color: MyTheme.accent_color,
+                                      value: loadingProgress
+                                                  .expectedTotalBytes !=
+                                              null
+                                          ? loadingProgress
+                                                  .cumulativeBytesLoaded /
+                                              loadingProgress.expectedTotalBytes
+                                          : null,
+                                    ),
+                                  );
+                                },
+                                errorBuilder: (BuildContext context,
+                                    Object exception, StackTrace stackTrace) {
+                                  return Image.asset(
+                                    "assets/placeholder.png",
+                                    fit: BoxFit.cover,
+                                  );
+                                },
                               ),
                             ),
-                            SizedBox(
-                              height: 16,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 2,
+                        ),
+                        Text(
+                          "Fashion USA",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w600),
+                        ),
+                        Text(
+                          "Latest Additions to our Women's\nstyle USA",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w500),
+                        ),
+                        SizedBox(
+                          height: 2,
+                        ),
+                        buildCategoryProduct(91),
+                        devider(),
+                        SizedBox(
+                          height: 250,
+                          child: AspectRatio(
+                            aspectRatio: 1.5,
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (builder) {
+                                  return HomeCategoryProducts(categoryList[0]);
+                                }));
+                              },
+                              child: Image.network(
+                                "https://demo.marekat.com/public/uploads/all/V9"
+                                "jNUWSRI3EEGhPOJojadCShDRV6xwpklN84ph6X.jpg",
+                                fit: BoxFit.cover,
+                                loadingBuilder:
+                                    (context, child, loadingProgress) {
+                                  if (loadingProgress == null) return child;
+                                  return Center(
+                                    child: CircularProgressIndicator(
+                                      color: MyTheme.accent_color,
+                                      value: loadingProgress
+                                                  .expectedTotalBytes !=
+                                              null
+                                          ? loadingProgress
+                                                  .cumulativeBytesLoaded /
+                                              loadingProgress.expectedTotalBytes
+                                          : null,
+                                    ),
+                                  );
+                                },
+                                errorBuilder: (BuildContext context,
+                                    Object exception, StackTrace stackTrace) {
+                                  return Image.asset(
+                                    "assets/placeholder.png",
+                                    fit: BoxFit.cover,
+                                  );
+                                },
+                              ),
                             ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16.0),
-                              child: Text(
-                                S.of(context).topTenBrands,
-                                style: TextStyle(
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w600,
-                                  color: MyTheme.accent_color,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 2,
+                        ),
+                        Text(
+                          "Europe Fashion",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w600),
+                        ),
+                        Text(
+                          "Shop the latest and trend Women's\nEurope Fashion",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w500),
+                        ),
+                        SizedBox(
+                          height: 2,
+                        ),
+                        buildCategoryProduct(126),
+                        devider(),
+                      ],
+                    ),
+                  ),
+                  SliverList(
+                    delegate: SliverChildListDelegate([
+                      SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: 275,
+                              child: AspectRatio(
+                                aspectRatio: 1.5,
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (builder) {
+                                      return HomeCategoryProducts(
+                                          categoryList[2]);
+                                    }));
+                                  },
+                                  child: Image.network(
+                                    "https://marekat.com/wp-content/uploads/2021/07/kids-fashion-home-page.jpg",
+                                    fit: BoxFit.cover,
+                                    loadingBuilder:
+                                        (context, child, loadingProgress) {
+                                      if (loadingProgress == null) return child;
+                                      return Center(
+                                        child: CircularProgressIndicator(
+                                          color: MyTheme.accent_color,
+                                          value: loadingProgress
+                                                      .expectedTotalBytes !=
+                                                  null
+                                              ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  loadingProgress
+                                                      .expectedTotalBytes
+                                              : null,
+                                        ),
+                                      );
+                                    },
+                                    errorBuilder: (BuildContext context,
+                                        Object exception,
+                                        StackTrace stackTrace) {
+                                      return Image.asset(
+                                        "assets/placeholder.png",
+                                        fit: BoxFit.cover,
+                                      );
+                                    },
+                                  ),
                                 ),
                               ),
                             ),
                             SizedBox(
-                              height: 4,
+                              height: 2,
+                            ),
+                            Text(
+                              "Kid's Collections",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w600),
+                            ),
+                            Text(
+                              "Match the daily journey with our kids"
+                              "\nessential",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w500),
+                            ),
+                            SizedBox(
+                              height: 2,
+                            ),
+                            buildCategoryProduct(83),
+                            devider(),
+                            SizedBox(
+                              height: 275,
+                              child: AspectRatio(
+                                aspectRatio: 1.5,
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (builder) {
+                                      return CategoryProducts(
+                                        category_id: 25,
+                                        category_name: "Swimwear & Sportswear",
+                                      );
+                                    }));
+                                  },
+                                  child: Image.network(
+                                    "https://marekat.com/wp-content/uploads/2021/07/sportwear-banner-HP.jpg",
+                                    fit: BoxFit.cover,
+                                    loadingBuilder:
+                                        (context, child, loadingProgress) {
+                                      if (loadingProgress == null) return child;
+                                      return Center(
+                                        child: CircularProgressIndicator(
+                                          color: MyTheme.accent_color,
+                                          value: loadingProgress
+                                                      .expectedTotalBytes !=
+                                                  null
+                                              ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  loadingProgress
+                                                      .expectedTotalBytes
+                                              : null,
+                                        ),
+                                      );
+                                    },
+                                    errorBuilder: (BuildContext context,
+                                        Object exception,
+                                        StackTrace stackTrace) {
+                                      return Image.asset(
+                                        "assets/placeholder.png",
+                                        fit: BoxFit.cover,
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 2,
+                            ),
+                            Text(
+                              "Women's Sportswear",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w600),
+                            ),
+                            Text(
+                              "Push yourself further with our trendy sportswear",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w500),
+                            ),
+                            SizedBox(
+                              height: 2,
+                            ),
+                            buildCategoryProduct(25),
+                            devider(),
+                            SizedBox(
+                              height: 275,
+                              child: AspectRatio(
+                                aspectRatio: 1.5,
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (builder) {
+                                      return CategoryProducts(
+                                        category_id: 26,
+                                        category_name: "BAGS",
+                                      );
+                                    }));
+                                  },
+                                  child: Image.network(
+                                    "https://marekat.com/wp-content/uploads/2021/07/women-bag-home-page-v02.jpg",
+                                    fit: BoxFit.cover,
+                                    loadingBuilder:
+                                        (context, child, loadingProgress) {
+                                      if (loadingProgress == null) return child;
+                                      return Center(
+                                        child: CircularProgressIndicator(
+                                          color: MyTheme.accent_color,
+                                          value: loadingProgress
+                                                      .expectedTotalBytes !=
+                                                  null
+                                              ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  loadingProgress
+                                                      .expectedTotalBytes
+                                              : null,
+                                        ),
+                                      );
+                                    },
+                                    errorBuilder: (BuildContext context,
+                                        Object exception,
+                                        StackTrace stackTrace) {
+                                      return Image.asset(
+                                        "assets/placeholder.png",
+                                        fit: BoxFit.cover,
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 2,
+                            ),
+                            Text(
+                              "Women's Bags",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w600),
+                            ),
+                            Text(
+                              "Discover our bags for women vibrant designs",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w500),
+                            ),
+                            SizedBox(
+                              height: 2,
+                            ),
+                            buildCategoryProduct(26),
+                            devider(),
+                            SizedBox(
+                              height: 275,
+                              child: AspectRatio(
+                                aspectRatio: 1.5,
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (builder) {
+                                      return CategoryProducts(
+                                        category_id: 24,
+                                        category_name: "SHOES",
+                                      );
+                                    }));
+                                  },
+                                  child: Image.network(
+                                    "https://marekat.com/wp-content/uploads/2021/07/faxkxkpk-MADEII@29.jpg",
+                                    fit: BoxFit.cover,
+                                    loadingBuilder:
+                                        (context, child, loadingProgress) {
+                                      if (loadingProgress == null) return child;
+                                      return Center(
+                                        child: CircularProgressIndicator(
+                                          color: MyTheme.accent_color,
+                                          value: loadingProgress
+                                                      .expectedTotalBytes !=
+                                                  null
+                                              ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  loadingProgress
+                                                      .expectedTotalBytes
+                                              : null,
+                                        ),
+                                      );
+                                    },
+                                    errorBuilder: (BuildContext context,
+                                        Object exception,
+                                        StackTrace stackTrace) {
+                                      return Image.asset(
+                                        "assets/placeholder.png",
+                                        fit: BoxFit.cover,
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 2,
+                            ),
+                            Text(
+                              "Women's Shoes",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w600),
+                            ),
+                            Text(
+                              "Shoes from the best brands, Must have\nshoes "
+                              "for every season",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w500),
+                            ),
+                            SizedBox(
+                              height: 2,
+                            ),
+                            buildCategoryProduct(24),
+                            devider(),
+                            SizedBox(
+                              height: 275,
+                              child: AspectRatio(
+                                aspectRatio: 1.5,
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (builder) {
+                                      return HomeCategoryProducts(
+                                          categoryList[4]);
+                                    }));
+                                  },
+                                  child: Image.network(
+                                    "https://marekat.com/wp-content/uploads/2021/06/perfume-banner-Home-page.jpg",
+                                    fit: BoxFit.cover,
+                                    loadingBuilder:
+                                        (context, child, loadingProgress) {
+                                      if (loadingProgress == null) return child;
+                                      return Center(
+                                        child: CircularProgressIndicator(
+                                          color: MyTheme.accent_color,
+                                          value: loadingProgress
+                                                      .expectedTotalBytes !=
+                                                  null
+                                              ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  loadingProgress
+                                                      .expectedTotalBytes
+                                              : null,
+                                        ),
+                                      );
+                                    },
+                                    errorBuilder: (BuildContext context,
+                                        Object exception,
+                                        StackTrace stackTrace) {
+                                      return Image.asset(
+                                        "assets/placeholder.png",
+                                        fit: BoxFit.cover,
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 2,
+                            ),
+                            Text(
+                              "Perfumes",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w600),
+                            ),
+                            Text(
+                              "Add the finishing touch to your look with\nour "
+                              "range of perfume",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w500),
+                            ),
+                            SizedBox(
+                              height: 2,
+                            ),
+                            buildCategoryProduct(118),
+                            devider(),
+                            SizedBox(
+                              height: 275,
+                              child: AspectRatio(
+                                aspectRatio: 1.5,
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (builder) {
+                                      return CategoryProducts(
+                                        category_id: 49,
+                                        category_name: "Sunglasses",
+                                      );
+                                    }));
+                                  },
+                                  child: Image.network(
+                                    "https://marekat.com/wp-content/uploads/2021/06/sunglasses-women-em-600x600-1.jpg",
+                                    fit: BoxFit.cover,
+                                    loadingBuilder:
+                                        (context, child, loadingProgress) {
+                                      if (loadingProgress == null) return child;
+                                      return Center(
+                                        child: CircularProgressIndicator(
+                                          color: MyTheme.accent_color,
+                                          value: loadingProgress
+                                                      .expectedTotalBytes !=
+                                                  null
+                                              ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  loadingProgress
+                                                      .expectedTotalBytes
+                                              : null,
+                                        ),
+                                      );
+                                    },
+                                    errorBuilder: (BuildContext context,
+                                        Object exception,
+                                        StackTrace stackTrace) {
+                                      return Image.asset(
+                                        "assets/placeholder.png",
+                                        fit: BoxFit.cover,
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 2,
+                            ),
+                            Text(
+                              "Women's Sunglasses",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w600),
+                            ),
+                            Text(
+                              "Best Women's sunglasses collections",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w500),
+                            ),
+                            SizedBox(
+                              height: 2,
+                            ),
+                            buildCategoryProduct(49),
+                            devider(),
+                            SizedBox(
+                              height: 275,
+                              child: AspectRatio(
+                                aspectRatio: 1.5,
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (builder) {
+                                      return CategoryProducts(
+                                        category_id: 77,
+                                        category_name: "Sunglasses",
+                                      );
+                                    }));
+                                  },
+                                  child: Image.network(
+                                    "https://marekat.com/wp-content/uploads/2021/06/man-with-sunglasses-1.jpg",
+                                    fit: BoxFit.cover,
+                                    loadingBuilder:
+                                        (context, child, loadingProgress) {
+                                      if (loadingProgress == null) return child;
+                                      return Center(
+                                        child: CircularProgressIndicator(
+                                          color: MyTheme.accent_color,
+                                          value: loadingProgress
+                                                      .expectedTotalBytes !=
+                                                  null
+                                              ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  loadingProgress
+                                                      .expectedTotalBytes
+                                              : null,
+                                        ),
+                                      );
+                                    },
+                                    errorBuilder: (BuildContext context,
+                                        Object exception,
+                                        StackTrace stackTrace) {
+                                      return Image.asset(
+                                        "assets/placeholder.png",
+                                        fit: BoxFit.cover,
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 2,
+                            ),
+                            Text(
+                              "Men's Sunglasses",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w600),
+                            ),
+                            Text(
+                              "Best Men's sunglasses collections",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w500),
+                            ),
+                            SizedBox(
+                              height: 2,
+                            ),
+                            buildCategoryProduct(77),
+                            devider(),
+                            SizedBox(
+                              height: 275,
+                              child: AspectRatio(
+                                aspectRatio: 1.5,
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (builder) {
+                                      return CategoryProducts(
+                                        category_name: "Watches",
+                                        category_id: 50,
+                                      );
+                                    }));
+                                  },
+                                  child: Image.network(
+                                    "https://marekat.com/wp-content/uploads/2021/06/PORTRA2-scaled-1.jpg",
+                                    fit: BoxFit.cover,
+                                    loadingBuilder:
+                                        (context, child, loadingProgress) {
+                                      if (loadingProgress == null) return child;
+                                      return Center(
+                                        child: CircularProgressIndicator(
+                                          color: MyTheme.accent_color,
+                                          value: loadingProgress
+                                                      .expectedTotalBytes !=
+                                                  null
+                                              ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  loadingProgress
+                                                      .expectedTotalBytes
+                                              : null,
+                                        ),
+                                      );
+                                    },
+                                    errorBuilder: (BuildContext context,
+                                        Object exception,
+                                        StackTrace stackTrace) {
+                                      return Image.asset(
+                                        "assets/placeholder.png",
+                                        fit: BoxFit.cover,
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 2,
+                            ),
+                            Text(
+                              "Women's Watches",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w600),
+                            ),
+                            Text(
+                              "Best Women's Watches collectionss",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w500),
+                            ),
+                            SizedBox(
+                              height: 2,
+                            ),
+                            buildCategoryProduct(50),
+                            devider(),
+                            SizedBox(
+                              height: 275,
+                              child: AspectRatio(
+                                aspectRatio: 1.5,
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (builder) {
+                                      return CategoryProducts(
+                                        category_id: 78,
+                                        category_name: "Watches",
+                                      );
+                                    }));
+                                  },
+                                  child: Image.network(
+                                    "https://marekat.com/wp-content/uploads/2021/06/men-watches-scaled-1.jpg",
+                                    fit: BoxFit.cover,
+                                    loadingBuilder:
+                                        (context, child, loadingProgress) {
+                                      if (loadingProgress == null) return child;
+                                      return Center(
+                                        child: CircularProgressIndicator(
+                                          color: MyTheme.accent_color,
+                                          value: loadingProgress
+                                                      .expectedTotalBytes !=
+                                                  null
+                                              ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  loadingProgress
+                                                      .expectedTotalBytes
+                                              : null,
+                                        ),
+                                      );
+                                    },
+                                    errorBuilder: (BuildContext context,
+                                        Object exception,
+                                        StackTrace stackTrace) {
+                                      return Image.asset(
+                                        "assets/placeholder.png",
+                                        fit: BoxFit.cover,
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 2,
+                            ),
+                            Text(
+                              "Men's Watches",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w600),
+                            ),
+                            Text(
+                              "Best Men's Watches collections",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w500),
+                            ),
+                            SizedBox(
+                              height: 2,
+                            ),
+                            buildCategoryProduct(78),
+                            devider(),
+                            Text(
+                              "Top Brands",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w600),
+                            ),
+                            Text(
+                              "Explore the hottest trend with your\nfavourite "
+                              "brand",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w500),
                             ),
                             Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 14),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 14, vertical: 2),
                               child: buildBrandCard(),
                             )
                           ],
@@ -283,16 +965,15 @@ class _HomeState extends State<Home> {
                     );
                   },
                   child: Card(
-                    elevation: 2,
+                    elevation: 0,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      side: BorderSide(
-                        width: 0.3,
-                        color: Color.fromARGB(255, 221, 221, 221),
-                      ),
+                      borderRadius: BorderRadius.circular(0),
+                      side: BorderSide(width: 2, color: MyTheme.black
+                          //color: Color.fromARGB(255, 221, 221, 221),
+                          ),
                     ),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(0),
                       child: FadeInImage.assetNetwork(
                         placeholder: 'assets/placeholder.png',
                         image: AppConfig.BASE_PATH +
@@ -701,7 +1382,17 @@ class _HomeState extends State<Home> {
         future: SlidersRepository().getSliders(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return Container();
+            return Container(
+              height: 250,
+              child: Center(
+                child: Text(
+                  "Please pull down to Refresh\nor "
+                  "check your internet or wi-fi",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: MyTheme.grey_153),
+                ),
+              ),
+            );
           } else if (snapshot.hasData) {
             var sliderResponse = snapshot.data;
             var carouselImageList = [];
@@ -921,9 +1612,20 @@ class _HomeState extends State<Home> {
         future: CategoryRepository().getCategories(parent_id: 0),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return Container();
+            return Container(
+              height: 80,
+              child: Center(
+                child: Text(
+                  "Please pull down to Refresh\nor "
+                  "check your internet or wi-fi",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: MyTheme.grey_153),
+                ),
+              ),
+            );
           } else if (snapshot.hasData) {
             var categoryResponse = snapshot.data as CategoryResponse;
+            categoryList = categoryResponse.categories;
             return SizedBox(
               height: 80,
               width: double.infinity,
@@ -1011,5 +1713,87 @@ class _HomeState extends State<Home> {
             );
           }
         });
+  }
+
+  buildCategoryProduct(int id) {
+    return FutureBuilder(
+        future: ProductRepository().getCategoryProducts(id: id),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Container(
+              height: MediaQuery.of(context).size.height * .4,
+              child: Center(
+                child: Text(
+                  "Please pull down to Refresh\nor "
+                  "check your internet or wi-fi",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: MyTheme.grey_153),
+                ),
+              ),
+            );
+          } else if (snapshot.hasData) {
+            var productResponse = snapshot.data as ProductMiniResponse;
+            if (productResponse.products.length == 0) return SizedBox();
+            return SizedBox(
+              height: MediaQuery.of(context).size.height * .4,
+              width: double.infinity,
+              child: ListView.builder(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemExtent: MediaQuery.of(context).size.width * .51,
+                physics: BouncingScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: ProductCard(
+                      image: productResponse.products[index].thumbnail_image,
+                      id: productResponse.products[index].id,
+                      name: productResponse.products[index].name,
+                      price: productResponse.products[index].stroked_price,
+                    ),
+                  );
+                },
+                itemCount: productResponse.products.length,
+              ),
+            );
+          } else {
+            return SizedBox(
+              height: MediaQuery.of(context).size.height * .4,
+              child: ListView.builder(
+                shrinkWrap: true,
+                padding: EdgeInsets.symmetric(horizontal: 8),
+                physics: NeverScrollableScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                itemExtent: MediaQuery.of(context).size.width * .4,
+                itemBuilder: (BuildContext context, int index) {
+                  return Shimmer.fromColors(
+                    baseColor: MyTheme.shimmer_base,
+                    highlightColor: MyTheme.shimmer_highlighted,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Container(
+                        height: 60,
+                        width: 60,
+                        color: Colors.white,
+                      ),
+                    ),
+                  );
+                },
+                itemCount: 8,
+              ),
+            );
+          }
+        });
+  }
+
+  devider() {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 12),
+      child: Container(
+        color: MyTheme.light_grey,
+        height: 2,
+        width: double.infinity,
+      ),
+    );
   }
 }

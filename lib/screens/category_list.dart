@@ -32,6 +32,13 @@ class _CategoryListState extends State<CategoryList> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
+  void initState() {
+    print(widget.parent_category_id.toString() +
+        widget.parent_category_name.toString());
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         key: _scaffoldKey,

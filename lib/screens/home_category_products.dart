@@ -89,6 +89,7 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
   @override
   void initState() {
     init();
+    print(widget.category.id);
     super.initState();
   }
 

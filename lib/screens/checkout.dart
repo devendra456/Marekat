@@ -10,9 +10,7 @@ import 'package:marekat/repositories/cart_repository.dart';
 import 'package:marekat/repositories/coupon_repository.dart';
 import 'package:marekat/repositories/payment_repository.dart';
 import 'package:marekat/screens/order_list.dart';
-import 'package:marekat/screens/paypal_screen.dart';
-import 'package:marekat/screens/razorpay_screen.dart';
-import 'package:marekat/screens/stripe_screen.dart';
+import 'package:marekat/screens/paytab_screen.dart';
 
 class Checkout extends StatefulWidget {
   int owner_id;
@@ -171,7 +169,25 @@ class _CheckoutState extends State<Checkout> {
       return;
     }
 
-    if (_selected_payment_method == "stripe_payment") {
+    if (_selected_payment_method == "paytab") {
+      if (_grandTotalValue == 0.00) {
+        ToastComponent.showDialog(
+          S.of(context).nothingToPay,
+        );
+        return;
+      }
+
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return PayTabScreen(
+          ownerId: widget.owner_id,
+          amount: _grandTotalValue,
+          paymentType: "cart_payment",
+          paymentMethodKey: _selected_payment_method_key,
+        );
+      })).then((value) {
+        onPopped(value);
+      });
+    } /*else if (_selected_payment_method == "stripe_payment") {
       if (_grandTotalValue == 0.00) {
         ToastComponent.showDialog(
           S.of(context).nothingToPay,
@@ -205,7 +221,6 @@ class _CheckoutState extends State<Checkout> {
       })).then((value) {
         onPopped(value);
       });
-      ;
     } else if (_selected_payment_method == "razorpay") {
       if (_grandTotalValue == 0.00) {
         ToastComponent.showDialog(S.of(context).nothingToPay);
@@ -222,8 +237,8 @@ class _CheckoutState extends State<Checkout> {
       })).then((value) {
         onPopped(value);
       });
-      ;
-    } else if (_selected_payment_method == "wallet_system") {
+    } */
+    else if (_selected_payment_method == "wallet_system") {
       pay_by_wallet();
     } else if (_selected_payment_method == "cash_payment") {
       pay_by_cod();
