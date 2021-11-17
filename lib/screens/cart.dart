@@ -597,7 +597,8 @@ class _CartState extends State<Cart> {
                                         ),
                                       ),
                                       Text(
-                                        _shopList[index].name,
+                                        //_shopList[index].name,
+                                        "Marekat",
                                         style:
                                             TextStyle(color: MyTheme.font_grey),
                                       ),

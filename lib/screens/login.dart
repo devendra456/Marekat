@@ -98,6 +98,7 @@ class _LoginState extends State<Login> {
                         Image.asset('assets/login_registration_form_logo.png'),
                   ),
                 ),
+                /*
                 Padding(
                   padding: const EdgeInsets.only(
                       bottom: 0.0, top: 10, left: 24, right: 24),
@@ -118,7 +119,7 @@ class _LoginState extends State<Login> {
                           ),
                         ]),
                   ),
-                ),
+                ),*/
                 Padding(
                   padding: const EdgeInsets.only(
                       bottom: 20.0, top: 12, left: 24, right: 24),

@@ -202,7 +202,7 @@ class _RegistrationState extends State<Registration> {
                                               S.of(context).johndoeexamplecom),
                                 ),
                               ),
-                              AddonConfig.otp_addon_installed
+                              /*AddonConfig.otp_addon_installed
                                   ? GestureDetector(
                                       onTap: () {
                                         setState(() {
@@ -219,7 +219,7 @@ class _RegistrationState extends State<Registration> {
                                                 TextDecoration.underline),
                                       ),
                                     )
-                                  : Container()
+                                  : Container()*/
                             ],
                           ),
                         )

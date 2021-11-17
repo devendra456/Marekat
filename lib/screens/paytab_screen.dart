@@ -118,7 +118,7 @@ class _PayTabScreenState extends State<PayTabScreen> {
         ),
       ),
       title: Text(
-        S.of(context).payWithStripe,
+        S.of(context).payWithPaytab,
         style: TextStyle(fontSize: 16, color: MyTheme.accent_color),
       ),
       elevation: 0.0,

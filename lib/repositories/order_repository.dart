@@ -22,7 +22,7 @@ class OrderRepository {
     return orderMiniResponseFromJson(response.body);
   }
 
-  Future<OrderDetailResponse> getOrderDetails({@required int id = 0}) async {
+  Future<OrderDetailResponse> getOrderDetails({int id = 0}) async {
     var url = "${AppConfig.BASE_URL}/purchase-history-details/" + id.toString();
 
     final response = await http.get(Uri.parse(url),
@@ -31,12 +31,28 @@ class OrderRepository {
     return orderDetailResponseFromJson(response.body);
   }
 
-  Future<OrderItemResponse> getOrderItems({@required int id = 0}) async {
+  Future<OrderItemResponse> getOrderItems({int id = 0}) async {
     var url = "${AppConfig.BASE_URL}/purchase-history-items/" + id.toString();
 
     final response = await http.get(Uri.parse(url),
         headers: {"X-localization": langCode.$ == "ar" ? "sa" : "en"});
     //print("url:" +url.toString());
     return orderItemlResponseFromJson(response.body);
+  }
+
+  Future<http.Response> cancelOrder(int id) async {
+    try {
+      var url = "${AppConfig.BASE_URL}/order/cancel";
+      final response = await http.post(
+        Uri.parse(url),
+        body: {"order_id": id.toString()},
+        headers: {
+          "X-localization": langCode.$ == "ar" ? "sa" : "en",
+          "Authorization": "Bearer ${access_token.$}",
+          "Accept": "Application/json"
+        },
+      );
+      return response;
+    } finally {}
   }
 }

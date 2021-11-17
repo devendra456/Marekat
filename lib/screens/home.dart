@@ -104,6 +104,7 @@ class _HomeState extends State<Home> {
                           ),
                           SizedBox(
                             height: 250,
+                            width: double.infinity,
                             child: InkWell(
                               onTap: () {
                                 Navigator.push(context,
@@ -174,6 +175,7 @@ class _HomeState extends State<Home> {
                       children: [
                         SizedBox(
                           height: 275,
+                          width: double.infinity,
                           child: AspectRatio(
                             aspectRatio: 1.5,
                             child: InkWell(
@@ -237,6 +239,7 @@ class _HomeState extends State<Home> {
                         devider(),
                         SizedBox(
                           height: 250,
+                          width: double.infinity,
                           child: AspectRatio(
                             aspectRatio: 1.5,
                             child: InkWell(
@@ -307,6 +310,7 @@ class _HomeState extends State<Home> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             SizedBox(
+                              width: double.infinity,
                               height: 275,
                               child: AspectRatio(
                                 aspectRatio: 1.5,
@@ -373,6 +377,7 @@ class _HomeState extends State<Home> {
                             devider(),
                             SizedBox(
                               height: 275,
+                              width: double.infinity,
                               child: AspectRatio(
                                 aspectRatio: 1.5,
                                 child: InkWell(
@@ -439,6 +444,7 @@ class _HomeState extends State<Home> {
                             devider(),
                             SizedBox(
                               height: 275,
+                              width: double.infinity,
                               child: AspectRatio(
                                 aspectRatio: 1.5,
                                 child: InkWell(
@@ -505,6 +511,7 @@ class _HomeState extends State<Home> {
                             devider(),
                             SizedBox(
                               height: 275,
+                              width: double.infinity,
                               child: AspectRatio(
                                 aspectRatio: 1.5,
                                 child: InkWell(
@@ -571,6 +578,7 @@ class _HomeState extends State<Home> {
                             buildCategoryProduct(24),
                             devider(),
                             SizedBox(
+                              width: double.infinity,
                               height: 275,
                               child: AspectRatio(
                                 aspectRatio: 1.5,
@@ -637,6 +645,7 @@ class _HomeState extends State<Home> {
                             devider(),
                             SizedBox(
                               height: 275,
+                              width: double.infinity,
                               child: AspectRatio(
                                 aspectRatio: 1.5,
                                 child: InkWell(
@@ -702,6 +711,7 @@ class _HomeState extends State<Home> {
                             buildCategoryProduct(49),
                             devider(),
                             SizedBox(
+                              width: double.infinity,
                               height: 275,
                               child: AspectRatio(
                                 aspectRatio: 1.5,
@@ -769,6 +779,7 @@ class _HomeState extends State<Home> {
                             devider(),
                             SizedBox(
                               height: 275,
+                              width: double.infinity,
                               child: AspectRatio(
                                 aspectRatio: 1.5,
                                 child: InkWell(
@@ -835,6 +846,7 @@ class _HomeState extends State<Home> {
                             devider(),
                             SizedBox(
                               height: 275,
+                              width: double.infinity,
                               child: AspectRatio(
                                 aspectRatio: 1.5,
                                 child: InkWell(
@@ -914,7 +926,7 @@ class _HomeState extends State<Home> {
                             ),
                             Padding(
                               padding: EdgeInsets.symmetric(
-                                  horizontal: 14, vertical: 2),
+                                  horizontal: 0, vertical: 8),
                               child: buildBrandCard(),
                             )
                           ],
@@ -940,59 +952,59 @@ class _HomeState extends State<Home> {
             return Container();
           } else if (snapshot.hasData) {
             var brandResponse = snapshot.data as BrandResponse;
-            return GridView.builder(
-              shrinkWrap: true,
-              padding: EdgeInsets.all(0),
-              physics: NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 24,
-                  crossAxisSpacing: 24,
-                  childAspectRatio: 1),
-              itemBuilder: (BuildContext context, int index) {
-                return InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return BrandProducts(
-                            id: brandResponse.brands[index].id,
-                            brand_name: brandResponse.brands[index].name,
-                          );
-                        },
+            return SizedBox(
+              height: 120,
+              child: ListView.builder(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                padding: EdgeInsets.all(0),
+                physics: BouncingScrollPhysics(),
+                itemBuilder: (BuildContext context, int index) {
+                  return InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return BrandProducts(
+                              id: brandResponse.brands[index].id,
+                              brand_name: brandResponse.brands[index].name,
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    child: Card(
+                      margin: EdgeInsets.symmetric(horizontal: 14, vertical: 0),
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(0),
+                        side: BorderSide(width: 2, color: MyTheme.black
+                            //color: Color.fromARGB(255, 221, 221, 221),
+                            ),
                       ),
-                    );
-                  },
-                  child: Card(
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(0),
-                      side: BorderSide(width: 2, color: MyTheme.black
-                          //color: Color.fromARGB(255, 221, 221, 221),
-                          ),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(0),
-                      child: FadeInImage.assetNetwork(
-                        placeholder: 'assets/placeholder.png',
-                        image: AppConfig.BASE_PATH +
-                            brandResponse.brands[index].logo,
-                        fit: BoxFit.cover,
-                        imageErrorBuilder: (BuildContext context,
-                            Object exception, StackTrace stackTrace) {
-                          return Image.asset(
-                            "assets/placeholder.png",
-                            fit: BoxFit.cover,
-                            //height: 64,
-                          );
-                        },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(0),
+                        child: FadeInImage.assetNetwork(
+                          placeholder: 'assets/placeholder.png',
+                          image: AppConfig.BASE_PATH +
+                              brandResponse.brands[index].logo,
+                          fit: BoxFit.cover,
+                          imageErrorBuilder: (BuildContext context,
+                              Object exception, StackTrace stackTrace) {
+                            return Image.asset(
+                              "assets/placeholder.png",
+                              fit: BoxFit.cover,
+                              //height: 64,
+                            );
+                          },
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
-              itemCount: brandResponse.brands.length,
+                  );
+                },
+                itemCount: brandResponse.brands.length,
+              ),
             );
           } else {
             return SizedBox(

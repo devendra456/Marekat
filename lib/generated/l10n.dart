@@ -2704,6 +2704,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Pay with PayTab`
+  String get payWithPaytab {
+    return Intl.message(
+      'Pay with PayTab',
+      name: 'payWithPaytab',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Something went wrong!`
+  String get somethingWentWrong {
+    return Intl.message(
+      'Something went wrong!',
+      name: 'somethingWentWrong',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure to cancel`
+  String get areYouSureToCancel {
+    return Intl.message(
+      'Are you sure to cancel',
+      name: 'areYouSureToCancel',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

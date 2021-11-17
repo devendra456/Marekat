@@ -4,7 +4,6 @@ import 'dart:ui';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:marekat/app_config.dart';
@@ -430,7 +429,7 @@ class _ProductReviewsState extends State<ProductReviews> {
                   autofocus: false,
                   maxLines: null,
                   inputFormatters: [
-                    LengthLimitingTextInputFormatter(10),
+                    //LengthLimitingTextInputFormatter(10),
                   ],
                   controller: _myReviewTextController,
                   decoration: InputDecoration(

@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:marekat/custom/toast_component.dart';
@@ -872,12 +875,32 @@ class _OrderDetailsState extends State<OrderDetails> {
                   SizedBox(
                     width: 4,
                   ),
-                  Text(
-                    _orderDetails.grand_total,
-                    style: TextStyle(
-                        color: MyTheme.accent_color,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600),
+                  Column(
+                    children: [
+                      Text(
+                        _orderDetails.grand_total,
+                        style: TextStyle(
+                            color: MyTheme.accent_color,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      _orderDetails.delivery_status == "delivered"
+                          ? SizedBox()
+                          : (_orderDetails.cancel_status < 2
+                              ? MaterialButton(
+                                  onPressed: () {
+                                    _orderDetails.cancel_status == 0
+                                        ? _showConfirmationDialog()
+                                        : null;
+                                  },
+                                  child: Text(_orderDetails.cancel_status == 0
+                                      ? "Order Cancel"
+                                      : "Cancel Requested"),
+                                  color: Colors.red,
+                                  textColor: MyTheme.white,
+                                )
+                              : SizedBox())
+                    ],
                   ),
                 ],
               ),
@@ -1036,5 +1059,55 @@ class _OrderDetailsState extends State<OrderDetails> {
             size: 10),
       ),
     );
+  }
+
+  Future<void> _showConfirmationDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          insetPadding: EdgeInsets.symmetric(horizontal: 0),
+          content: SingleChildScrollView(
+            child: Row(
+              children: <Widget>[
+                //Icon(Icons.logout),
+                Text(S.of(context).areYouSureToCancel),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(S.of(context).confirm),
+              onPressed: () async {
+                _orderCancel(context);
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text(S.of(context).cancel),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  _orderCancel(BuildContext context) async {
+    final response = await OrderRepository().cancelOrder(widget.id);
+    print(response.body);
+    if (response.statusCode == HttpStatus.ok) {
+      final json = jsonDecode(response.body);
+      if (json["result"]) {
+        ToastComponent.showDialog(json["message"]);
+      }
+    } else {
+      ToastComponent.showDialog(S.of(context).somethingWentWrong);
+    }
+    await _onPageRefresh();
+    setState(() {});
   }
 }

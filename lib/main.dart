@@ -6,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:marekat/screens/splash_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shared_value/shared_value.dart';
-
 import 'generated/l10n.dart';
 import 'helpers/shared_value_helper.dart';
 import 'my_theme.dart';
@@ -102,6 +101,7 @@ class _MyAppState extends State<MyApp> {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
+      debugShowMaterialGrid: false,
       supportedLocales: AppLocalizationDelegate().supportedLocales,
       title: "Marekat",
       debugShowCheckedModeBanner: false,
