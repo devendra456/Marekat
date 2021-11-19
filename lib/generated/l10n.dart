@@ -2734,6 +2734,276 @@ class S {
       args: [],
     );
   }
+
+  /// `Please pull down to Refresh\nor check your Internet or wi-fi`
+  String get pleasePullDownToRefreshnorCheckYourInternetOr {
+    return Intl.message(
+      'Please pull down to Refresh\nor check your Internet or wi-fi',
+      name: 'pleasePullDownToRefreshnorCheckYourInternetOr',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Explore the hottest trend with your\nfavourite Brand`
+  String get exploreTheHottestTrendWithYournfavouriteBrand {
+    return Intl.message(
+      'Explore the hottest trend with your\nfavourite Brand',
+      name: 'exploreTheHottestTrendWithYournfavouriteBrand',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Top Brands`
+  String get topBrands {
+    return Intl.message(
+      'Top Brands',
+      name: 'topBrands',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Best Men's Watches collections`
+  String get bestMensWatchesCollections {
+    return Intl.message(
+      'Best Men\'s Watches collections',
+      name: 'bestMensWatchesCollections',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Men's Watches`
+  String get mensWatches {
+    return Intl.message(
+      'Men\'s Watches',
+      name: 'mensWatches',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Best Women's Watches collections`
+  String get bestWomensWatchesCollectionss {
+    return Intl.message(
+      'Best Women\'s Watches collections',
+      name: 'bestWomensWatchesCollectionss',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Women's Watches`
+  String get womensWatches {
+    return Intl.message(
+      'Women\'s Watches',
+      name: 'womensWatches',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Best Men's sunglasses collections`
+  String get bestMensSunglassesCollections {
+    return Intl.message(
+      'Best Men\'s sunglasses collections',
+      name: 'bestMensSunglassesCollections',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Men's Sunglasses`
+  String get mensSunglasses {
+    return Intl.message(
+      'Men\'s Sunglasses',
+      name: 'mensSunglasses',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Best Women's sunglasses collections`
+  String get bestWomensSunglassesCollections {
+    return Intl.message(
+      'Best Women\'s sunglasses collections',
+      name: 'bestWomensSunglassesCollections',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Women's Sunglasses`
+  String get womensSunglasses {
+    return Intl.message(
+      'Women\'s Sunglasses',
+      name: 'womensSunglasses',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add the finishing touch to your look with\nour Range`
+  String get addTheFinishingTouchToYourLookWithnourRange {
+    return Intl.message(
+      'Add the finishing touch to your look with\nour Range',
+      name: 'addTheFinishingTouchToYourLookWithnourRange',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Perfumes`
+  String get perfumes {
+    return Intl.message(
+      'Perfumes',
+      name: 'perfumes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Shoes from the best brands, Must have\nshoes for every one`
+  String get shoesFromTheBestBrandsMustHavenshoesForEvery {
+    return Intl.message(
+      'Shoes from the best brands, Must have\nshoes for every one',
+      name: 'shoesFromTheBestBrandsMustHavenshoesForEvery',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Women's Shoes`
+  String get womensShoes {
+    return Intl.message(
+      'Women\'s Shoes',
+      name: 'womensShoes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Discover our bags for women vibrant designs`
+  String get discoverOurBagsForWomenVibrantDesigns {
+    return Intl.message(
+      'Discover our bags for women vibrant designs',
+      name: 'discoverOurBagsForWomenVibrantDesigns',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Women's Bags`
+  String get womensBags {
+    return Intl.message(
+      'Women\'s Bags',
+      name: 'womensBags',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Push yourself further with our trendy sportswear`
+  String get pushYourselfFurtherWithOurTrendySportswear {
+    return Intl.message(
+      'Push yourself further with our trendy sportswear',
+      name: 'pushYourselfFurtherWithOurTrendySportswear',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Women's Sportswear`
+  String get womensSportswear {
+    return Intl.message(
+      'Women\'s Sportswear',
+      name: 'womensSportswear',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Match the daily journey with our kids essential`
+  String get matchTheDailyJourneyWithOurKidsNessential {
+    return Intl.message(
+      'Match the daily journey with our kids essential',
+      name: 'matchTheDailyJourneyWithOurKidsNessential',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Kid's Collections`
+  String get kidsCollections {
+    return Intl.message(
+      'Kid\'s Collections',
+      name: 'kidsCollections',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Shop the latest and trend Women's\nEurope Fashion`
+  String get shopTheLatestAndTrendWomensneuropeFashion {
+    return Intl.message(
+      'Shop the latest and trend Women\'s\nEurope Fashion',
+      name: 'shopTheLatestAndTrendWomensneuropeFashion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Europe Fashion`
+  String get europeFashion {
+    return Intl.message(
+      'Europe Fashion',
+      name: 'europeFashion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Latest Additions to our Women's\nstyle USA`
+  String get latestAdditionsToOurWomensnstyleUsa {
+    return Intl.message(
+      'Latest Additions to our Women\'s\nstyle USA',
+      name: 'latestAdditionsToOurWomensnstyleUsa',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fashion USA`
+  String get fashionUsa {
+    return Intl.message(
+      'Fashion USA',
+      name: 'fashionUsa',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Men's Collections`
+  String get mensCollections {
+    return Intl.message(
+      'Men\'s Collections',
+      name: 'mensCollections',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Discover a wide range of high-quality\nMen Collection`
+  String get discoverAWideRangeOfHighqualitynmenCollection {
+    return Intl.message(
+      'Discover a wide range of high-quality\nMen Collection',
+      name: 'discoverAWideRangeOfHighqualitynmenCollection',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

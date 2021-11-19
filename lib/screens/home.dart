@@ -149,14 +149,13 @@ class _HomeState extends State<Home> {
                             height: 2,
                           ),
                           Text(
-                            "Men's Collections",
+                            S.of(context).mensCollections,
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.w600),
                           ),
                           Text(
-                            "Discover a wide range of high-quality\nMen "
-                            "Collection",
+                            S.of(context).discoverAWideRangeOfHighqualitynmenCollection,
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.w500),
@@ -221,13 +220,13 @@ class _HomeState extends State<Home> {
                           height: 2,
                         ),
                         Text(
-                          "Fashion USA",
+                          S.of(context).fashionUsa,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w600),
                         ),
                         Text(
-                          "Latest Additions to our Women's\nstyle USA",
+                          S.of(context).latestAdditionsToOurWomensnstyleUsa,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w500),
@@ -284,13 +283,13 @@ class _HomeState extends State<Home> {
                           height: 2,
                         ),
                         Text(
-                          "Europe Fashion",
+                          S.of(context).europeFashion,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w600),
                         ),
                         Text(
-                          "Shop the latest and trend Women's\nEurope Fashion",
+                          S.of(context).shopTheLatestAndTrendWomensneuropeFashion,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w500),
@@ -358,14 +357,13 @@ class _HomeState extends State<Home> {
                               height: 2,
                             ),
                             Text(
-                              "Kid's Collections",
+                              S.of(context).kidsCollections,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w600),
                             ),
                             Text(
-                              "Match the daily journey with our kids"
-                              "\nessential",
+                              S.of(context).matchTheDailyJourneyWithOurKidsNessential,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w500),
@@ -426,13 +424,13 @@ class _HomeState extends State<Home> {
                               height: 2,
                             ),
                             Text(
-                              "Women's Sportswear",
+                              S.of(context).womensSportswear,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w600),
                             ),
                             Text(
-                              "Push yourself further with our trendy sportswear",
+                              S.of(context).pushYourselfFurtherWithOurTrendySportswear,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w500),
@@ -493,13 +491,13 @@ class _HomeState extends State<Home> {
                               height: 2,
                             ),
                             Text(
-                              "Women's Bags",
+                              S.of(context).womensBags,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w600),
                             ),
                             Text(
-                              "Discover our bags for women vibrant designs",
+                              S.of(context).discoverOurBagsForWomenVibrantDesigns,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w500),
@@ -560,14 +558,13 @@ class _HomeState extends State<Home> {
                               height: 2,
                             ),
                             Text(
-                              "Women's Shoes",
+                              S.of(context).womensShoes,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w600),
                             ),
                             Text(
-                              "Shoes from the best brands, Must have\nshoes "
-                              "for every season",
+                              S.of(context).shoesFromTheBestBrandsMustHavenshoesForEvery,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w500),
@@ -626,14 +623,13 @@ class _HomeState extends State<Home> {
                               height: 2,
                             ),
                             Text(
-                              "Perfumes",
+                              S.of(context).perfumes,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w600),
                             ),
                             Text(
-                              "Add the finishing touch to your look with\nour "
-                              "range of perfume",
+                              S.of(context).addTheFinishingTouchToYourLookWithnourRange,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w500),
@@ -694,13 +690,13 @@ class _HomeState extends State<Home> {
                               height: 2,
                             ),
                             Text(
-                              "Women's Sunglasses",
+                              S.of(context).womensSunglasses,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w600),
                             ),
                             Text(
-                              "Best Women's sunglasses collections",
+                              S.of(context).bestWomensSunglassesCollections,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w500),
@@ -761,13 +757,13 @@ class _HomeState extends State<Home> {
                               height: 2,
                             ),
                             Text(
-                              "Men's Sunglasses",
+                              S.of(context).mensSunglasses,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w600),
                             ),
                             Text(
-                              "Best Men's sunglasses collections",
+                              S.of(context).bestMensSunglassesCollections,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w500),
@@ -828,13 +824,13 @@ class _HomeState extends State<Home> {
                               height: 2,
                             ),
                             Text(
-                              "Women's Watches",
+                              S.of(context).womensWatches,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w600),
                             ),
                             Text(
-                              "Best Women's Watches collectionss",
+                              S.of(context).bestWomensWatchesCollectionss,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w500),
@@ -895,13 +891,13 @@ class _HomeState extends State<Home> {
                               height: 2,
                             ),
                             Text(
-                              "Men's Watches",
+                              S.of(context).mensWatches,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w600),
                             ),
                             Text(
-                              "Best Men's Watches collections",
+                              S.of(context).bestMensWatchesCollections,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w500),
@@ -912,14 +908,13 @@ class _HomeState extends State<Home> {
                             buildCategoryProduct(78),
                             devider(),
                             Text(
-                              "Top Brands",
+                              S.of(context).topBrands,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w600),
                             ),
                             Text(
-                              "Explore the hottest trend with your\nfavourite "
-                              "brand",
+                              S.of(context).exploreTheHottestTrendWithYournfavouriteBrand,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w500),
@@ -1398,8 +1393,7 @@ class _HomeState extends State<Home> {
               height: 250,
               child: Center(
                 child: Text(
-                  "Please pull down to Refresh\nor "
-                  "check your internet or wi-fi",
+                  S.of(context).pleasePullDownToRefreshnorCheckYourInternetOr,
                   textAlign: TextAlign.center,
                   style: TextStyle(color: MyTheme.grey_153),
                 ),
@@ -1628,8 +1622,7 @@ class _HomeState extends State<Home> {
               height: 80,
               child: Center(
                 child: Text(
-                  "Please pull down to Refresh\nor "
-                  "check your internet or wi-fi",
+                  S.of(context).pleasePullDownToRefreshnorCheckYourInternetOr,
                   textAlign: TextAlign.center,
                   style: TextStyle(color: MyTheme.grey_153),
                 ),
@@ -1736,8 +1729,7 @@ class _HomeState extends State<Home> {
               height: MediaQuery.of(context).size.height * .4,
               child: Center(
                 child: Text(
-                  "Please pull down to Refresh\nor "
-                  "check your internet or wi-fi",
+                  S.of(context).pleasePullDownToRefreshnorCheckYourInternetOr,
                   textAlign: TextAlign.center,
                   style: TextStyle(color: MyTheme.grey_153),
                 ),
