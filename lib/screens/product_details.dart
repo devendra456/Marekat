@@ -544,25 +544,6 @@ class _ProductDetailsState extends State<ProductDetails> {
                     height: 24.0,
                   ),
                 ])),
-                /*SliverList(
-                    delegate: SliverChildListDelegate([
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                      16.0,
-                      0.0,
-                      16.0,
-                      0.0,
-                    ),
-                    child: _productDetails != null
-                        ? buildSellerRow(context)
-                        : ShimmerHelper().buildBasicShimmer(
-                            height: 50.0,
-                          ),
-                  ),
-                  Divider(
-                    height: 24,
-                  ),
-                ])),*/
                 SliverList(
                   delegate: SliverChildListDelegate([
                     Padding(
@@ -914,89 +895,6 @@ class _ProductDetailsState extends State<ProductDetails> {
             ),
           ),
         ));
-  }
-
-  Row buildSellerRow(BuildContext context) {
-    //print("sl:" + AppConfig.BASE_PATH + _productDetails.shop_logo);
-    return Row(
-      children: [
-        _productDetails.added_by == "admin"
-            ? Container()
-            : Padding(
-                padding: const EdgeInsets.only(right: 8.0),
-                child: Container(
-                  width: 30,
-                  height: 30,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(2.0),
-                    border: Border.all(
-                        color: Color.fromRGBO(112, 112, 112, .3), width: 0.5),
-                    //shape: BoxShape.rectangle,
-                  ),
-                  child: FadeInImage.assetNetwork(
-                    placeholder: 'assets/placeholder.png',
-                    image: AppConfig.BASE_PATH + _productDetails.shop_logo,
-                    fit: BoxFit.cover,
-                    imageErrorBuilder: (BuildContext context, Object exception,
-                        StackTrace stackTrace) {
-                      return Image.asset(
-                        "assets/placeholder.png",
-                        fit: BoxFit.cover,
-                      );
-                    },
-                  ),
-                ),
-              ),
-        Container(
-          width: MediaQuery.of(context).size.width * (.5),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(S.of(context).seller,
-                  style: TextStyle(
-                    color: Color.fromRGBO(153, 153, 153, 1),
-                  )),
-              Text(
-                _productDetails.shop_name,
-                style: TextStyle(
-                    color: MyTheme.font_grey,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600),
-              )
-            ],
-          ),
-        ),
-        Spacer(),
-        Visibility(
-          visible: false,
-          child: Container(
-            child: Row(
-              children: [
-                InkWell(
-                  onTap: () {
-                    _launchURL(
-                        "https://api.whatsapp.com/send/?phone=+917897430432&text=hello seller&app_absent=0");
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 4.0),
-                    child: Text(
-                      S.of(context).chatWithSeller,
-                      style: TextStyle(
-                          decoration: TextDecoration.underline,
-                          color: Color.fromRGBO(7, 101, 136, 1),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                ),
-                Icon(Icons.message,
-                    size: 16, color: Color.fromRGBO(7, 101, 136, 1))
-              ],
-            ),
-          ),
-        )
-      ],
-    );
   }
 
   Row buildTotalPriceRow() {

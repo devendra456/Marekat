@@ -187,58 +187,7 @@ class _CheckoutState extends State<Checkout> {
       })).then((value) {
         onPopped(value);
       });
-    } /* else if (_selected_payment_method == "stripe_payment") {
-      if (_grandTotalValue == 0.00) {
-        ToastComponent.showDialog(
-          S.of(context).nothingToPay,
-        );
-        return;
-      }
-
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return StripeScreen(
-          owner_id: widget.owner_id,
-          amount: _grandTotalValue,
-          payment_type: "cart_payment",
-          payment_method_key: _selected_payment_method_key,
-        );
-      })).then((value) {
-        onPopped(value);
-      });
-    } else if (_selected_payment_method == "paypal_payment") {
-      if (_grandTotalValue == 0.00) {
-        ToastComponent.showDialog(S.of(context).nothingToPay);
-        return;
-      }
-
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return PaypalScreen(
-          owner_id: widget.owner_id,
-          amount: _grandTotalValue,
-          payment_type: "cart_payment",
-          payment_method_key: _selected_payment_method_key,
-        );
-      })).then((value) {
-        onPopped(value);
-      });
-    } else if (_selected_payment_method == "razorpay") {
-      if (_grandTotalValue == 0.00) {
-        ToastComponent.showDialog(S.of(context).nothingToPay);
-        return;
-      }
-
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return RazorpayScreen(
-          owner_id: widget.owner_id,
-          amount: _grandTotalValue,
-          payment_type: "cart_payment",
-          payment_method_key: _selected_payment_method_key,
-        );
-      })).then((value) {
-        onPopped(value);
-      });
-    } */
-    else if (_selected_payment_method == "wallet_system") {
+    } else if (_selected_payment_method == "wallet_system") {
       pay_by_wallet();
     } else if (_selected_payment_method == "cash_payment") {
       pay_by_cod();

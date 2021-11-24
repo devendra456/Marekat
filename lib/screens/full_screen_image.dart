@@ -29,61 +29,25 @@ class _FullScreenImageState extends State<FullScreenImage> {
         fit: StackFit.expand,
         children: [
           Center(
-            child: InteractiveViewer(
-              clipBehavior: Clip.none,
-              child: FadeInImage.assetNetwork(
-                placeholder: 'assets/placeholder.png',
-                image: AppConfig.BASE_PATH + widget.list[index],
-                imageErrorBuilder: (BuildContext context, Object exception,
-                    StackTrace stackTrace) {
-                  return Image.asset(
-                    "assets/placeholder.png",
-                  );
-                },
+            child: GestureDetector(
+              onTap: () {
+                _forwardImage();
+              },
+              child: InteractiveViewer(
+                clipBehavior: Clip.none,
+                child: FadeInImage.assetNetwork(
+                  placeholder: 'assets/placeholder.png',
+                  image: AppConfig.BASE_PATH + widget.list[index],
+                  imageErrorBuilder: (BuildContext context, Object exception,
+                      StackTrace stackTrace) {
+                    return Image.asset(
+                      "assets/placeholder.png",
+                    );
+                  },
+                ),
               ),
             ),
           ),
-          Positioned(
-            left: 16,
-            top: 0,
-            bottom: 0,
-            child: index > 0
-                ? GestureDetector(
-                    onTap: () {
-                      _backImage();
-                    },
-                    child: CircleAvatar(
-                      radius: 16,
-                      backgroundColor: Color.fromARGB(102, 255, 255, 255),
-                      child: Icon(
-                        Icons.keyboard_arrow_left_rounded,
-                        color: MyTheme.accent_color,
-                        size: 20,
-                      ),
-                    ),
-                  )
-                : Container(),
-          ),
-          Positioned(
-              top: 0,
-              right: 16,
-              bottom: 0,
-              child: index == widget.list.length - 1
-                  ? Container()
-                  : GestureDetector(
-                      onTap: () {
-                        _forwardImage();
-                      },
-                      child: CircleAvatar(
-                        radius: 16,
-                        backgroundColor: Color.fromARGB(102, 255, 255, 255),
-                        child: Icon(
-                          Icons.keyboard_arrow_right_rounded,
-                          color: MyTheme.accent_color,
-                          size: 20,
-                        ),
-                      ),
-                    )),
           Positioned(
             left: 16,
             top: 16,
@@ -117,6 +81,9 @@ class _FullScreenImageState extends State<FullScreenImage> {
   void _forwardImage() {
     if (index != widget.list.length - 1) {
       index++;
+    } else if (index == widget.list.length - 1) {
+      //index = 0;
+      Navigator.pop(context);
     }
     setState(() {});
   }

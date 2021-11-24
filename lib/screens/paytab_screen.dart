@@ -9,6 +9,7 @@ import 'package:marekat/helpers/shared_value_helper.dart';
 import 'package:marekat/my_theme.dart';
 import 'package:marekat/screens/order_list.dart';
 import 'package:marekat/screens/wallet.dart';
+import 'package:marekat/ui_sections/loader.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PayTabScreen extends StatefulWidget {
@@ -68,6 +69,12 @@ class _PayTabScreenState extends State<PayTabScreen> {
                 onWebResourceError: (error) {
                   print(error);
                 },
+                onWebViewCreated: (controller) {
+                  Loader.showLoaderDialog(context);
+                },
+                onPageStarted: (value) {
+                  Loader.dismissDialog(context);
+                },
                 onPageFinished: (page) {
                   if (page.contains("/stripe/success")) {
                     getData();
@@ -81,7 +88,9 @@ class _PayTabScreenState extends State<PayTabScreen> {
             );
           } else {
             return Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                color: MyTheme.accent_color,
+              ),
             );
           }
         },
