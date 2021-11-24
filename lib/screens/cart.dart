@@ -296,7 +296,7 @@ class _CartState extends State<Cart> {
                 )*/
       ),
 
-      height: widget.has_bottomnav ? 200 : 120,
+      height: widget.has_bottomnav ? 180 : 120,
       //color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(16.0),

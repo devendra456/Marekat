@@ -6,11 +6,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:marekat/generated/l10n.dart';
 import 'package:marekat/my_theme.dart';
-import 'package:marekat/screens/cart.dart';
 import 'package:marekat/screens/category_list.dart';
 import 'package:marekat/screens/home.dart';
 import 'package:marekat/screens/profile.dart';
 import 'package:marekat/screens/wishlist.dart';
+
+import 'cart.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -24,8 +25,7 @@ class _MainScreenState extends State<MainScreen> {
     CategoryList(
       is_base_category: true,
     ),
-    Home(),
-    /*Cart(has_bottomnav: true),*/
+    Cart(has_bottomnav: true),
     Wishlist(
       hasBottomNav: true,
     ),
@@ -49,9 +49,9 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       extendBody: true,
       body: _children[_currentIndex],
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      //floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       //specify the location of the FAB
-      floatingActionButton: Visibility(
+      /*floatingActionButton: Visibility(
         visible: MediaQuery.of(context).viewInsets.bottom ==
             0.0, // if the kyeboard is open then hide, else show
         child: Theme(
@@ -68,9 +68,9 @@ class _MainScreenState extends State<MainScreen> {
                 MaterialPageRoute(builder: (context) {
                   return Cart(
                     has_bottomnav: false,
-                  ); /*Filter(
+                  ); */ /*Filter(
                     selected_filter: "sellers",
-                  );*/
+                  );*/ /*
                 }),
               );
             },
@@ -94,7 +94,7 @@ class _MainScreenState extends State<MainScreen> {
             elevation: 0.0,
           ),
         ),
-      ),
+      ),*/
       bottomNavigationBar: ClipRRect(
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(15.0),
@@ -152,9 +152,24 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   label: S.of(context).categories),
               BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.circle,
-                    color: Colors.transparent,
+                  icon: Column(
+                    children: [
+                      SvgPicture.asset(
+                        "assets/favicon.svg",
+                        color: MyTheme.white,
+                        height: 20,
+                        width: 20,
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Container(
+                        width: 14,
+                        height: 1,
+                        color:
+                            _currentIndex == 2 ? Colors.white : MyTheme.black,
+                      )
+                    ],
                   ),
                   label: ""),
               BottomNavigationBarItem(

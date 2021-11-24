@@ -33,6 +33,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
 
   int _seleted_shipping_address = 0;
   City _selected_city;
+  int _selectedAddressIndex = 0;
 
   Country _selected_country;
 
@@ -243,10 +244,11 @@ class _ShippingInfoState extends State<ShippingInfo> {
 
     ToastComponent.showDialog(addressUpdateInCartResponse.message);
 
+    //print(_shippingAddressList[_seleted_shipping_address]);
+
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return Checkout(
-        owner_id: widget.owner_id,
-      );
+      return Checkout(_shippingAddressList[_selectedAddressIndex],
+          owner_id: widget.owner_id);
     })).then((value) {
       onPopped(value);
     });
@@ -742,6 +744,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
             _selected_address_city_name = _shippingAddressList[index].city;
           });
           onAddressSwitch();
+          _selectedAddressIndex = index;
         }
       },
       child: Card(

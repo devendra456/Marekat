@@ -1,6 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_paytabs_bridge/BaseBillingShippingInfo.dart';
+import 'package:flutter_paytabs_bridge/IOSThemeConfiguration.dart';
+import 'package:flutter_paytabs_bridge/PaymentSdkApms.dart';
+import 'package:flutter_paytabs_bridge/PaymentSdkConfigurationDetails.dart';
+import 'package:flutter_paytabs_bridge/flutter_paytabs_bridge.dart';
 import 'package:http/http.dart' as http;
 import 'package:marekat/app_config.dart';
 import 'package:marekat/custom/toast_component.dart';
@@ -9,7 +14,6 @@ import 'package:marekat/helpers/shared_value_helper.dart';
 import 'package:marekat/my_theme.dart';
 import 'package:marekat/screens/order_list.dart';
 import 'package:marekat/screens/wallet.dart';
-import 'package:marekat/ui_sections/loader.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PayTabScreen extends StatefulWidget {
@@ -34,7 +38,7 @@ class _PayTabScreenState extends State<PayTabScreen> {
   int _orderId = 0;
 
   WebViewController _webViewController;
-
+  String _instructions = 'Tap on "Pay" Button to try PayTabs plugin';
   @override
   void initState() {
     print(
@@ -42,9 +46,112 @@ class _PayTabScreenState extends State<PayTabScreen> {
     super.initState();
   }
 
+  Future<PaymentSdkConfigurationDetails> generateConfig() async {
+    var billingDetails = BillingDetails("John Smith", "email@domain.com",
+        "+97311111111", "st. 12", "ae", "dubai", "dubai", "12345");
+    var shippingDetails = ShippingDetails("John Smith", "email@domain.com",
+        "+97311111111", "st. 12", "ae", "dubai", "dubai", "12345");
+    List<PaymentSdkAPms> apms = [];
+    apms.add(PaymentSdkAPms.STC_PAY);
+    var configuration = PaymentSdkConfigurationDetails(
+        profileId: "*profile id*",
+        serverKey: "*server key*",
+        clientKey: "*client key*",
+        cartId: "12433",
+        cartDescription: "Flowers",
+        merchantName: "Flowers Store",
+        screentTitle: "Pay with Card",
+        amount: 20.0,
+        showBillingInfo: true,
+        forceShippingInfo: false,
+        currencyCode: "SAR",
+        merchantCountryCode: "SA",
+        billingDetails: billingDetails,
+        shippingDetails: shippingDetails,
+        alternativePaymentMethods: apms);
+
+    var theme = IOSThemeConfigurations();
+
+    theme.logoImage = "assets/logo.png";
+
+    configuration.iOSThemeConfigurations = theme;
+
+    return configuration;
+  }
+
+  Future<void> payPressed() async {
+    FlutterPaytabsBridge.startCardPayment(await generateConfig(), (event) {
+      setState(() {
+        if (event["status"] == "success") {
+          // Handle transaction details here.
+          var transactionDetails = event["data"];
+          print(transactionDetails);
+        } else if (event["status"] == "error") {
+          // Handle error here.
+        } else if (event["status"] == "event") {
+          // Handle events here.
+        }
+      });
+    });
+  }
+
+  Future<void> apmsPayPressed() async {
+    FlutterPaytabsBridge.startAlternativePaymentMethod(await generateConfig(),
+        (event) {
+      setState(() {
+        if (event["status"] == "success") {
+          // Handle transaction details here.
+          var transactionDetails = event["data"];
+          print(transactionDetails);
+        } else if (event["status"] == "error") {
+          // Handle error here.
+        } else if (event["status"] == "event") {
+          // Handle events here.
+        }
+      });
+    });
+  }
+
+  Future<void> applePayPressed() async {
+    var configuration = PaymentSdkConfigurationDetails(
+        profileId: "*Profile id*",
+        serverKey: "*server key*",
+        clientKey: "*client key*",
+        cartId: "12433",
+        cartDescription: "Flowers",
+        merchantName: "Flowers Store",
+        amount: 20.0,
+        currencyCode: "AED",
+        merchantCountryCode: "ae",
+        merchantApplePayIndentifier: "merchant.com.bunldeId",
+        simplifyApplePayValidation: true);
+    FlutterPaytabsBridge.startApplePayPayment(configuration, (event) {
+      setState(() {
+        if (event["status"] == "success") {
+          // Handle transaction details here.
+          var transactionDetails = event["data"];
+          print(transactionDetails);
+        } else if (event["status"] == "error") {
+          // Handle error here.
+        } else if (event["status"] == "event") {
+          // Handle events here.
+        }
+      });
+    });
+  }
+
+  Widget applePayButton() {
+    return TextButton(
+      onPressed: () {
+        applePayPressed();
+      },
+      child: Text('Pay with Apple Pay'),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    /*return Scaffold(
       backgroundColor: Colors.white,
       appBar: buildAppBar(context),
       body: FutureBuilder(
@@ -95,6 +202,33 @@ class _PayTabScreenState extends State<PayTabScreen> {
           }
         },
       ),
+    );*/
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('PayTabs Plugin Example App'),
+      ),
+      body: Center(
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+            Text('$_instructions'),
+            SizedBox(height: 16),
+            TextButton(
+              onPressed: () {
+                payPressed();
+              },
+              child: Text('Pay with Card'),
+            ),
+            SizedBox(height: 16),
+            TextButton(
+              onPressed: () {
+                apmsPayPressed();
+              },
+              child: Text('Pay with Alternative payment methods'),
+            ),
+            SizedBox(height: 16),
+            applePayButton()
+          ])),
     );
   }
 
@@ -149,9 +283,6 @@ class _PayTabScreenState extends State<PayTabScreen> {
           ),
           headers: {"Authorization": "Bearer ${access_token.$}"});
 
-      /*  if (await canLaunch(res.body.toString())) {
-        await launch(res.body.toString());
-      }*/
       return res;
     } catch (e) {
       return Future.error(e);

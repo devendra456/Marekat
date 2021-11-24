@@ -1,21 +1,34 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_paytabs_bridge/BaseBillingShippingInfo.dart';
+import 'package:flutter_paytabs_bridge/IOSThemeConfiguration.dart';
+import 'package:flutter_paytabs_bridge/PaymentSdkApms.dart';
+import 'package:flutter_paytabs_bridge/PaymentSdkConfigurationDetails.dart';
+import 'package:flutter_paytabs_bridge/PaymentSdkLocale.dart';
+import 'package:flutter_paytabs_bridge/flutter_paytabs_bridge.dart';
 import 'package:marekat/custom/toast_component.dart';
+import 'package:marekat/data_model/address_response.dart';
 import 'package:marekat/generated/l10n.dart';
+import 'package:marekat/helpers/payment_gateway_helper.dart';
 import 'package:marekat/helpers/shared_value_helper.dart';
 import 'package:marekat/helpers/shimmer_helper.dart';
+import 'package:marekat/helpers/string_helper.dart';
 import 'package:marekat/my_theme.dart';
 import 'package:marekat/repositories/cart_repository.dart';
 import 'package:marekat/repositories/coupon_repository.dart';
 import 'package:marekat/repositories/payment_repository.dart';
 import 'package:marekat/screens/order_list.dart';
-import 'package:marekat/screens/paytab_screen.dart';
 
 class Checkout extends StatefulWidget {
   int owner_id;
+  final Address address;
 
-  Checkout({Key key, this.owner_id}) : super(key: key);
+  Checkout(
+    this.address, {
+    Key key,
+    this.owner_id,
+  }) : super(key: key);
 
   @override
   _CheckoutState createState() => _CheckoutState();
@@ -161,6 +174,75 @@ class _CheckoutState extends State<Checkout> {
     fetchSummary();
   }
 
+  Future<PaymentSdkConfigurationDetails> generateConfig() async {
+    var billingDetails = BillingDetails(
+      user_name.$,
+      user_email.$,
+      widget.address.phone,
+      widget.address.address,
+      widget.address.country,
+      widget.address.city,
+      "",
+      widget.address.postal_code,
+    );
+    var shippingDetails = ShippingDetails(
+      user_name.$,
+      user_email.$,
+      widget.address.phone,
+      widget.address.address,
+      widget.address.country,
+      widget.address.city,
+      "",
+      widget.address.postal_code,
+    );
+    List<PaymentSdkAPms> apms = [];
+    apms.add(PaymentSdkAPms.STC_PAY);
+    var configuration = PaymentSdkConfigurationDetails(
+      profileId: PaymentGatewayHelper.profileId,
+      serverKey: PaymentGatewayHelper.serverKey,
+      clientKey: PaymentGatewayHelper.clientKey,
+      cartId: widget.owner_id.toString(),
+      cartDescription: "Cart description",
+      merchantName: PaymentGatewayHelper.merchantName,
+      screentTitle: "Pay with Card",
+      amount:
+          double.parse(StringHelper.getRealPrice(_grandTotalValue.toString())),
+      showBillingInfo: true,
+      forceShippingInfo: false,
+      currencyCode: "SAR",
+      merchantCountryCode: "SA",
+      billingDetails: billingDetails,
+      shippingDetails: shippingDetails,
+      alternativePaymentMethods: apms,
+      locale: langCode.$ == "ar" ? PaymentSdkLocale.AR : PaymentSdkLocale.EN,
+    );
+
+    var theme = IOSThemeConfigurations();
+
+    theme.logoImage = "assets/logo.png";
+
+    configuration.iOSThemeConfigurations = theme;
+
+    return configuration;
+  }
+
+  Future<void> payPressed() async {
+    FlutterPaytabsBridge.startCardPayment(await generateConfig(), (event) {
+      setState(() {
+        if (event["status"] == "success") {
+          // Handle transaction details here.
+          var transactionDetails = event["data"];
+          print(transactionDetails);
+          print("payment successful");
+        } else if (event["status"] == "error") {
+          // Handle error here.
+        } else if (event["status"] == "event") {
+          // Handle events here.
+        }
+      });
+    });
+  }
+
   onPressPlaceOrder() {
     if (_selected_payment_method == "") {
       ToastComponent.showDialog(
@@ -177,7 +259,8 @@ class _CheckoutState extends State<Checkout> {
         return;
       }
 
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
+      payPressed();
+      /*Navigator.push(context, MaterialPageRoute(builder: (context) {
         return PayTabScreen(
           ownerId: widget.owner_id,
           amount: _grandTotalValue,
@@ -186,7 +269,7 @@ class _CheckoutState extends State<Checkout> {
         );
       })).then((value) {
         onPopped(value);
-      });
+      });*/
     } else if (_selected_payment_method == "wallet_system") {
       pay_by_wallet();
     } else if (_selected_payment_method == "cash_payment") {
