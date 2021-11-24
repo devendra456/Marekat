@@ -223,9 +223,16 @@ class _ProductDetailsState extends State<ProductDetails> {
         : "";
 
     Loader.showLoaderDialog(context);
-    var variantResponse = await ProductRepository().getVariantWiseInfo(
-        id: widget.id, color: color_string, variants: _choiceString);
-    Loader.dismissDialog(context);
+    var variantResponse;
+
+    try {
+      variantResponse = await ProductRepository().getVariantWiseInfo(
+          id: widget.id, color: color_string, variants: _choiceString);
+      Loader.dismissDialog(context);
+    } catch (e) {
+      Loader.dismissDialog(context);
+    }
+
     _singlePrice = variantResponse.price;
     _stock = variantResponse.stock;
     _appbarPriceString = variantResponse.price_string;
@@ -314,9 +321,15 @@ class _ProductDetailsState extends State<ProductDetails> {
     }
 
     Loader.showLoaderDialog(context);
-    var cartAddResponse = await CartRepository()
-        .getCartAddResponse(widget.id, _variant, user_id.$, _quantity);
-    Loader.dismissDialog(context);
+    var cartAddResponse;
+    try {
+      cartAddResponse = await CartRepository()
+          .getCartAddResponse(widget.id, _variant, user_id.$, _quantity);
+      Loader.dismissDialog(context);
+    } catch (e) {
+      Loader.dismissDialog(context);
+    }
+
     if (cartAddResponse.result == false) {
       ToastComponent.showDialog(
         cartAddResponse.message,
@@ -483,7 +496,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(
                       16.0,
-                      16.0,
+                      0.0,
                       16.0,
                       0.0,
                     ),
@@ -568,21 +581,15 @@ class _ProductDetailsState extends State<ProductDetails> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                        8.0,
-                        0.0,
-                        8.0,
-                        8.0,
-                      ),
-                      child: _productDetails != null
-                          ? buildExpandableDescription()
-                          : Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8.0, vertical: 8.0),
-                              child: ShimmerHelper().buildBasicShimmer(
-                                height: 60.0,
-                              )),
-                    ),
+                        padding: const EdgeInsets.fromLTRB(
+                          16.0,
+                          0.0,
+                          16.0,
+                          8.0,
+                        ),
+                        child: _productDetails != null
+                            ? buildExpandableDescription()
+                            : SizedBox()),
                     Divider(
                       height: 1,
                     ),
@@ -1540,9 +1547,6 @@ class _ProductDetailsState extends State<ProductDetails> {
   }
 
   ExpandableNotifier buildExpandableDescription() {
-    /* var description =
-        _productDetails.description == null ? "" : _productDetails.description;
-*/
     return ExpandableNotifier(
       child: ScrollOnExpand(
         child: Column(
@@ -1550,7 +1554,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           children: <Widget>[
             Expandable(
               collapsed: Container(
-                  height: 50,
+                  height: 48,
                   child: SingleChildScrollView(
                     child: Container(
                         child: Html(

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:marekat/app_config.dart';
 import 'package:marekat/custom/toast_component.dart';
 import 'package:marekat/generated/l10n.dart';
@@ -30,57 +31,62 @@ class PayTabScreen extends StatefulWidget {
 
 class _PayTabScreenState extends State<PayTabScreen> {
   int _orderId = 0;
-  bool _orderInit = false;
 
   WebViewController _webViewController;
+
+  @override
+  void initState() {
+    print(
+        "${AppConfig.BASE_URL}/paytabs?payment_type=${widget.paymentType}&order_id=$_orderId&amount=${widget.amount}&user_id=${user_id.$}");
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: buildAppBar(context),
-      body: buildBody(),
+      body: FutureBuilder(
+        future: _getUrl(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                "Something went Wrong",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            );
+          } else if (snapshot.hasData) {
+            http.Response res = snapshot.data;
+            return Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              child: WebView(
+                debuggingEnabled: true,
+                javascriptMode: JavascriptMode.unrestricted,
+                initialUrl: res.body.toString(),
+                onWebResourceError: (error) {
+                  print(error);
+                },
+                onPageFinished: (page) {
+                  if (page.contains("/stripe/success")) {
+                    getData();
+                  } else if (page.contains("/stripe/cancel")) {
+                    ToastComponent.showDialog(S.of(context).paymentCancelled);
+                    Navigator.of(context).pop();
+                    return;
+                  }
+                },
+              ),
+            );
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+      ),
     );
-  }
-
-  buildBody() {
-    String initialUrl =
-        "${AppConfig.BASE_URL}/stripe?payment_type=${widget.paymentType}&order_id=$_orderId&amount=${widget.amount}&user_id=${user_id.$}";
-
-    if (_orderInit == false &&
-        _orderId == 0 &&
-        widget.paymentType == "cart_payment") {
-      return Container(
-        child: Center(
-          child: Text(S.of(context).creatingOrder),
-        ),
-      );
-    } else {
-      return SingleChildScrollView(
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: WebView(
-            debuggingEnabled: false,
-            javascriptMode: JavascriptMode.unrestricted,
-            onWebViewCreated: (controller) {
-              _webViewController = controller;
-              _webViewController.loadUrl(initialUrl);
-            },
-            onWebResourceError: (error) {},
-            onPageFinished: (page) {
-              if (page.contains("/stripe/success")) {
-                getData();
-              } else if (page.contains("/stripe/cancel")) {
-                ToastComponent.showDialog(S.of(context).paymentCancelled);
-                Navigator.of(context).pop();
-                return;
-              }
-            },
-          ),
-        ),
-      );
-    }
   }
 
   void getData() {
@@ -124,5 +130,22 @@ class _PayTabScreenState extends State<PayTabScreen> {
       elevation: 0.0,
       titleSpacing: 0,
     );
+  }
+
+  Future<http.Response> _getUrl() async {
+    try {
+      final res = await http.post(
+          Uri.parse(
+            "${AppConfig.BASE_URL}/paytabs?payment_type=${widget.paymentType}&order_id=$_orderId&amount=${widget.amount}&user_id=${user_id.$}",
+          ),
+          headers: {"Authorization": "Bearer ${access_token.$}"});
+
+      /*  if (await canLaunch(res.body.toString())) {
+        await launch(res.body.toString());
+      }*/
+      return res;
+    } catch (e) {
+      return Future.error(e);
+    }
   }
 }

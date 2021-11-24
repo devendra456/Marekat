@@ -79,14 +79,21 @@ class _RegistrationState extends State<Registration> {
 
     Loader.showLoaderDialog(context);
 
-    var signupResponse = await AuthRepository().getSignupResponse(
-        name,
-        _register_by == 'email' ? email : _phone,
-        password,
-        password_confirm,
-        _register_by);
+    var signupResponse;
 
-    Loader.dismissDialog(context);
+    try{
+      signupResponse = await AuthRepository().getSignupResponse(
+          name,
+          _register_by == 'email' ? email : _phone,
+          password,
+          password_confirm,
+          _register_by);
+      Loader.dismissDialog(context);
+    }catch(e){
+      Loader.dismissDialog(context);
+    }
+
+
 
     if (signupResponse.result == false) {
       ToastComponent.showDialog(

@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'dart:io' as Io;
 
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:marekat/app_config.dart';
 import 'package:marekat/custom/input_decorations.dart';
 import 'package:marekat/custom/toast_component.dart';
@@ -9,9 +12,6 @@ import 'package:marekat/helpers/shared_value_helper.dart';
 import 'package:marekat/my_theme.dart';
 import 'package:marekat/repositories/profile_repositories.dart';
 import 'package:marekat/ui_sections/loader.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class ProfileEdit extends StatefulWidget {
@@ -77,11 +77,18 @@ class _ProfileEditState extends State<ProfileEdit> {
           base64Encode(await Io.File(file.path.toString()).readAsBytesSync());
       String fileName = file.name;
 
-      var profileImageUpdateResponse =
-          await ProfileRepository().getProfileImageUpdateResponse(
-        base64Image,
-        fileName,
-      );
+      var profileImageUpdateResponse;
+
+      try {
+        profileImageUpdateResponse =
+            await ProfileRepository().getProfileImageUpdateResponse(
+          base64Image,
+          fileName,
+        );
+        Loader.dismissDialog(context);
+      } catch (e) {
+        Loader.dismissDialog(context);
+      }
 
       if (profileImageUpdateResponse.result == false) {
         ToastComponent.showDialog(
@@ -97,15 +104,11 @@ class _ProfileEditState extends State<ProfileEdit> {
         setState(() {});
       }
     }
-
-    Loader.dismissDialog(context);
   }
 
   Future<void> _onPageRefresh() async {}
 
   onPressUpdate() async {
-    Loader.showLoaderDialog(context);
-
     var name = _nameController.text.toString();
     var password = _passwordController.text.toString();
     var password_confirm = _passwordConfirmController.text.toString();
@@ -145,11 +148,18 @@ class _ProfileEditState extends State<ProfileEdit> {
       return;
     }
 
-    var profileUpdateResponse =
-        await ProfileRepository().getProfileUpdateResponse(
-      name,
-      change_password ? password : "",
-    );
+    var profileUpdateResponse;
+    Loader.showLoaderDialog(context);
+    try {
+      profileUpdateResponse =
+          await ProfileRepository().getProfileUpdateResponse(
+        name,
+        change_password ? password : "",
+      );
+      Loader.dismissDialog(context);
+    } catch (e) {
+      Loader.dismissDialog(context);
+    }
 
     if (profileUpdateResponse.result == false) {
       ToastComponent.showDialog(
@@ -163,7 +173,6 @@ class _ProfileEditState extends State<ProfileEdit> {
       user_name.$ = name;
       setState(() {});
     }
-    Loader.dismissDialog(context);
   }
 
   @override

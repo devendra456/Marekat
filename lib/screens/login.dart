@@ -52,10 +52,15 @@ class _LoginState extends State<Login> {
 
     Loader.showLoaderDialog(context);
 
-    var loginResponse = await AuthRepository()
-        .getLoginResponse(_login_by == 'email' ? email : _phone, password);
+    var loginResponse;
 
-    Loader.dismissDialog(context);
+    try {
+      loginResponse = await AuthRepository()
+          .getLoginResponse(_login_by == 'email' ? email : _phone, password);
+      Loader.dismissDialog(context);
+    } catch (e) {
+      Loader.dismissDialog(context);
+    }
 
     if (loginResponse.result == false) {
       ToastComponent.showDialog(

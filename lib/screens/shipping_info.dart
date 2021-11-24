@@ -196,14 +196,20 @@ class _ShippingInfoState extends State<ShippingInfo> {
 
     Loader.showLoaderDialog(context);
 
-    var addressAddResponse = await AddressRepository().getAddressAddResponse(
-        address,
-        _selected_country_name,
-        _selected_city_name,
-        postal_code,
-        phone);
+    var addressAddResponse;
 
-    Loader.dismissDialog(context);
+    try {
+      addressAddResponse = await AddressRepository().getAddressAddResponse(
+          address,
+          _selected_country_name,
+          _selected_city_name,
+          postal_code,
+          phone);
+      Loader.dismissDialog(context);
+    } catch (e) {
+      Loader.dismissDialog(context);
+    }
+
     if (addressAddResponse.result == false) {
       ToastComponent.showDialog(addressAddResponse.message);
       return;
@@ -278,11 +284,19 @@ class _ShippingInfoState extends State<ShippingInfo> {
     Loader.showLoaderDialog(context);
 
     var add = "";
-    final address4 = await http.get(
-        Uri.parse("https://maps.googleapis"
-            ".com/maps/api/geocode/json?latlng=${_locationData.latitude},"
-            "${_locationData.longitude}&key=${AppConfig.GOOGLE_API_KEY}"),
-        headers: {"Accept-Language": langCode.$});
+    var address4;
+
+    try {
+      address4 = await http.get(
+          Uri.parse("https://maps.googleapis"
+              ".com/maps/api/geocode/json?latlng=${_locationData.latitude},"
+              "${_locationData.longitude}&key=${AppConfig.GOOGLE_API_KEY}"),
+          headers: {"Accept-Language": langCode.$});
+      Loader.dismissDialog(context);
+    } catch (e) {
+      Loader.dismissDialog(context);
+    }
+
     if (address4.statusCode == HttpStatus.ok) {
       final json = jsonDecode(address4.body);
       if (json["results"].length > 0) {
@@ -291,7 +305,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
     }
 
     _addressController.text = add;
-    Loader.dismissDialog(context);
+
     buildShowAddFormDialog(context);
   }
 

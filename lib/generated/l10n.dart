@@ -2745,10 +2745,10 @@ class S {
     );
   }
 
-  /// `Explore the hottest trend with your\nfavourite Brand`
+  /// `Explore the hottest trend with your favourite Brand`
   String get exploreTheHottestTrendWithYournfavouriteBrand {
     return Intl.message(
-      'Explore the hottest trend with your\nfavourite Brand',
+      'Explore the hottest trend with your favourite Brand',
       name: 'exploreTheHottestTrendWithYournfavouriteBrand',
       desc: '',
       args: [],
@@ -2845,10 +2845,10 @@ class S {
     );
   }
 
-  /// `Add the finishing touch to your look with\nour Range`
+  /// `Add the finishing touch to your look with our Range`
   String get addTheFinishingTouchToYourLookWithnourRange {
     return Intl.message(
-      'Add the finishing touch to your look with\nour Range',
+      'Add the finishing touch to your look with our Range',
       name: 'addTheFinishingTouchToYourLookWithnourRange',
       desc: '',
       args: [],
@@ -2865,10 +2865,10 @@ class S {
     );
   }
 
-  /// `Shoes from the best brands, Must have\nshoes for every one`
+  /// `Shoes from the best brands, Must have shoes for every one`
   String get shoesFromTheBestBrandsMustHavenshoesForEvery {
     return Intl.message(
-      'Shoes from the best brands, Must have\nshoes for every one',
+      'Shoes from the best brands, Must have shoes for every one',
       name: 'shoesFromTheBestBrandsMustHavenshoesForEvery',
       desc: '',
       args: [],
@@ -2945,10 +2945,10 @@ class S {
     );
   }
 
-  /// `Shop the latest and trend Women's\nEurope Fashion`
+  /// `Shop the latest and trend Women's Europe Fashion`
   String get shopTheLatestAndTrendWomensneuropeFashion {
     return Intl.message(
-      'Shop the latest and trend Women\'s\nEurope Fashion',
+      'Shop the latest and trend Women\'s Europe Fashion',
       name: 'shopTheLatestAndTrendWomensneuropeFashion',
       desc: '',
       args: [],
@@ -2965,10 +2965,10 @@ class S {
     );
   }
 
-  /// `Latest Additions to our Women's\nstyle USA`
+  /// `Latest Additions to our Women's style USA`
   String get latestAdditionsToOurWomensnstyleUsa {
     return Intl.message(
-      'Latest Additions to our Women\'s\nstyle USA',
+      'Latest Additions to our Women\'s style USA',
       name: 'latestAdditionsToOurWomensnstyleUsa',
       desc: '',
       args: [],
@@ -2995,10 +2995,10 @@ class S {
     );
   }
 
-  /// `Discover a wide range of high-quality\nMen Collection`
+  /// `Discover a wide range of high-quality Men Collection`
   String get discoverAWideRangeOfHighqualitynmenCollection {
     return Intl.message(
-      'Discover a wide range of high-quality\nMen Collection',
+      'Discover a wide range of high-quality Men Collection',
       name: 'discoverAWideRangeOfHighqualitynmenCollection',
       desc: '',
       args: [],

@@ -187,7 +187,7 @@ class _CheckoutState extends State<Checkout> {
       })).then((value) {
         onPopped(value);
       });
-    } /*else if (_selected_payment_method == "stripe_payment") {
+    } /* else if (_selected_payment_method == "stripe_payment") {
       if (_grandTotalValue == 0.00) {
         ToastComponent.showDialog(
           S.of(context).nothingToPay,

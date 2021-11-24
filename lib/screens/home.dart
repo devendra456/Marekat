@@ -154,11 +154,17 @@ class _HomeState extends State<Home> {
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.w600),
                           ),
-                          Text(
-                            S.of(context).discoverAWideRangeOfHighqualitynmenCollection,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.w500),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 24.0),
+                            child: Text(
+                              S
+                                  .of(context)
+                                  .discoverAWideRangeOfHighqualitynmenCollection,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w500),
+                            ),
                           ),
                           SizedBox(
                             height: 2,
@@ -225,11 +231,14 @@ class _HomeState extends State<Home> {
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w600),
                         ),
-                        Text(
-                          S.of(context).latestAdditionsToOurWomensnstyleUsa,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w500),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                          child: Text(
+                            S.of(context).latestAdditionsToOurWomensnstyleUsa,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w500),
+                          ),
                         ),
                         SizedBox(
                           height: 2,
@@ -288,11 +297,16 @@ class _HomeState extends State<Home> {
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w600),
                         ),
-                        Text(
-                          S.of(context).shopTheLatestAndTrendWomensneuropeFashion,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w500),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                          child: Text(
+                            S
+                                .of(context)
+                                .shopTheLatestAndTrendWomensneuropeFashion,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w500),
+                          ),
                         ),
                         SizedBox(
                           height: 2,
@@ -362,11 +376,17 @@ class _HomeState extends State<Home> {
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w600),
                             ),
-                            Text(
-                              S.of(context).matchTheDailyJourneyWithOurKidsNessential,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w500),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 24.0),
+                              child: Text(
+                                S
+                                    .of(context)
+                                    .matchTheDailyJourneyWithOurKidsNessential,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w500),
+                              ),
                             ),
                             SizedBox(
                               height: 2,
@@ -429,11 +449,17 @@ class _HomeState extends State<Home> {
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w600),
                             ),
-                            Text(
-                              S.of(context).pushYourselfFurtherWithOurTrendySportswear,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w500),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 24.0),
+                              child: Text(
+                                S
+                                    .of(context)
+                                    .pushYourselfFurtherWithOurTrendySportswear,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w500),
+                              ),
                             ),
                             SizedBox(
                               height: 2,
@@ -496,11 +522,17 @@ class _HomeState extends State<Home> {
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w600),
                             ),
-                            Text(
-                              S.of(context).discoverOurBagsForWomenVibrantDesigns,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w500),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 24.0),
+                              child: Text(
+                                S
+                                    .of(context)
+                                    .discoverOurBagsForWomenVibrantDesigns,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w500),
+                              ),
                             ),
                             SizedBox(
                               height: 2,
@@ -563,11 +595,17 @@ class _HomeState extends State<Home> {
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w600),
                             ),
-                            Text(
-                              S.of(context).shoesFromTheBestBrandsMustHavenshoesForEvery,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w500),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 24.0),
+                              child: Text(
+                                S
+                                    .of(context)
+                                    .shoesFromTheBestBrandsMustHavenshoesForEvery,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w500),
+                              ),
                             ),
                             SizedBox(
                               height: 2,
@@ -628,11 +666,17 @@ class _HomeState extends State<Home> {
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w600),
                             ),
-                            Text(
-                              S.of(context).addTheFinishingTouchToYourLookWithnourRange,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w500),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 24.0),
+                              child: Text(
+                                S
+                                    .of(context)
+                                    .addTheFinishingTouchToYourLookWithnourRange,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w500),
+                              ),
                             ),
                             SizedBox(
                               height: 2,
@@ -695,11 +739,15 @@ class _HomeState extends State<Home> {
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w600),
                             ),
-                            Text(
-                              S.of(context).bestWomensSunglassesCollections,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w500),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 24.0),
+                              child: Text(
+                                S.of(context).bestWomensSunglassesCollections,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w500),
+                              ),
                             ),
                             SizedBox(
                               height: 2,
@@ -762,11 +810,15 @@ class _HomeState extends State<Home> {
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w600),
                             ),
-                            Text(
-                              S.of(context).bestMensSunglassesCollections,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w500),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 24.0),
+                              child: Text(
+                                S.of(context).bestMensSunglassesCollections,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w500),
+                              ),
                             ),
                             SizedBox(
                               height: 2,
@@ -829,11 +881,15 @@ class _HomeState extends State<Home> {
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w600),
                             ),
-                            Text(
-                              S.of(context).bestWomensWatchesCollectionss,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w500),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 24.0),
+                              child: Text(
+                                S.of(context).bestWomensWatchesCollectionss,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w500),
+                              ),
                             ),
                             SizedBox(
                               height: 2,
@@ -896,11 +952,15 @@ class _HomeState extends State<Home> {
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w600),
                             ),
-                            Text(
-                              S.of(context).bestMensWatchesCollections,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w500),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 24.0),
+                              child: Text(
+                                S.of(context).bestMensWatchesCollections,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w500),
+                              ),
                             ),
                             SizedBox(
                               height: 2,
@@ -913,11 +973,17 @@ class _HomeState extends State<Home> {
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w600),
                             ),
-                            Text(
-                              S.of(context).exploreTheHottestTrendWithYournfavouriteBrand,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w500),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 24.0),
+                              child: Text(
+                                S
+                                    .of(context)
+                                    .exploreTheHottestTrendWithYournfavouriteBrand,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w500),
+                              ),
                             ),
                             Padding(
                               padding: EdgeInsets.symmetric(
