@@ -560,7 +560,8 @@ class _CartState extends State<Cart> {
             SliverList(
               delegate: SliverChildListDelegate([
                 Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.only(
+                        left: 16.0, right: 16, bottom: 16),
                     child: SingleChildScrollView(
                       child: ListView.builder(
                         itemCount: _shopList.length,
@@ -575,7 +576,7 @@ class _CartState extends State<Cart> {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.only(
-                                      bottom: 0.0, top: 16.0),
+                                      bottom: 0.0, top: 8.0),
                                   child: Row(
                                     children: [
                                       Padding(
