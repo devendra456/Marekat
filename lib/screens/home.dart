@@ -5,22 +5,17 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:marekat/app_config.dart';
-import 'package:marekat/custom/toast_component.dart';
 import 'package:marekat/data_model/brand_response.dart';
 import 'package:marekat/data_model/category_response.dart';
 import 'package:marekat/data_model/product_mini_response.dart';
 import 'package:marekat/generated/l10n.dart';
-import 'package:marekat/helpers/shimmer_helper.dart';
 import 'package:marekat/my_theme.dart';
 import 'package:marekat/repositories/brand_repository.dart';
 import 'package:marekat/repositories/category_repository.dart';
 import 'package:marekat/repositories/product_repository.dart';
 import 'package:marekat/repositories/sliders_repository.dart';
-import 'package:marekat/screens/category_list.dart';
 import 'package:marekat/screens/home_category_products.dart';
 import 'package:marekat/screens/main_screen.dart';
-import 'package:marekat/screens/todays_deal_products.dart';
-import 'package:marekat/screens/top_selling_products.dart';
 import 'package:marekat/ui_elements/product_card.dart';
 import 'package:marekat/ui_sections/main_drawer.dart';
 import 'package:shimmer/shimmer.dart';
@@ -28,7 +23,6 @@ import 'package:shimmer/shimmer.dart';
 import 'brand_products.dart';
 import 'category_products.dart';
 import 'filter.dart';
-import 'flash_deal_list.dart';
 
 class Home extends StatefulWidget {
   Home({Key key, this.title, this.show_back_button = false}) : super(key: key);
@@ -43,8 +37,15 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   int _current_slider = 0;
-  ScrollController _featuredProductScrollController;
   List<Category> categoryList = [];
+
+  GlobalKey globalKey;
+
+  @override
+  void initState() {
+    super.initState();
+    globalKey = GlobalKey();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -170,7 +171,7 @@ class _HomeState extends State<Home> {
                             height: 2,
                           ),
                           buildCategoryProduct(51),
-                          devider(),
+                          divider(),
                         ],
                       ),
                     ]),
@@ -244,7 +245,7 @@ class _HomeState extends State<Home> {
                           height: 2,
                         ),
                         buildCategoryProduct(91),
-                        devider(),
+                        divider(),
                         SizedBox(
                           height: 250,
                           width: double.infinity,
@@ -312,7 +313,7 @@ class _HomeState extends State<Home> {
                           height: 2,
                         ),
                         buildCategoryProduct(126),
-                        devider(),
+                        divider(),
                       ],
                     ),
                   ),
@@ -392,7 +393,7 @@ class _HomeState extends State<Home> {
                               height: 2,
                             ),
                             buildCategoryProduct(83),
-                            devider(),
+                            divider(),
                             SizedBox(
                               height: 275,
                               width: double.infinity,
@@ -465,7 +466,7 @@ class _HomeState extends State<Home> {
                               height: 2,
                             ),
                             buildCategoryProduct(25),
-                            devider(),
+                            divider(),
                             SizedBox(
                               height: 275,
                               width: double.infinity,
@@ -538,7 +539,7 @@ class _HomeState extends State<Home> {
                               height: 2,
                             ),
                             buildCategoryProduct(26),
-                            devider(),
+                            divider(),
                             SizedBox(
                               height: 275,
                               width: double.infinity,
@@ -611,7 +612,7 @@ class _HomeState extends State<Home> {
                               height: 2,
                             ),
                             buildCategoryProduct(24),
-                            devider(),
+                            divider(),
                             SizedBox(
                               width: double.infinity,
                               height: 275,
@@ -682,7 +683,7 @@ class _HomeState extends State<Home> {
                               height: 2,
                             ),
                             buildCategoryProduct(118),
-                            devider(),
+                            divider(),
                             SizedBox(
                               height: 275,
                               width: double.infinity,
@@ -753,7 +754,7 @@ class _HomeState extends State<Home> {
                               height: 2,
                             ),
                             buildCategoryProduct(49),
-                            devider(),
+                            divider(),
                             SizedBox(
                               width: double.infinity,
                               height: 275,
@@ -824,7 +825,7 @@ class _HomeState extends State<Home> {
                               height: 2,
                             ),
                             buildCategoryProduct(77),
-                            devider(),
+                            divider(),
                             SizedBox(
                               height: 275,
                               width: double.infinity,
@@ -895,7 +896,7 @@ class _HomeState extends State<Home> {
                               height: 2,
                             ),
                             buildCategoryProduct(50),
-                            devider(),
+                            divider(),
                             SizedBox(
                               height: 275,
                               width: double.infinity,
@@ -966,7 +967,7 @@ class _HomeState extends State<Home> {
                               height: 2,
                             ),
                             buildCategoryProduct(78),
-                            devider(),
+                            divider(),
                             Text(
                               S.of(context).topBrands,
                               textAlign: TextAlign.center,
@@ -1092,362 +1093,6 @@ class _HomeState extends State<Home> {
             );
           }
         });
-  }
-
-  buildHomeFeaturedProducts(context) {
-    return FutureBuilder(
-        future: ProductRepository().getFeaturedProducts(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Container();
-          } else if (snapshot.hasData) {
-            var featuredProductResponse = snapshot.data;
-            return GridView.builder(
-              itemCount: featuredProductResponse.products.length,
-              controller: _featuredProductScrollController,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 8,
-                  mainAxisSpacing: 8,
-                  childAspectRatio: 0.52),
-              padding: EdgeInsets.all(8),
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                return ProductCard(
-                  id: featuredProductResponse.products[index].id,
-                  image:
-                      featuredProductResponse.products[index].thumbnail_image,
-                  name: featuredProductResponse.products[index].name,
-                  price: featuredProductResponse.products[index].stroked_price,
-                );
-              },
-            );
-          } else {
-            return ShimmerHelper().buildProductGridShimmer(
-                scontroller: _featuredProductScrollController);
-          }
-        });
-  }
-
-  buildHomeFeaturedCategories(context) {
-    return FutureBuilder(
-        future: CategoryRepository().getFeturedCategories(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Container();
-          } else if (snapshot.hasData) {
-            //snapshot.hasData
-            var featuredCategoryResponse = snapshot.data;
-            return ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: featuredCategoryResponse.categories.length,
-                itemExtent: 125,
-                controller: _scrollController,
-                shrinkWrap: true,
-                padding: EdgeInsets.only(left: 8, right: 8),
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 3),
-                    child: GestureDetector(
-                      onTap: () {
-                        if (featuredCategoryResponse
-                                .categories[index].number_of_children >
-                            0) {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return CategoryList(
-                              parent_category_name: featuredCategoryResponse
-                                  .categories[index].name,
-                              parent_category_id:
-                                  featuredCategoryResponse.categories[index].id,
-                            );
-                          }));
-                        } else {
-                          ToastComponent.showDialog(
-                            S.of(context).noSubCategoriesAvailable,
-                          );
-                        }
-                      },
-                      child: Card(
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                        shape: RoundedRectangleBorder(
-                          side: new BorderSide(
-                              color: Color.fromARGB(255, 232, 232, 232),
-                              width: 1.0),
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        elevation: 1.0,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Container(
-                                width: double.infinity,
-                                height: 100,
-                                child: ClipRRect(
-                                    borderRadius: BorderRadius.vertical(
-                                        top: Radius.circular(8),
-                                        bottom: Radius.zero),
-                                    child: FadeInImage.assetNetwork(
-                                      placeholder: 'assets/placeholder.png',
-                                      image: AppConfig.BASE_PATH +
-                                          featuredCategoryResponse
-                                              .categories[index].banner,
-                                      fit: BoxFit.cover,
-                                      imageErrorBuilder: (BuildContext context,
-                                          Object exception,
-                                          StackTrace stackTrace) {
-                                        return Image.asset(
-                                          "assets/placeholder.png",
-                                          fit: BoxFit.cover,
-                                        );
-                                      },
-                                    ))),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8.0, right: 8, top: 8),
-                              child: Divider(
-                                color: MyTheme.black.withOpacity(0.1),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(8, 0, 8, 4),
-                              child: Container(
-                                height: 28,
-                                child: Text(
-                                  featuredCategoryResponse
-                                      .categories[index].name,
-                                  textAlign: TextAlign.center,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 2,
-                                  style: TextStyle(
-                                      fontSize: 11, color: MyTheme.font_grey),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                });
-          } else {
-            return Row(
-              children: [
-                Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: ShimmerHelper().buildBasicShimmer(
-                        height: 120.0,
-                        width: (MediaQuery.of(context).size.width - 32) / 3)),
-                Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: ShimmerHelper().buildBasicShimmer(
-                        height: 120.0,
-                        width: (MediaQuery.of(context).size.width - 32) / 3)),
-                Padding(
-                    padding: const EdgeInsets.only(right: 0.0),
-                    child: ShimmerHelper().buildBasicShimmer(
-                        height: 120.0,
-                        width: (MediaQuery.of(context).size.width - 32) / 3)),
-              ],
-            );
-          }
-        });
-  }
-
-  buildHomeMenuRow(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        GestureDetector(
-          onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return CategoryList(
-                is_top_category: true,
-              );
-            }));
-          },
-          child: Container(
-            height: 100,
-            width: MediaQuery.of(context).size.width / 5 - 4,
-            child: Column(
-              children: [
-                Container(
-                  height: 57,
-                  width: 57,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(28),
-                      ),
-                      border: Border.all(color: MyTheme.light_grey, width: 1),
-                      color: Color.fromARGB(255, 248, 252, 255)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Image.asset("assets/top_categories.png"),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8),
-                  child: Text(
-                    S.of(context).top_categories,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Color.fromRGBO(132, 132, 132, 1),
-                        fontWeight: FontWeight.w300),
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return Filter(
-                selected_filter: "brands",
-              );
-            }));
-          },
-          child: Container(
-            height: 100,
-            width: MediaQuery.of(context).size.width / 5 - 4,
-            child: Column(
-              children: [
-                Container(
-                    height: 57,
-                    width: 57,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.all(Radius.circular(28)),
-                      border: Border.all(color: MyTheme.light_grey, width: 1),
-                      color: Color.fromARGB(255, 248, 252, 255),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Image.asset("assets/brands.png"),
-                    )),
-                Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: Center(
-                      child: Text(S.of(context).brands,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Color.fromRGBO(132, 132, 132, 1),
-                              fontWeight: FontWeight.w300)),
-                    )),
-              ],
-            ),
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return TopSellingProducts();
-            }));
-          },
-          child: Container(
-            height: 100,
-            width: MediaQuery.of(context).size.width / 5 - 4,
-            child: Column(
-              children: [
-                Container(
-                    height: 57,
-                    width: 57,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.all(Radius.circular(28)),
-                      border: Border.all(color: MyTheme.light_grey, width: 1),
-                      color: Color.fromARGB(255, 248, 252, 255),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Image.asset("assets/top_sellers.png"),
-                    )),
-                Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: Text(S.of(context).top_sellers,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Color.fromRGBO(132, 132, 132, 1),
-                            fontWeight: FontWeight.w300))),
-              ],
-            ),
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return TodaysDealProducts();
-            }));
-          },
-          child: Container(
-            height: 100,
-            width: MediaQuery.of(context).size.width / 5 - 4,
-            child: Column(
-              children: [
-                Container(
-                    height: 57,
-                    width: 57,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.all(Radius.circular(28)),
-                      border: Border.all(color: MyTheme.light_grey, width: 1),
-                      color: Color.fromARGB(255, 248, 252, 255),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Image.asset("assets/todays_deal.png"),
-                    )),
-                Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: Text(S.of(context).today_deal,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Color.fromRGBO(132, 132, 132, 1),
-                            fontWeight: FontWeight.w300))),
-              ],
-            ),
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return FlashDealList();
-            }));
-          },
-          child: Container(
-            height: 100,
-            width: MediaQuery.of(context).size.width / 5 - 4,
-            child: Column(
-              children: [
-                Container(
-                    height: 57,
-                    width: 57,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.all(Radius.circular(28)),
-                      border: Border.all(color: MyTheme.light_grey, width: 1),
-                      color: Color.fromARGB(255, 248, 252, 255),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Image.asset("assets/flash_deal.png"),
-                    )),
-                Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: Text(S.of(context).flash_deal,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Color.fromRGBO(132, 132, 132, 1),
-                            fontWeight: FontWeight.w300))),
-              ],
-            ),
-          ),
-        )
-      ],
-    );
   }
 
   buildHomeCarouselSlider(context) {
@@ -1658,16 +1303,6 @@ class _HomeState extends State<Home> {
     );
   }
 
-  ScrollController _scrollController;
-  GlobalKey globalKey;
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController = ScrollController();
-    globalKey = GlobalKey();
-  }
-
   Future<void> _onRefresh() async {
     Navigator.pushReplacement(
       context,
@@ -1676,7 +1311,6 @@ class _HomeState extends State<Home> {
         pageBuilder: (_, __, ___) => MainScreen(),
       ),
     );
-    setState(() {});
   }
 
   buildHomeCategory() {
@@ -1856,7 +1490,7 @@ class _HomeState extends State<Home> {
         });
   }
 
-  devider() {
+  divider() {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 12),
       child: Container(

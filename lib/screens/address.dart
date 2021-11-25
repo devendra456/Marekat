@@ -72,9 +72,6 @@ class _AddressState extends State<Address> {
   List<City> _selected_city_list_for_update = [];
   List<Country> _selected_country_list_for_update = [];
 
-  // for current location
-  TextEditingController _mobileNumberController = TextEditingController();
-
   @override
   void initState() {
     // TODO: implement initState
@@ -243,11 +240,11 @@ class _AddressState extends State<Address> {
     Loader.showLoaderDialog(context);
     var addressDeleteResponse;
 
-    try{
-    addressDeleteResponse =
-    await AddressRepository().getAddressDeleteResponse(id);
-    Loader.dismissDialog(context);
-    }catch(e){
+    try {
+      addressDeleteResponse =
+          await AddressRepository().getAddressDeleteResponse(id);
+      Loader.dismissDialog(context);
+    } catch (e) {
       Loader.dismissDialog(context);
     }
 
@@ -259,7 +256,6 @@ class _AddressState extends State<Address> {
     ToastComponent.showDialog(addressDeleteResponse.message);
 
     afterDeletingAnAddress();
-
   }
 
   onAddressAdd(context) async {
@@ -294,7 +290,7 @@ class _AddressState extends State<Address> {
     Loader.showLoaderDialog(context);
     var addressAddResponse;
 
-    try{
+    try {
       addressAddResponse = await AddressRepository().getAddressAddResponse(
           address,
           _selected_country_name,
@@ -302,11 +298,9 @@ class _AddressState extends State<Address> {
           postal_code,
           phone);
       Loader.dismissDialog(context);
-    }catch(e){
+    } catch (e) {
       Loader.dismissDialog(context);
     }
-
-
 
     if (addressAddResponse.result == false) {
       ToastComponent.showDialog(addressAddResponse.message);
@@ -346,21 +340,19 @@ class _AddressState extends State<Address> {
     Loader.showLoaderDialog(context);
     var addressUpdateResponse;
 
-    try{
+    try {
       addressUpdateResponse = await AddressRepository()
           .getAddressUpdateResponse(
-          id,
-          address,
-          _selected_country_name_list_for_update[index],
-          _selected_city_name_list_for_update[index],
-          postal_code,
-          phone);
+              id,
+              address,
+              _selected_country_name_list_for_update[index],
+              _selected_city_name_list_for_update[index],
+              postal_code,
+              phone);
       Loader.dismissDialog(context);
-    }catch(e){
+    } catch (e) {
       Loader.dismissDialog(context);
     }
-
-
 
     if (addressUpdateResponse.result == false) {
       ToastComponent.showDialog(addressUpdateResponse.message);
@@ -1321,14 +1313,14 @@ class _AddressState extends State<Address> {
     var add = "";
     var address4;
 
-    try{
+    try {
       address4 = await http.get(
           Uri.parse("https://maps.googleapis"
               ".com/maps/api/geocode/json?latlng=${_locationData.latitude},"
               "${_locationData.longitude}&key=${AppConfig.GOOGLE_API_KEY}"),
           headers: {"Accept-Language": langCode.$});
       Loader.dismissDialog(context);
-    }catch(e){
+    } catch (e) {
       Loader.dismissDialog(context);
     }
 

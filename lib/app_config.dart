@@ -1,8 +1,4 @@
-var this_year = DateTime.now().year.toString();
-
 class AppConfig {
-  static String copyright_text =
-      "@ Skyview " + this_year; //this shows in the splash screen
   static String app_name = "Marekat"; //this shows in the splash screen
 
   //configure this
