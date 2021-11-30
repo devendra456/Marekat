@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:marekat/custom/scroll_to_hide.dart';
 import 'package:marekat/custom/toast_component.dart';
 import 'package:marekat/data_model/category_response.dart';
 import 'package:marekat/generated/l10n.dart';
@@ -9,6 +11,7 @@ import 'package:marekat/repositories/brand_repository.dart';
 import 'package:marekat/repositories/category_repository.dart';
 import 'package:marekat/repositories/product_repository.dart';
 import 'package:marekat/repositories/shop_repository.dart';
+import 'package:marekat/screens/main_screen.dart';
 import 'package:marekat/ui_elements/product_card.dart';
 
 import '../my_theme.dart';
@@ -68,6 +71,8 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
   var _selectedIndex = 0;
 
   String selectedCategoryRoute = "";
+
+  var _currentIndex = 0;
 
   //----------------------------------------
 
@@ -254,6 +259,186 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
       endDrawer: buildFilterDrawer(),
       key: _scaffoldKey,
       backgroundColor: Colors.white,
+      bottomNavigationBar: ScrollToHide(
+        controller: _productScrollController,
+        child: ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(15.0),
+            topRight: Radius.circular(15.0),
+          ),
+          child: BottomAppBar(
+            clipBehavior: Clip.antiAlias,
+            child: BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              backgroundColor: MyTheme.accent_color,
+              onTap: (index) {
+                switch (index) {
+                  case 0:
+                    {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (builder) {
+                        return MainScreen(currentIndex: 0);
+                      }));
+                      break;
+                    }
+                  case 1:
+                    {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (builder) {
+                        return MainScreen(
+                          currentIndex: 1,
+                        );
+                      }));
+                      break;
+                    }
+                  case 2:
+                    {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (builder) {
+                        return MainScreen(
+                          currentIndex: 2,
+                        );
+                      }));
+                      break;
+                    }
+                  case 3:
+                    {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (builder) {
+                        return MainScreen(
+                          currentIndex: 3,
+                        );
+                      }));
+                      break;
+                    }
+                  case 4:
+                    {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (builder) {
+                        return MainScreen(
+                          currentIndex: 4,
+                        );
+                      }));
+                      break;
+                    }
+                }
+              },
+              currentIndex: _currentIndex,
+              showUnselectedLabels: false,
+              showSelectedLabels: false,
+              elevation: 3,
+              items: [
+                BottomNavigationBarItem(
+                    icon: Column(
+                      children: [
+                        SvgPicture.asset(
+                          "assets/home.svg",
+                          color: Colors.white,
+                          height: 20,
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Container(
+                          width: 14,
+                          height: 1,
+                          /*color:
+                              _currentIndex == 0 ? Colors.white : MyTheme.black,*/
+                        )
+                      ],
+                    ),
+                    label: S.of(context).home),
+                BottomNavigationBarItem(
+                    icon: Column(
+                      children: [
+                        Image.asset(
+                          "assets/categories.png",
+                          color: Colors.white,
+                          height: 20,
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Container(
+                          width: 14,
+                          height: 1,
+                          /*color:
+                              _currentIndex == 1 ? Colors.white : MyTheme.black,*/
+                        )
+                      ],
+                    ),
+                    label: S.of(context).categories),
+                BottomNavigationBarItem(
+                    icon: Column(
+                      children: [
+                        SvgPicture.asset(
+                          "assets/favicon.svg",
+                          color: MyTheme.white,
+                          height: 20,
+                          width: 20,
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Container(
+                          width: 14,
+                          height: 1,
+                          /*color:
+                              _currentIndex == 2 ? Colors.white : MyTheme.black,*/
+                        )
+                      ],
+                    ),
+                    label: ""),
+                BottomNavigationBarItem(
+                    icon: Column(
+                      children: [
+                        /*SvgPicture.asset(
+                          "assets/favicon.svg",
+                          color: Colors.white,
+                          height: 20,
+                        ),*/
+                        Icon(
+                          Icons.favorite_border_outlined,
+                          color: Colors.white,
+                          size: 24,
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Container(
+                          width: 14,
+                          height: 1,
+                          /*color:
+                              _currentIndex == 3 ? Colors.white : MyTheme.black,*/
+                        )
+                      ],
+                    ),
+                    label: S.of(context).cart),
+                BottomNavigationBarItem(
+                    icon: Column(
+                      children: [
+                        SvgPicture.asset(
+                          "assets/user.svg",
+                          color: Colors.white,
+                          height: 20,
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Container(
+                          width: 14,
+                          height: 1,
+                          /*color:
+                              _currentIndex == 4 ? Colors.white : MyTheme.black,*/
+                        )
+                      ],
+                    ),
+                    label: S.of(context).profile),
+              ],
+            ),
+          ),
+        ),
+      ),
       body: Stack(clipBehavior: Clip.none, children: [
         buildProductList(),
         Positioned(

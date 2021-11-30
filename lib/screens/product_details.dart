@@ -819,7 +819,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       ),
                       child: buildProductsMayLikeList(),
                     ),
-                    _relatedProducts.length > 2
+                    /*_relatedProducts.length > 2
                         ? Center(
                             child: InkWell(
                               onTap: () {
@@ -860,7 +860,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                               ),
                             ),
                           )
-                        : Container(),
+                        : Container(),*/
                   ]),
                 ),
                 SliverList(
@@ -1572,9 +1572,7 @@ class _ProductDetailsState extends State<ProductDetails> {
       );
     } else if (_relatedProducts.length > 0) {
       return GridView.builder(
-        itemCount: _relatedProducts.length > 2
-            ? _relatedProductLength
-            : _relatedProducts.length,
+        itemCount: _relatedProducts.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             crossAxisSpacing: 8,
