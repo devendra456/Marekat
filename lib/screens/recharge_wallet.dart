@@ -5,9 +5,6 @@ import 'package:marekat/generated/l10n.dart';
 import 'package:marekat/helpers/shimmer_helper.dart';
 import 'package:marekat/my_theme.dart';
 import 'package:marekat/repositories/payment_repository.dart';
-import 'package:marekat/screens/paypal_screen.dart';
-import 'package:marekat/screens/razorpay_screen.dart';
-import 'package:marekat/screens/stripe_screen.dart';
 
 class RechargeWallet extends StatefulWidget {
   double amount;
@@ -77,7 +74,7 @@ class _RechargeWalletState extends State<RechargeWallet> {
       return;
     }
 
-    if (_selected_payment_method == "stripe_payment") {
+    /*if (_selected_payment_method == "stripe_payment") {
       if (widget.amount == 0.00) {
         ToastComponent.showDialog(
           S.of(context).nothingToPay,
@@ -122,7 +119,7 @@ class _RechargeWalletState extends State<RechargeWallet> {
           payment_method_key: _selected_payment_method_key,
         );
       }));
-    }
+    }*/
   }
 
   onPaymentMethodItemTap(index) {

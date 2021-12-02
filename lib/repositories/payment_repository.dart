@@ -12,18 +12,19 @@ import 'package:marekat/helpers/shared_value_helper.dart';
 class PaymentRepository {
   Future<List<PaymentTypeResponse>> getPaymentResponseList({mode = ""}) async {
     final response = await http.get(
-        Uri.parse("${AppConfig.BASE_URL}/payment-types?mode=${mode}"),
+        Uri.parse("${AppConfig.BASE_URL}/payment-types?mode=$mode"),
         headers: {"X-localization": langCode.$ == "ar" ? "sa" : "en"});
 
     return paymentTypeResponseFromJson(response.body);
   }
 
   Future<OrderCreateResponse> getOrderCreateResponse(
-      @required int owner_id, @required payment_method) async {
+      @required int owner_id, @required payment_method, paymentStatus) async {
     var post_body = jsonEncode({
-      "owner_id": "${owner_id}",
+      "owner_id": "$owner_id",
       "user_id": "${user_id.$}",
-      "payment_type": "${payment_method}"
+      "payment_type": "$payment_method",
+      "payment_status": "$paymentStatus"
     });
 
     final response =

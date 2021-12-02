@@ -74,6 +74,7 @@ class _CheckoutState extends State<Checkout> {
   }
 
   fetchList() async {
+    _paymentTypeList.clear();
     var paymentTypeResponseList =
         await PaymentRepository().getPaymentResponseList();
     _paymentTypeList.addAll(paymentTypeResponseList);
@@ -208,6 +209,7 @@ class _CheckoutState extends State<Checkout> {
       amount:
           double.parse(StringHelper.getRealPrice(_grandTotalValue.toString())),
       showBillingInfo: true,
+      showShippingInfo: true,
       forceShippingInfo: false,
       currencyCode: "SAR",
       merchantCountryCode: "SA",
@@ -228,18 +230,17 @@ class _CheckoutState extends State<Checkout> {
 
   Future<void> payPressed() async {
     FlutterPaytabsBridge.startCardPayment(await generateConfig(), (event) {
-      setState(() {
-        if (event["status"] == "success") {
-          // Handle transaction details here.
-          var transactionDetails = event["data"];
-          print(transactionDetails);
-          print("payment successful");
-        } else if (event["status"] == "error") {
-          // Handle error here.
-        } else if (event["status"] == "event") {
-          // Handle events here.
-        }
-      });
+      print(event);
+      if (event["status"] == "success") {
+        var transactionDetails = event["data"];
+        print(transactionDetails);
+        print("payment successful");
+        paymentSuccessful();
+      } else if (event["status"] == "error") {
+        paymentError();
+      } else if (event["status"] == "event") {
+        // Handle events here.
+      }
     });
   }
 
@@ -258,18 +259,7 @@ class _CheckoutState extends State<Checkout> {
         );
         return;
       }
-
       payPressed();
-      /*Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return PayTabScreen(
-          ownerId: widget.owner_id,
-          amount: _grandTotalValue,
-          paymentType: "cart_payment",
-          paymentMethodKey: _selected_payment_method_key,
-        );
-      })).then((value) {
-        onPopped(value);
-      });*/
     } else if (_selected_payment_method == "wallet_system") {
       pay_by_wallet();
     } else if (_selected_payment_method == "cash_payment") {
@@ -871,5 +861,20 @@ class _CheckoutState extends State<Checkout> {
         ),
       ),
     );
+  }
+
+  void paymentSuccessful() async {
+    final response = await PaymentRepository()
+        .getOrderCreateResponse(widget.owner_id, "Paytabs", "paid");
+    if (response.result) {
+      ToastComponent.showDialog(response.message);
+      Navigator.push(context, MaterialPageRoute(builder: (builder) {
+        return OrderList();
+      })).then((value) => fetchAll());
+    }
+  }
+
+  void paymentError() async {
+    ToastComponent.showDialog("Something went wrong! Please try again.");
   }
 }
