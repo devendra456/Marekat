@@ -17,9 +17,10 @@ import 'package:marekat/ui_elements/product_card.dart';
 import '../my_theme.dart';
 
 class HomeCategoryProducts extends StatefulWidget {
-  final Category category;
+  //final Category category;
+  final int id;
 
-  const HomeCategoryProducts(this.category, {Key key}) : super(key: key);
+  const HomeCategoryProducts(this.id, {Key key}) : super(key: key);
 
   @override
   _HomeCategoryProductsState createState() => _HomeCategoryProductsState();
@@ -94,7 +95,7 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
   @override
   void initState() {
     init();
-    print(widget.category.id);
+    print(widget.id);
     super.initState();
   }
 
@@ -105,9 +106,9 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
   }
 
   init() {
-    _selectedCategories.add(widget.category.id);
+    _selectedCategories.add(widget.id);
     fetchProductData();
-    fetchSubCategory(widget.category.id);
+    fetchSubCategory(widget.id);
     fetchFilteredBrands();
     _productScrollController.addListener(() {
       if (_productScrollController.position.pixels ==
@@ -493,9 +494,8 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
                         _selectedIndex = index;
                       });
                       _selectedCategories.clear();
-                      _selectedCategories.add(index == 0
-                          ? widget.category.id
-                          : _categoryList[index - 1].id);
+                      _selectedCategories.add(
+                          index == 0 ? widget.id : _categoryList[index - 1].id);
                       resetProductList();
                       fetchProductData();
                       print(_categoryList[index - 1].number_of_children);
@@ -504,7 +504,7 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (builder) {
                             return HomeCategoryProducts(
-                                _categoryList[index - 1]);
+                                _categoryList[index - 1].id);
                           }));
                         }
                       } else if (index == 0) {

@@ -233,10 +233,13 @@ class _CategoryListState extends State<CategoryList> {
       child: GestureDetector(
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return CategoryList(
-              parent_category_id: categoryResponse.categories[index].id,
-              parent_category_name: categoryResponse.categories[index].name,
-            );
+            return categoryResponse.categories[index].number_of_children > 0
+                ? CategoryList(
+                    parent_category_id: categoryResponse.categories[index].id,
+                    parent_category_name:
+                        categoryResponse.categories[index].name,
+                  )
+                : HomeCategoryProducts(categoryResponse.categories[index]);
           }));
         },
         child: Row(

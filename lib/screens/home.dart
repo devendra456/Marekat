@@ -22,7 +22,6 @@ import 'package:marekat/ui_sections/main_drawer.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'brand_products.dart';
-import 'category_products.dart';
 import 'filter.dart';
 
 class Home extends StatefulWidget {
@@ -199,239 +198,202 @@ class _HomeState extends State<Home> {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
 
     return Scaffold(
-        key: _scaffoldKey,
-        backgroundColor: Colors.white,
-        appBar: buildAppBar(statusBarHeight, context),
-        drawer: MainDrawer(),
-        body: Stack(
-          children: [
-            Positioned(
-              bottom: 0,
-              right: -50,
-              child: Image(
-                image: AssetImage(
-                  "assets/foreground.png",
-                ),
-                alignment: Alignment.bottomRight,
-                height: 250,
-                colorBlendMode: BlendMode.modulate,
-                color: const Color.fromRGBO(255, 255, 255, 0.5),
+      key: _scaffoldKey,
+      backgroundColor: Colors.white,
+      appBar: buildAppBar(statusBarHeight, context),
+      drawer: MainDrawer(),
+      body: Stack(
+        children: [
+          Positioned(
+            bottom: 0,
+            right: -50,
+            child: Image(
+              image: AssetImage(
+                "assets/foreground.png",
               ),
+              alignment: Alignment.bottomRight,
+              height: 250,
+              colorBlendMode: BlendMode.modulate,
+              color: const Color.fromRGBO(255, 255, 255, 0.5),
             ),
-            RefreshIndicator(
-              color: MyTheme.accent_color,
-              backgroundColor: Colors.white,
-              onRefresh: _onRefresh,
-              displacement: 0,
-              child: CustomScrollView(
-                controller: widget.controller,
-                slivers: <Widget>[
-                  SliverList(
-                    delegate: SliverChildListDelegate([
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(
-                          0.0,
-                          4.0,
-                          0.0,
-                          0.0,
-                        ),
-                        child: buildHomeCarouselSlider(context),
+          ),
+          RefreshIndicator(
+            color: MyTheme.accent_color,
+            backgroundColor: Colors.white,
+            onRefresh: _onRefresh,
+            displacement: 0,
+            child: CustomScrollView(
+              controller: widget.controller,
+              slivers: <Widget>[
+                SliverList(
+                  delegate: SliverChildListDelegate([
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        0.0,
+                        4.0,
+                        0.0,
+                        0.0,
                       ),
-                      Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(
-                              0.0,
-                              16.0,
-                              0.0,
-                              0.0,
-                            ),
-                            child: buildHomeCategory(),
-                          ),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          _buildHomeBanners(
-                              productList: list1,
-                              description: S
-                                  .of(context)
-                                  .discoverAWideRangeOfHighqualitynmenCollection,
-                              heading: S.of(context).mensCollections,
-                              imagePath: bannerImage1,
-                              onClickScreen: CategoryProducts(
-                                category_id: 51,
-                                category_name: "Men's Collection",
-                              ))
-                        ],
-                      ),
-                    ]),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Column(
+                      child: buildHomeCarouselSlider(context),
+                    ),
+                    Column(
                       children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(
+                            0.0,
+                            16.0,
+                            0.0,
+                            0.0,
+                          ),
+                          child: buildHomeCategory(),
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
                         _buildHomeBanners(
+                            productList: list1,
                             description: S
                                 .of(context)
-                                .latestAdditionsToOurWomensnstyleUsa,
-                            productList: list2,
-                            heading: S.of(context).fashionUsa,
-                            imagePath: bannerImage2,
-                            onClickScreen: CategoryProducts(
-                              category_id: 91,
-                              category_name: "Fashion USA",
-                            )),
-                        _buildHomeBanners(
-                            description: S
-                                .of(context)
-                                .shopTheLatestAndTrendWomensneuropeFashion,
-                            heading: S.of(context).europeFashion,
-                            imagePath: bannerImage3,
-                            productList: list3,
-                            onClickScreen: CategoryProducts(
-                              category_id: 126,
-                              category_name: "Europe Fashion",
-                            )),
+                                .discoverAWideRangeOfHighqualitynmenCollection,
+                            heading: S.of(context).mensCollections,
+                            imagePath: bannerImage1,
+                            onClickScreen: HomeCategoryProducts(51))
                       ],
                     ),
+                  ]),
+                ),
+                SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                      _buildHomeBanners(
+                          description:
+                              S.of(context).latestAdditionsToOurWomensnstyleUsa,
+                          productList: list2,
+                          heading: S.of(context).fashionUsa,
+                          imagePath: bannerImage2,
+                          onClickScreen: HomeCategoryProducts(91)),
+                      _buildHomeBanners(
+                          description: S
+                              .of(context)
+                              .shopTheLatestAndTrendWomensneuropeFashion,
+                          heading: S.of(context).europeFashion,
+                          imagePath: bannerImage3,
+                          productList: list3,
+                          onClickScreen: HomeCategoryProducts(126)),
+                    ],
                   ),
-                  SliverList(
-                    delegate: SliverChildListDelegate([
-                      SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            _buildHomeBanners(
-                                productList: list4,
-                                description: S
-                                    .of(context)
-                                    .matchTheDailyJourneyWithOurKidsNessential,
-                                heading: S.of(context).kidsCollections,
-                                imagePath: bannerImage4,
-                                onClickScreen: CategoryProducts(
-                                  category_id: 83,
-                                  category_name: "Kid's Collections",
-                                )),
-                            _buildHomeBanners(
-                                productList: list5,
-                                description: S
-                                    .of(context)
-                                    .pushYourselfFurtherWithOurTrendySportswear,
-                                heading: S.of(context).womensSportswear,
-                                imagePath: bannerImage5,
-                                onClickScreen: CategoryProducts(
-                                  category_id: 25,
-                                  category_name: "Swimwear & Sportswear",
-                                )),
-                            _buildHomeBanners(
-                                productList: list6,
-                                description: S
-                                    .of(context)
-                                    .discoverOurBagsForWomenVibrantDesigns,
-                                heading: S.of(context).womensBags,
-                                imagePath: bannerImage6,
-                                onClickScreen: CategoryProducts(
-                                  category_id: 26,
-                                  category_name: "BAGS",
-                                )),
-                            _buildHomeBanners(
-                                productList: list7,
-                                description: S
-                                    .of(context)
-                                    .shoesFromTheBestBrandsMustHavenshoesForEvery,
-                                heading: S.of(context).womensShoes,
-                                imagePath: bannerImage7,
-                                onClickScreen: CategoryProducts(
-                                  category_id: 34,
-                                  category_name: "SHOES",
-                                )),
-                            _buildHomeBanners(
-                                productList: list8,
-                                description: S
-                                    .of(context)
-                                    .addTheFinishingTouchToYourLookWithnourRange,
-                                heading: S.of(context).perfumes,
-                                imagePath: bannerImage8,
-                                onClickScreen: CategoryProducts(
-                                  category_id: 118,
-                                  category_name: "Perfumes",
-                                )),
-                            _buildHomeBanners(
-                                productList: list9,
-                                description: S
-                                    .of(context)
-                                    .bestWomensSunglassesCollections,
-                                heading: S.of(context).womensSunglasses,
-                                imagePath: bannerImage9,
-                                onClickScreen: CategoryProducts(
-                                  category_id: 49,
-                                  category_name: "Women's Sunglasses",
-                                )),
-                            _buildHomeBanners(
-                                productList: list10,
-                                description:
-                                    S.of(context).bestMensSunglassesCollections,
-                                heading: S.of(context).mensSunglasses,
-                                imagePath: bannerImage10,
-                                onClickScreen: CategoryProducts(
-                                  category_id: 77,
-                                  category_name: "Men's Sunglasses",
-                                )),
-                            _buildHomeBanners(
-                                productList: list11,
-                                description:
-                                    S.of(context).bestWomensWatchesCollectionss,
-                                heading: S.of(context).womensWatches,
-                                imagePath: bannerImage11,
-                                onClickScreen: CategoryProducts(
-                                  category_name: "Women's Watches",
-                                  category_id: 50,
-                                )),
-                            _buildHomeBanners(
-                                productList: list12,
-                                description:
-                                    S.of(context).bestMensWatchesCollections,
-                                heading: S.of(context).mensWatches,
-                                imagePath: bannerImage12,
-                                onClickScreen: CategoryProducts(
-                                  category_id: 78,
-                                  category_name: "Men's Watches",
-                                )),
-                            Text(
-                              S.of(context).topBrands,
+                ),
+                SliverList(
+                  delegate: SliverChildListDelegate([
+                    SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          _buildHomeBanners(
+                              productList: list4,
+                              description: S
+                                  .of(context)
+                                  .matchTheDailyJourneyWithOurKidsNessential,
+                              heading: S.of(context).kidsCollections,
+                              imagePath: bannerImage4,
+                              onClickScreen: HomeCategoryProducts(83)),
+                          _buildHomeBanners(
+                              productList: list5,
+                              description: S
+                                  .of(context)
+                                  .pushYourselfFurtherWithOurTrendySportswear,
+                              heading: S.of(context).womensSportswear,
+                              imagePath: bannerImage5,
+                              onClickScreen: HomeCategoryProducts(25)),
+                          _buildHomeBanners(
+                              productList: list6,
+                              description: S
+                                  .of(context)
+                                  .discoverOurBagsForWomenVibrantDesigns,
+                              heading: S.of(context).womensBags,
+                              imagePath: bannerImage6,
+                              onClickScreen: HomeCategoryProducts(26)),
+                          _buildHomeBanners(
+                              productList: list7,
+                              description: S
+                                  .of(context)
+                                  .shoesFromTheBestBrandsMustHavenshoesForEvery,
+                              heading: S.of(context).womensShoes,
+                              imagePath: bannerImage7,
+                              onClickScreen: HomeCategoryProducts(34)),
+                          _buildHomeBanners(
+                              productList: list8,
+                              description: S
+                                  .of(context)
+                                  .addTheFinishingTouchToYourLookWithnourRange,
+                              heading: S.of(context).perfumes,
+                              imagePath: bannerImage8,
+                              onClickScreen: HomeCategoryProducts(118)),
+                          _buildHomeBanners(
+                              productList: list9,
+                              description:
+                                  S.of(context).bestWomensSunglassesCollections,
+                              heading: S.of(context).womensSunglasses,
+                              imagePath: bannerImage9,
+                              onClickScreen: HomeCategoryProducts(49)),
+                          _buildHomeBanners(
+                              productList: list10,
+                              description:
+                                  S.of(context).bestMensSunglassesCollections,
+                              heading: S.of(context).mensSunglasses,
+                              imagePath: bannerImage10,
+                              onClickScreen: HomeCategoryProducts(77)),
+                          _buildHomeBanners(
+                              productList: list11,
+                              description:
+                                  S.of(context).bestWomensWatchesCollectionss,
+                              heading: S.of(context).womensWatches,
+                              imagePath: bannerImage11,
+                              onClickScreen: HomeCategoryProducts(50)),
+                          _buildHomeBanners(
+                              productList: list12,
+                              description:
+                                  S.of(context).bestMensWatchesCollections,
+                              heading: S.of(context).mensWatches,
+                              imagePath: bannerImage12,
+                              onClickScreen: HomeCategoryProducts(78)),
+                          Text(
+                            S.of(context).topBrands,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w600),
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 24.0),
+                            child: Text(
+                              S
+                                  .of(context)
+                                  .exploreTheHottestTrendWithYournfavouriteBrand,
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w600),
+                                  fontSize: 18, fontWeight: FontWeight.w500),
                             ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 24.0),
-                              child: Text(
-                                S
-                                    .of(context)
-                                    .exploreTheHottestTrendWithYournfavouriteBrand,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 0, vertical: 8),
-                              child: buildBrandCard(),
-                            )
-                          ],
-                        ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 0, vertical: 8),
+                            child: buildBrandCard(),
+                          )
+                        ],
                       ),
-                      Container(
-                        height: 104,
-                      )
-                    ]),
-                  ),
-                ],
-              ),
+                    ),
+                    Container(
+                      height: 104,
+                    )
+                  ]),
+                ),
+              ],
             ),
-          ],
-        ));
+          ),
+        ],
+      ),
+    );
   }
 
   buildBrandCard() {
@@ -757,7 +719,7 @@ class _HomeState extends State<Home> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (builder) {
-                        return HomeCategoryProducts(categoriesList[index]);
+                        return HomeCategoryProducts(categoriesList[index].id);
                       }),
                     );
                   },
