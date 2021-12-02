@@ -239,7 +239,9 @@ class _CheckoutState extends State<Checkout> {
       } else if (event["status"] == "error") {
         paymentError();
       } else if (event["status"] == "event") {
-        // Handle events here.
+        print("errror");
+      }else{
+        print("elase");
       }
     });
   }

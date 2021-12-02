@@ -397,7 +397,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                 SliverList(
                     delegate: SliverChildListDelegate([
                   Container(
-                    height: MediaQuery.of(context).size.height * .64,
+                    height: 504,
+                    width: MediaQuery.of(context).size.width,
                     child: Stack(
                       fit: StackFit.expand,
                       children: [
@@ -1684,7 +1685,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             child: CarouselSlider(
               carouselController: _imageCarouselController,
               options: CarouselOptions(
-                  aspectRatio: 0.77,
+                  aspectRatio: 0.75,
                   viewportFraction: 1,
                   initialPage: 0,
                   enableInfiniteScroll: false,

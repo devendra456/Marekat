@@ -128,13 +128,13 @@ class _HomeState extends State<Home> {
   }
 
   getList4() async {
-    final res = await ProductRepository().getCategoryProducts(id: 83);
+    final res = await ProductRepository().getCategoryProducts(id: 144);
     list4 = res.products;
     setState(() {});
   }
 
   getList5() async {
-    final res = await ProductRepository().getCategoryProducts(id: 25);
+    final res = await ProductRepository().getCategoryProducts(id: 147);
     list5 = res.products;
     setState(() {});
   }
@@ -296,7 +296,7 @@ class _HomeState extends State<Home> {
                                   .matchTheDailyJourneyWithOurKidsNessential,
                               heading: S.of(context).kidsCollections,
                               imagePath: bannerImage4,
-                              onClickScreen: HomeCategoryProducts(83)),
+                              onClickScreen: HomeCategoryProducts(144)),
                           _buildHomeBanners(
                               productList: list5,
                               description: S
@@ -304,7 +304,7 @@ class _HomeState extends State<Home> {
                                   .pushYourselfFurtherWithOurTrendySportswear,
                               heading: S.of(context).womensSportswear,
                               imagePath: bannerImage5,
-                              onClickScreen: HomeCategoryProducts(25)),
+                              onClickScreen: HomeCategoryProducts(147)),
                           _buildHomeBanners(
                               productList: list6,
                               description: S
