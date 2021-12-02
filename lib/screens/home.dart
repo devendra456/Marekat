@@ -436,7 +436,7 @@ class _HomeState extends State<Home> {
 
   buildBrandCard() {
     return FutureBuilder(
-        future: BrandRepository().getBrands(page: "1", name: ""),
+        future: BrandRepository().getTopBrands(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Container();
