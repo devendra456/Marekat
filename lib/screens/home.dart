@@ -770,12 +770,12 @@ class _HomeState extends State<Home> {
     return productList.length == 0
         ? Container()
         : SizedBox(
-            height: MediaQuery.of(context).size.height * .4,
+            height: 320,
             width: double.infinity,
             child: ListView.builder(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
-              itemExtent: MediaQuery.of(context).size.width * .51,
+              itemExtent: 180,
               physics: BouncingScrollPhysics(),
               itemBuilder: (context, index) {
                 return Padding(

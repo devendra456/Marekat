@@ -239,7 +239,7 @@ class _CategoryListState extends State<CategoryList> {
                     parent_category_name:
                         categoryResponse.categories[index].name,
                   )
-                : HomeCategoryProducts(categoryResponse.categories[index]);
+                : HomeCategoryProducts(categoryResponse.categories[index].id);
           }));
         },
         child: Row(
@@ -348,7 +348,7 @@ class _CategoryListState extends State<CategoryList> {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
                                   return HomeCategoryProducts(
-                                      categoryResponse.categories[index]);
+                                      categoryResponse.categories[index].id);
                                 }));
                               },
                               child: Container(
