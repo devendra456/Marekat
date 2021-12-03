@@ -88,14 +88,14 @@ class _CheckoutState extends State<Checkout> {
   }
 
   fetchSummary() async {
-    Loader.showLoaderDialog(context);
+    //Loader.showLoaderDialog(context);
     var cartSummaryResponse;
     try {
       cartSummaryResponse =
           await CartRepository().getCartSummaryResponse(widget.owner_id);
       Loader.dismissDialog(context);
     } catch (e) {
-      Loader.dismissDialog(context);
+      //Loader.dismissDialog(context);
     }
 
     if (cartSummaryResponse != null) {
