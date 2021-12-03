@@ -19,6 +19,7 @@ import 'package:marekat/repositories/cart_repository.dart';
 import 'package:marekat/repositories/coupon_repository.dart';
 import 'package:marekat/repositories/payment_repository.dart';
 import 'package:marekat/screens/order_list.dart';
+import 'package:marekat/ui_sections/loader.dart';
 
 class Checkout extends StatefulWidget {
   int owner_id;
@@ -87,8 +88,15 @@ class _CheckoutState extends State<Checkout> {
   }
 
   fetchSummary() async {
-    var cartSummaryResponse =
-        await CartRepository().getCartSummaryResponse(widget.owner_id);
+    Loader.showLoaderDialog(context);
+    var cartSummaryResponse;
+    try {
+      cartSummaryResponse =
+          await CartRepository().getCartSummaryResponse(widget.owner_id);
+      Loader.dismissDialog(context);
+    } catch (e) {
+      Loader.dismissDialog(context);
+    }
 
     if (cartSummaryResponse != null) {
       _subTotalString = cartSummaryResponse.sub_total;
@@ -230,17 +238,16 @@ class _CheckoutState extends State<Checkout> {
 
   Future<void> payPressed() async {
     FlutterPaytabsBridge.startCardPayment(await generateConfig(), (event) {
-      print(event);
       if (event["status"] == "success") {
         var transactionDetails = event["data"];
         print(transactionDetails);
-        print("payment successful");
+        ToastComponent.showDialog("Payment Successful");
         paymentSuccessful();
       } else if (event["status"] == "error") {
         paymentError();
       } else if (event["status"] == "event") {
         print("errror");
-      }else{
+      } else {
         print("elase");
       }
     });
@@ -866,8 +873,16 @@ class _CheckoutState extends State<Checkout> {
   }
 
   void paymentSuccessful() async {
-    final response = await PaymentRepository()
-        .getOrderCreateResponse(widget.owner_id, "Paytabs", "paid");
+    var response;
+    Loader.showLoaderDialog(context);
+    try {
+      response = await PaymentRepository()
+          .getOrderCreateResponse(widget.owner_id, "Paytabs", "paid");
+      Loader.dismissDialog(context);
+    } catch (e) {
+      Loader.dismissDialog(context);
+    }
+
     if (response.result) {
       ToastComponent.showDialog(response.message);
       Navigator.push(context, MaterialPageRoute(builder: (builder) {

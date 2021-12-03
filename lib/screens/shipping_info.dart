@@ -233,9 +233,15 @@ class _ShippingInfoState extends State<ShippingInfo> {
       ToastComponent.showDialog(S.of(context).selectACountry);
       return;
     }
-
-    var addressUpdateInCartResponse = await AddressRepository()
-        .getAddressUpdateInCartResponse(_seleted_shipping_address);
+    var addressUpdateInCartResponse;
+    Loader.showLoaderDialog(context);
+    try {
+      addressUpdateInCartResponse = await AddressRepository()
+          .getAddressUpdateInCartResponse(_seleted_shipping_address);
+      Loader.dismissDialog(context);
+    } catch (e) {
+      Loader.dismissDialog(context);
+    }
 
     if (addressUpdateInCartResponse.result == false) {
       ToastComponent.showDialog(addressUpdateInCartResponse.message);

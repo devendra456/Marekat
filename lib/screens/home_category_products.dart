@@ -440,19 +440,21 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
           ),
         ),
       ),
-      body: Stack(clipBehavior: Clip.none, children: [
-        buildProductList(),
-        Positioned(
-          top: 0.0,
-          left: 0.0,
-          right: 0.0,
-          child: buildAppBar(context),
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: buildProductLoadingContainer(),
-        )
-      ]),
+      body: SafeArea(
+        child: Stack(clipBehavior: Clip.none, children: [
+          buildProductList(),
+          Positioned(
+            top: 0.0,
+            left: 0.0,
+            right: 0.0,
+            child: buildAppBar(context),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: buildProductLoadingContainer(),
+          )
+        ]),
+      ),
     );
   }
 
@@ -463,15 +465,12 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
       actions: [Container()],
       backgroundColor: Colors.white.withOpacity(0.95),
       centerTitle: false,
-      flexibleSpace: Padding(
-        padding: const EdgeInsets.fromLTRB(0.0, 16.0, 0.0, 0.0),
-        child: Column(
-          children: [
-            buildTopAppbar(context),
-            buildBottomAppBar(context),
-            subCategoriesList(context)
-          ],
-        ),
+      flexibleSpace: Column(
+        children: [
+          buildTopAppbar(context),
+          buildBottomAppBar(context),
+          subCategoriesList(context)
+        ],
       ),
     );
   }
@@ -751,48 +750,45 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
   }
 
   buildTopAppbar(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8.0),
-      child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.arrow_back, color: MyTheme.accent_color),
-              onPressed: () {
-                Navigator.of(context).pop();
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          IconButton(
+            icon: Icon(Icons.arrow_back, color: MyTheme.accent_color),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          Expanded(
+            child: TextField(
+              onTap: () {},
+              controller: _searchController,
+              onSubmitted: (txt) {
+                _searchKey = txt;
+                setState(() {});
+                _onSearchSubmit();
               },
+              decoration: InputDecoration(
+                  hintText: S.of(context).searchHere,
+                  hintStyle:
+                      TextStyle(fontSize: 12.0, color: MyTheme.textfield_grey),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: MyTheme.white, width: 0.0),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: MyTheme.white, width: 0.0),
+                  ),
+                  contentPadding: EdgeInsets.all(0.0)),
             ),
-            Expanded(
-              child: TextField(
-                onTap: () {},
-                controller: _searchController,
-                onSubmitted: (txt) {
-                  _searchKey = txt;
-                  setState(() {});
-                  _onSearchSubmit();
-                },
-                decoration: InputDecoration(
-                    hintText: S.of(context).searchHere,
-                    hintStyle: TextStyle(
-                        fontSize: 12.0, color: MyTheme.textfield_grey),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: MyTheme.white, width: 0.0),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: MyTheme.white, width: 0.0),
-                    ),
-                    contentPadding: EdgeInsets.all(0.0)),
-              ),
-            ),
-            IconButton(
-                icon: Icon(Icons.search, color: MyTheme.accent_color),
-                onPressed: () {
-                  _searchKey = _searchController.text.toString();
-                  setState(() {});
-                  _onSearchSubmit();
-                }),
-          ]),
-    );
+          ),
+          IconButton(
+              icon: Icon(Icons.search, color: MyTheme.accent_color),
+              onPressed: () {
+                _searchKey = _searchController.text.toString();
+                setState(() {});
+                _onSearchSubmit();
+              }),
+        ]);
   }
 
   Drawer buildFilterDrawer() {
@@ -1071,7 +1067,7 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
               parent: AlwaysScrollableScrollPhysics()),
           child: Column(
             children: [
-              SizedBox(height: 144),
+              SizedBox(height: 120),
               GridView.builder(
                 itemCount: _productList.length,
                 controller: _scrollController,
