@@ -4,24 +4,6 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
-	<key>NSContactsUsageDescription</key>
-	<string>$(DEVELOPMENT_LANGUAGE)</string>
-	<key>NSCalendarsUsageDescription</key>
-	<string>$(DEVELOPMENT_LANGUAGE)</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>$(DEVELOPMENT_LANGUAGE)</string>
-	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>$(DEVELOPMENT_LANGUAGE)</string>
-	<key>NSCameraUsageDescription</key>
-	<string>$(DEVELOPMENT_LANGUAGE)</string>
-	<key>NSAppleMusicUsageDescription</key>
-	<string>$(DEVELOPMENT_LANGUAGE)</string>
-	<key>NSMotionUsageDescription</key>
-	<string>$(DEVELOPMENT_LANGUAGE)</string>
-	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>$(DEVELOPMENT_LANGUAGE)</string>
-    <key>NSBluetoothAlwaysUsageDescription</key>
-	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -40,8 +22,26 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>NSCameraUsageDescription</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>NSContactsUsageDescription</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This app needs access to location when open</string>
+	<key>NSMotionUsageDescription</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
