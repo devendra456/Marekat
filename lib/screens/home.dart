@@ -30,7 +30,7 @@ class Home extends StatefulWidget {
     Key key,
     this.title,
     this.show_back_button = false,
-    this.controller = null,
+    this.controller,
   }) : super(key: key);
 
   final String title;
@@ -65,29 +65,29 @@ class _HomeState extends State<Home> {
   List<Product> list12 = [];
 
   final String bannerImage1 =
-      "https://demo.marekat.com/public/uploads/all/mT97RVRjqnv7w0rBMwH4qSxIApL3YhTUy8Gk8eiA.jpg";
+      "https://marekat.com/public/uploads/all/cat-1.png";
   final String bannerImage2 =
-      "https://demo.marekat.com/public/uploads/all/ziGlq4gl7xvgUUpGxO7ok71DbJx1ZuA4dfJmuWHt.jpg";
-  final String bannerImage3 = "https://demo.marekat.com/public/uploads/all/V9"
-      "jNUWSRI3EEGhPOJojadCShDRV6xwpklN84ph6X.jpg";
+      "https://marekat.com/public/uploads/all/cat-3.png";
+  final String bannerImage3 =
+      "https://marekat.com/public/uploads/all/cat-4.png";
   final String bannerImage4 =
-      "https://marekat.com/wp-content/uploads/2021/07/kids-fashion-home-page.jpg";
+      "https://marekat.com/public/uploads/all/cat-5.png";
   final String bannerImage5 =
-      "https://marekat.com/wp-content/uploads/2021/07/sportwear-banner-HP.jpg";
+      "https://marekat.com/public/uploads/all/cat-6.png";
   final String bannerImage6 =
-      "https://marekat.com/wp-content/uploads/2021/07/women-bag-home-page-v02.jpg";
+      "https://marekat.com/public/uploads/all/cat-7.png";
   final String bannerImage7 =
-      "https://marekat.com/wp-content/uploads/2021/07/faxkxkpk-MADEII@29.jpg";
+      "https://marekat.com/public/uploads/all/cat-%E2%80%938.png";
   final String bannerImage8 =
-      "https://marekat.com/wp-content/uploads/2021/06/perfume-banner-Home-page.jpg";
+      "https://marekat.com/public/uploads/all/cat-%E2%80%939.png";
   final String bannerImage9 =
-      "https://marekat.com/wp-content/uploads/2021/06/sunglasses-women-em-600x600-1.jpg";
+      "https://marekat.com/public/uploads/all/QIQ2S0T2pcwo4cQH4flIysVlrdhqmg3tsGEM2war.png";
   final String bannerImage10 =
-      "https://marekat.com/wp-content/uploads/2021/06/man-with-sunglasses-1.jpg";
+      "https://marekat.com/public/uploads/all/6fa590YXgLTL4FX5ZIz26hFCCZX1fYe77slxrOht.png";
   final String bannerImage11 =
-      "https://marekat.com/wp-content/uploads/2021/06/PORTRA2-scaled-1.jpg";
+      "https://marekat.com/public/uploads/all/3Ek4Q8DMqA2MRx9BRJb5zsdIfNrP1cgMbM9kqklL.png";
   final String bannerImage12 =
-      "https://marekat.com/wp-content/uploads/2021/06/men-watches-scaled-1.jpg";
+      "https://marekat.com/public/uploads/all/zGpWMgJrqQ8jJHPlETfG6OorLeg6SJ7y2oBSrP1E.png";
 
   @override
   void initState() {
