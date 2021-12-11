@@ -80,7 +80,7 @@ class ProductRepository {
     var url = "${AppConfig.BASE_URL}/products/search" +
         "?page=${page}&name=${name}&sort_key=${sort_key}&brands=${brands}&categories=${categories}&min=${min}&max=${max}&colors=${colors}";
 
-    print("url:" + url);
+    //print("url:" + url);
     final response = await http.get(Uri.parse(url),
         headers: {"X-localization": langCode.$ == "ar" ? "sa" : "en"});
     return productMiniResponseFromJson(response.body);

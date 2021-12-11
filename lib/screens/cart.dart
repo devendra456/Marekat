@@ -201,8 +201,8 @@ class _CartState extends State<Cart> {
     var cart_ids_string = cart_ids.join(',').toString();
     var cart_quantities_string = cart_quantities.join(',').toString();
 
-    print(cart_ids_string);
-    print(cart_quantities_string);
+    //print(cart_ids_string);
+    //print(cart_quantities_string);
 
     var cartProcessResponse = await CartRepository()
         .getCartProcessResponse(cart_ids_string, cart_quantities_string);

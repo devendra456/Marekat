@@ -1177,35 +1177,37 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
     );
   }
 
-  ListView buildFilterBrandsList() {
-    return ListView(
-      padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
-      physics: NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      children: <Widget>[
-        ..._filterBrandList
-            .map(
-              (brand) => CheckboxListTile(
-                controlAffinity: ListTileControlAffinity.leading,
-                dense: true,
-                title: Text(brand.name),
-                value: _selectedBrands.contains(brand.id),
-                onChanged: (bool value) {
-                  if (value) {
-                    setState(() {
-                      _selectedBrands.add(brand.id);
-                    });
-                  } else {
-                    setState(() {
-                      _selectedBrands.remove(brand.id);
-                    });
-                  }
-                },
-              ),
-            )
-            .toList()
-      ],
-    );
+  buildFilterBrandsList() {
+    return StatefulBuilder(builder: (_, setState) {
+      return ListView(
+        padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
+        physics: NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        children: <Widget>[
+          ..._filterBrandList
+              .map(
+                (brand) => CheckboxListTile(
+                  controlAffinity: ListTileControlAffinity.leading,
+                  dense: true,
+                  title: Text(brand.name),
+                  value: _selectedBrands.contains(brand.id),
+                  onChanged: (bool value) {
+                    if (value) {
+                      setState(() {
+                        _selectedBrands.add(brand.id);
+                      });
+                    } else {
+                      setState(() {
+                        _selectedBrands.remove(brand.id);
+                      });
+                    }
+                  },
+                ),
+              )
+              .toList()
+        ],
+      );
+    });
   }
 
   Container buildProductList() {
