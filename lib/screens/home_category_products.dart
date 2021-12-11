@@ -39,15 +39,9 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
   final TextEditingController _searchController = new TextEditingController();
   final TextEditingController _minPriceController = new TextEditingController();
   final TextEditingController _maxPriceController = new TextEditingController();
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  //--------------------
-  List<dynamic> _filterBrandList = List();
-  bool _filteredBrandsCalled = false;
-  List<dynamic> _filterCategoryList = List();
-  bool _filteredCategoriesCalled = false;
+  List<dynamic> _filterBrandList = [];
 
-  //----------------------------------------
   String _searchKey = "";
 
   List<dynamic> _productList = [];
@@ -57,13 +51,10 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
   bool _showProductLoadingContainer = false;
 
   List<dynamic> _brandList = [];
-  bool _isBrandInitial = true;
-  int _brandPage = 1;
   int _totalBrandData = 0;
   bool _showBrandLoadingContainer = false;
 
   List<dynamic> _shopList = [];
-  bool _isShopInitial = true;
   int _shopPage = 1;
   int _totalShopData = 0;
   bool _showShopLoadingContainer = false;
@@ -75,20 +66,20 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
 
   var _currentIndex = 0;
 
-  //----------------------------------------
+  List<String> _filterColorList = [];
 
-  fetchFilteredBrands() async {
-    var filteredBrandResponse = await BrandRepository().getFilterPageBrands();
+  String selectedFilterColor = "";
+
+  fetchFilteredBrands(int id) async {
+    _filterBrandList.clear();
+    var filteredBrandResponse = await BrandRepository().getFilterBrands(id);
     _filterBrandList.addAll(filteredBrandResponse.brands);
-    _filteredBrandsCalled = true;
     setState(() {});
   }
 
-  fetchFilteredCategories() async {
-    var filteredCategoriesResponse =
-        await CategoryRepository().getFilterPageCategories();
-    _filterCategoryList.addAll(filteredCategoriesResponse.categories);
-    _filteredCategoriesCalled = true;
+  fetchFilteredColors(int id) async {
+    _filterColorList.clear();
+    _filterColorList = await BrandRepository().getFilterColor(id);
     setState(() {});
   }
 
@@ -109,7 +100,8 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
     _selectedCategories.add(widget.id);
     fetchProductData();
     fetchSubCategory(widget.id);
-    fetchFilteredBrands();
+    fetchFilteredBrands(widget.id);
+    fetchFilteredColors(widget.id);
     _productScrollController.addListener(() {
       if (_productScrollController.position.pixels ==
           _productScrollController.position.maxScrollExtent) {
@@ -131,13 +123,15 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
 
   fetchProductData() async {
     var productResponse = await ProductRepository().getFilteredProducts(
-        page: _productPage,
-        name: _searchKey,
-        sort_key: _selectedSort,
-        brands: _selectedBrands.join(",").toString(),
-        categories: _selectedCategories.join(",").toString(),
-        max: _maxPriceController.text.toString(),
-        min: _minPriceController.text.toString());
+      page: _productPage,
+      name: _searchKey,
+      sort_key: _selectedSort,
+      brands: _selectedBrands.join(",").toString(),
+      categories: _selectedCategories.join(",").toString(),
+      max: _maxPriceController.text.toString(),
+      min: _minPriceController.text.toString(),
+      colors: selectedFilterColor,
+    );
 
     _productList.addAll(productResponse.products);
     _isProductInitial = false;
@@ -155,21 +149,9 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
     setState(() {});
   }
 
-  fetchBrandData() async {
-    var brandResponse =
-        await BrandRepository().getBrands(page: _brandPage, name: _searchKey);
-    _brandList.addAll(brandResponse.brands);
-    _isBrandInitial = false;
-    _totalBrandData = brandResponse.meta.total;
-    _showBrandLoadingContainer = false;
-    setState(() {});
-  }
-
   resetBrandList() {
     _brandList.clear();
-    _isBrandInitial = true;
     _totalBrandData = 0;
-    _brandPage = 1;
     _showBrandLoadingContainer = false;
     setState(() {});
   }
@@ -178,7 +160,6 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
     var shopResponse =
         await ShopRepository().getShops(page: _shopPage, name: _searchKey);
     _shopList.addAll(shopResponse.shops);
-    _isShopInitial = false;
     _totalShopData = shopResponse.meta.total;
     _showShopLoadingContainer = false;
     setState(() {});
@@ -186,7 +167,6 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
 
   resetShopList() {
     _shopList.clear();
-    _isShopInitial = true;
     _totalShopData = 0;
     _shopPage = 1;
     _showShopLoadingContainer = false;
@@ -257,8 +237,6 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      endDrawer: buildFilterDrawer(),
-      key: _scaffoldKey,
       backgroundColor: Colors.white,
       bottomNavigationBar: ScrollToHide(
         controller: _productScrollController,
@@ -497,6 +475,10 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
                           index == 0 ? widget.id : _categoryList[index - 1].id);
                       resetProductList();
                       fetchProductData();
+                      fetchFilteredBrands(
+                          index == 0 ? widget.id : _categoryList[index - 1].id);
+                      fetchFilteredColors(
+                          index == 0 ? widget.id : _categoryList[index - 1].id);
                       print(_categoryList[index - 1].number_of_children);
                       if (index != 0) {
                         if (_categoryList[index - 1].number_of_children > 0) {
@@ -551,7 +533,12 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
         Expanded(
           child: GestureDetector(
             onTap: () {
-              _scaffoldKey.currentState.openEndDrawer();
+              //_scaffoldKey.currentState.openEndDrawer();
+              showDialog(
+                  context: context,
+                  builder: (builder) {
+                    return buildFilterDialog();
+                  });
             },
             child: Container(
               decoration: BoxDecoration(
@@ -976,6 +963,220 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
     );
   }
 
+  buildFilterDialog() {
+    return Dialog(
+      child: StatefulBuilder(
+        builder: (_, setState) {
+          return Container(
+            padding: EdgeInsets.only(top: 8),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  height: 100,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Text(
+                            S.of(context).priceRange,
+                            style: TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Container(
+                                height: 30,
+                                width: 100,
+                                child: TextField(
+                                  controller: _minPriceController,
+                                  keyboardType: TextInputType.number,
+                                  inputFormatters: [_amountValidator],
+                                  decoration: InputDecoration(
+                                      hintText: S.of(context).minimum,
+                                      hintStyle: TextStyle(
+                                          fontSize: 12.0,
+                                          color: MyTheme.textfield_grey),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: MyTheme.textfield_grey,
+                                            width: 1.0),
+                                        borderRadius: const BorderRadius.all(
+                                          const Radius.circular(4.0),
+                                        ),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: MyTheme.textfield_grey,
+                                            width: 2.0),
+                                        borderRadius: const BorderRadius.all(
+                                          const Radius.circular(4.0),
+                                        ),
+                                      ),
+                                      contentPadding: EdgeInsets.all(4.0)),
+                                ),
+                              ),
+                            ),
+                            Text(" - "),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Container(
+                                height: 30,
+                                width: 100,
+                                child: TextField(
+                                  controller: _maxPriceController,
+                                  keyboardType: TextInputType.number,
+                                  inputFormatters: [_amountValidator],
+                                  decoration: InputDecoration(
+                                      hintText: S.of(context).maximum,
+                                      hintStyle: TextStyle(
+                                          fontSize: 12.0,
+                                          color: MyTheme.textfield_grey),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: MyTheme.textfield_grey,
+                                            width: 1.0),
+                                        borderRadius: const BorderRadius.all(
+                                          const Radius.circular(4.0),
+                                        ),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: MyTheme.textfield_grey,
+                                            width: 2.0),
+                                        borderRadius: const BorderRadius.all(
+                                          const Radius.circular(4.0),
+                                        ),
+                                      ),
+                                      contentPadding: EdgeInsets.all(4.0)),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: CustomScrollView(slivers: [
+                    SliverList(
+                      delegate: SliverChildListDelegate([
+                        Padding(
+                          padding: const EdgeInsets.only(left: 16.0, right: 16),
+                          child: Text(
+                            S.of(context).brands,
+                            style: TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        _filterBrandList.length == 0
+                            ? Container(
+                                height: 100,
+                                child: Center(
+                                  child: Text(
+                                    S.of(context).noBrandsAvailable,
+                                    style: TextStyle(color: MyTheme.font_grey),
+                                  ),
+                                ),
+                              )
+                            : SingleChildScrollView(
+                                child: buildFilterBrandsList(),
+                              ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 16.0, right: 16),
+                          child: Text(
+                            S.of(context).colors,
+                            style: TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        _filterColorList.length == 0
+                            ? Container(
+                                height: 100,
+                                child: Center(
+                                  child: Text(
+                                    S.of(context).noColorsAvailable,
+                                    style: TextStyle(color: MyTheme.font_grey),
+                                  ),
+                                ),
+                              )
+                            : SingleChildScrollView(
+                                child: buildColorsList(),
+                              ),
+                      ]),
+                    )
+                  ]),
+                ),
+                Container(
+                  height: 70,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      MaterialButton(
+                        color: Color.fromRGBO(234, 67, 53, 1),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4.0),
+                        ),
+                        child: Text(
+                          S.of(context).clear,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onPressed: () {
+                          _minPriceController.clear();
+                          _maxPriceController.clear();
+                          setState(() {
+                            _selectedCategories.clear();
+                            _selectedBrands.clear();
+                            selectedFilterColor = "";
+                          });
+                        },
+                      ),
+                      MaterialButton(
+                        color: Color.fromRGBO(52, 168, 83, 1),
+                        child: Text(
+                          S.of(context).apply,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onPressed: () {
+                          var min = _minPriceController.text.toString();
+                          var max = _maxPriceController.text.toString();
+                          bool apply = true;
+                          if (min != "" && max != "") {
+                            if (max.compareTo(min) < 0) {
+                              ToastComponent.showDialog(
+                                S
+                                    .of(context)
+                                    .minPriceCannotBeLargerThanMaxPrice,
+                              );
+                              apply = false;
+                            }
+                          }
+
+                          if (apply) {
+                            Navigator.pop(context);
+                            _applyProductFilter();
+                          }
+                        },
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
   ListView buildFilterBrandsList() {
     return ListView(
       padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
@@ -997,38 +1198,6 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
                   } else {
                     setState(() {
                       _selectedBrands.remove(brand.id);
-                    });
-                  }
-                },
-              ),
-            )
-            .toList()
-      ],
-    );
-  }
-
-  ListView buildFilterCategoryList() {
-    return ListView(
-      padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
-      physics: NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      children: <Widget>[
-        ..._filterCategoryList
-            .map(
-              (category) => CheckboxListTile(
-                controlAffinity: ListTileControlAffinity.leading,
-                dense: true,
-                title: Text(category.name),
-                value: _selectedCategories.contains(category.id),
-                onChanged: (bool value) {
-                  if (value) {
-                    setState(() {
-                      _selectedCategories.clear();
-                      _selectedCategories.add(category.id);
-                    });
-                  } else {
-                    setState(() {
-                      _selectedCategories.remove(category.id);
                     });
                   }
                 },
@@ -1098,5 +1267,51 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
     } else {
       return Container(); // should never be happening
     }
+  }
+
+  buildColorsList() {
+    return StatefulBuilder(builder: (_, setState) {
+      return GridView.builder(
+          itemCount: _filterColorList.length,
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 4,
+            mainAxisSpacing: 16,
+            crossAxisSpacing: 16,
+            childAspectRatio: 1,
+          ),
+          itemBuilder: (itemBuilder, index) {
+            return InkWell(
+              onTap: () {
+                setState(() {
+                  selectedFilterColor =
+                      _filterColorList[index].replaceAll("#", "");
+                });
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Color(int.parse(
+                        "0xFF" + _filterColorList[index].replaceAll("#", ""))),
+                    border: selectedFilterColor ==
+                            _filterColorList[index].replaceAll("#", "")
+                        ? Border.all(color: MyTheme.accent_color, width: 2)
+                        : null,
+                    boxShadow: [
+                      selectedFilterColor ==
+                              _filterColorList[index].replaceAll("#", "")
+                          ? BoxShadow(
+                              color: MyTheme.accent_color,
+                              offset: Offset(0.5, 0.5),
+                              blurRadius: 1,
+                              spreadRadius: 0.5)
+                          : BoxShadow(),
+                    ],
+                    borderRadius: BorderRadius.circular(4)),
+              ),
+            );
+          });
+    });
   }
 }

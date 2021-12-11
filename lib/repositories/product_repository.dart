@@ -67,18 +67,20 @@ class ProductRepository {
     return productMiniResponseFromJson(response.body);
   }
 
-  Future<ProductMiniResponse> getFilteredProducts(
-      {name = "",
-      sort_key = "",
-      page = 1,
-      brands = "",
-      categories = "",
-      min = "",
-      max = ""}) async {
+  Future<ProductMiniResponse> getFilteredProducts({
+    name = "",
+    sort_key = "",
+    page = 1,
+    brands = "",
+    categories = "",
+    min = "",
+    max = "",
+    colors = "",
+  }) async {
     var url = "${AppConfig.BASE_URL}/products/search" +
-        "?page=${page}&name=${name}&sort_key=${sort_key}&brands=${brands}&categories=${categories}&min=${min}&max=${max}";
+        "?page=${page}&name=${name}&sort_key=${sort_key}&brands=${brands}&categories=${categories}&min=${min}&max=${max}&colors=${colors}";
 
-    //print("url:" + url);
+    print("url:" + url);
     final response = await http.get(Uri.parse(url),
         headers: {"X-localization": langCode.$ == "ar" ? "sa" : "en"});
     return productMiniResponseFromJson(response.body);

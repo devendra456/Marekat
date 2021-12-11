@@ -1,6 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'package:marekat/app_config.dart';
 import 'package:marekat/data_model/brand_response.dart';
+import 'package:marekat/data_model/color_filter_model.dart';
 import 'package:marekat/helpers/shared_value_helper.dart';
 
 class BrandRepository {
@@ -8,6 +9,16 @@ class BrandRepository {
     final response = await http.get(
         Uri.parse("${AppConfig.BASE_URL}/filter/brands"),
         headers: {"X-localization": langCode.$ == "ar" ? "sa" : "en"});
+    return brandResponseFromJson(response.body);
+  }
+
+  Future<BrandResponse> getFilterBrands(int id) async {
+    final response = await http.post(
+        Uri.parse("${AppConfig.BASE_URL}/filter/brands"),
+        headers: {"X-localization": langCode.$ == "ar" ? "sa" : "en"},
+        body: {"category_id": id.toString()});
+    print(id);
+    print(response.body);
     return brandResponseFromJson(response.body);
   }
 
@@ -23,5 +34,16 @@ class BrandRepository {
         Uri.parse("${AppConfig.BASE_URL}/brands/top"),
         headers: {"X-localization": langCode.$ == "ar" ? "sa" : "en"});
     return brandResponseFromJson(response.body);
+  }
+
+  Future<List<String>> getFilterColor(int id) async {
+    final response = await http
+        .post(Uri.parse("${AppConfig.BASE_URL}/filter/colors"), body: {
+      "category_id": id.toString(),
+    });
+
+    print(response.body);
+
+    return filterColorModelFromJson(response.body);
   }
 }

@@ -3004,6 +3004,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Colors`
+  String get colors {
+    return Intl.message(
+      'Colors',
+      name: 'colors',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No Colors Available`
+  String get noColorsAvailable {
+    return Intl.message(
+      'No Colors Available',
+      name: 'noColorsAvailable',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
