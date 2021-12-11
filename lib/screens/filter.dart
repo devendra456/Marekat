@@ -394,7 +394,7 @@ class _FilterState extends State<Filter> {
         flexibleSpace: Padding(
           padding: const EdgeInsets.fromLTRB(0.0, 16.0, 0.0, 0.0),
           child: Column(
-            children: [buildTopAppbar(context), buildBottomAppBar(context)],
+            children: [buildTopAppbar(context)],
           ),
         ));
   }
@@ -655,44 +655,42 @@ class _FilterState extends State<Filter> {
   buildTopAppbar(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
-      child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.arrow_back, color: MyTheme.accent_color),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            Expanded(
-              child: TextField(
-                onTap: () {},
-                autofocus: true,
-                controller: _searchController,
-                onSubmitted: (txt) {
-                  _searchKey = txt;
-                  setState(() {});
-                  _onSearchSubmit();
-                },
-                decoration: InputDecoration(
-                    hintText: S.of(context).searchHere,
-                    hintStyle: TextStyle(
-                        fontSize: 12.0, color: MyTheme.textfield_grey),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: MyTheme.white, width: 0.0),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: MyTheme.white, width: 0.0),
-                    ),
-                    contentPadding: EdgeInsets.all(0.0)),
-              ),
-            ),
-            IconButton(
-                icon: Icon(Icons.search, color: MyTheme.accent_color),
-                onPressed: () {
-                  _searchKey = _searchController.text.toString();
-                  setState(() {});
-                  _onSearchSubmit();
-                }),
-          ]),
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <
+          Widget>[
+        IconButton(
+          icon: Icon(Icons.arrow_back, color: MyTheme.accent_color),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        Expanded(
+          child: TextField(
+            onTap: () {},
+            autofocus: true,
+            controller: _searchController,
+            onSubmitted: (txt) {
+              _searchKey = txt;
+              setState(() {});
+              _onSearchSubmit();
+            },
+            decoration: InputDecoration(
+                hintText: S.of(context).searchProductHere,
+                hintStyle: TextStyle(fontSize: 12.0, color: MyTheme.light_grey),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: MyTheme.white, width: 0.0),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: MyTheme.white, width: 0.0),
+                ),
+                contentPadding: EdgeInsets.all(0.0)),
+          ),
+        ),
+        IconButton(
+            icon: Icon(Icons.search, color: MyTheme.accent_color),
+            onPressed: () {
+              _searchKey = _searchController.text.toString();
+              setState(() {});
+              _onSearchSubmit();
+            }),
+      ]),
     );
   }
 
@@ -993,7 +991,7 @@ class _FilterState extends State<Filter> {
               parent: AlwaysScrollableScrollPhysics()),
           child: Column(
             children: [
-              SizedBox(height: 112
+              SizedBox(height: 88
                   //MediaQuery.of(context).viewPadding.top > 40 ? 180 : 135
                   //MediaQuery.of(context).viewPadding.top is the statusbar height, with a notch phone it results almost 50, without a notch it shows 24.0.For safety we have checked if its greater than thirty
                   ),

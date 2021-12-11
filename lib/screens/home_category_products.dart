@@ -973,7 +973,7 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  height: 100,
+                  height: 90,
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
@@ -1179,17 +1179,27 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
 
   buildFilterBrandsList() {
     return StatefulBuilder(builder: (_, setState) {
-      return ListView(
-        padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
+      return GridView(
+        padding: EdgeInsets.only(top: 4.0, bottom: 4.0),
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
-        children: <Widget>[
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          mainAxisSpacing: 0,
+          crossAxisSpacing: 8,
+          childAspectRatio: 3,
+        ),
+        children: [
           ..._filterBrandList
               .map(
                 (brand) => CheckboxListTile(
                   controlAffinity: ListTileControlAffinity.leading,
                   dense: true,
-                  title: Text(brand.name),
+                  contentPadding: EdgeInsets.only(left: 8),
+                  title: Text(
+                    brand.name,
+                    maxLines: 2,
+                  ),
                   value: _selectedBrands.contains(brand.id),
                   onChanged: (bool value) {
                     if (value) {
@@ -1293,24 +1303,20 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
                 });
               },
               child: Container(
+                padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                    color: Color(int.parse(
-                        "0xFF" + _filterColorList[index].replaceAll("#", ""))),
                     border: selectedFilterColor ==
                             _filterColorList[index].replaceAll("#", "")
                         ? Border.all(color: MyTheme.accent_color, width: 2)
-                        : null,
-                    boxShadow: [
-                      selectedFilterColor ==
-                              _filterColorList[index].replaceAll("#", "")
-                          ? BoxShadow(
-                              color: MyTheme.accent_color,
-                              offset: Offset(0.5, 0.5),
-                              blurRadius: 1,
-                              spreadRadius: 0.5)
-                          : BoxShadow(),
-                    ],
-                    borderRadius: BorderRadius.circular(4)),
+                        : Border.all(color: MyTheme.accent_color, width: 0.1),
+                    borderRadius: BorderRadius.circular(8)),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Color(int.parse(
+                        "0xFF" + _filterColorList[index].replaceAll("#", ""))),
+                  ),
+                ),
               ),
             );
           });

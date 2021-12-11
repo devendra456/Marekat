@@ -250,6 +250,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "reviews" : MessageLookupByLibrary.simpleMessage("المراجعات"),
     "search" : MessageLookupByLibrary.simpleMessage("يبحث"),
     "searchHere" : MessageLookupByLibrary.simpleMessage("ابحث هنا ؟"),
+    "searchProductHere" : MessageLookupByLibrary.simpleMessage("Search product here?"),
     "searchProductsFrom" : MessageLookupByLibrary.simpleMessage("البحث عن منتجات من:"),
     "searchProductsOfBrand" : MessageLookupByLibrary.simpleMessage("البحث عن منتجات العلامة التجارية:"),
     "searchProductsOfShop" : MessageLookupByLibrary.simpleMessage("البحث عن منتجات المتجر:"),
