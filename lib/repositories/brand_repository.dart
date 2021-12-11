@@ -17,8 +17,6 @@ class BrandRepository {
         Uri.parse("${AppConfig.BASE_URL}/filter/brands"),
         headers: {"X-localization": langCode.$ == "ar" ? "sa" : "en"},
         body: {"category_id": id.toString()});
-    print(id);
-    print(response.body);
     return brandResponseFromJson(response.body);
   }
 
@@ -41,9 +39,6 @@ class BrandRepository {
         .post(Uri.parse("${AppConfig.BASE_URL}/filter/colors"), body: {
       "category_id": id.toString(),
     });
-
-    print(response.body);
-
     return filterColorModelFromJson(response.body);
   }
 }
