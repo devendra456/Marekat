@@ -31,6 +31,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "address" : MessageLookupByLibrary.simpleMessage("Address *"),
     "address_" : MessageLookupByLibrary.simpleMessage("Address"),
     "addressesOfUser" : MessageLookupByLibrary.simpleMessage("Addresses of user"),
+    "all" : MessageLookupByLibrary.simpleMessage("ALL"),
     "allDeliveries" : MessageLookupByLibrary.simpleMessage("All Deliveries"),
     "allPayments" : MessageLookupByLibrary.simpleMessage("All Payments"),
     "allProductsOf" : MessageLookupByLibrary.simpleMessage("All Products of"),

@@ -507,7 +507,9 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
                               width: index == _selectedIndex ? 1 : 0.5),
                           borderRadius: BorderRadius.circular(6)),
                       child: Text(
-                        index == 0 ? "ALL" : _categoryList[index - 1].name,
+                        index == 0
+                            ? S.of(context).all
+                            : _categoryList[index - 1].name,
                         style: TextStyle(
                             color: _selectedIndex == index
                                 ? MyTheme.white
@@ -973,7 +975,7 @@ class _HomeCategoryProductsState extends State<HomeCategoryProducts> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  height: 90,
+                  height: 94,
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(

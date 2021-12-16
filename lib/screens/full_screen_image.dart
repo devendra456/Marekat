@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:marekat/helpers/shared_value_helper.dart';
 
 import '../app_config.dart';
 import '../my_theme.dart';
@@ -49,7 +50,8 @@ class _FullScreenImageState extends State<FullScreenImage> {
             ),
           ),
           Positioned(
-            left: 16,
+            left: langCode.$ == "en" ? 16 : null,
+            right: langCode.$ == "en" ? null : 16,
             top: 16,
             child: GestureDetector(
               onTap: () {
