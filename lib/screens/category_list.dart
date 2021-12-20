@@ -345,24 +345,31 @@ class _CategoryListState extends State<CategoryList> {
                             padding: const EdgeInsets.fromLTRB(0, 12, 0, 0),
                             child: GestureDetector(
                               onTap: () {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return HomeCategoryProducts(
-                                      categoryResponse.categories[index].id);
-                                }));
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return HomeCategoryProducts(
+                                          categoryResponse
+                                              .categories[index].id);
+                                    },
+                                  ),
+                                );
                               },
                               child: Container(
                                 decoration: BoxDecoration(
-                                    color: MyTheme.accent_color,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(4))),
-                                height: 30,
-                                width: 100,
-                                child: Center(
-                                  child: Text(
-                                    S.of(context).viewProducts,
-                                    style: TextStyle(color: Colors.white),
+                                  color: MyTheme.accent_color,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(4),
                                   ),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 4,
+                                ),
+                                child: Text(
+                                  S.of(context).viewProducts,
+                                  style: TextStyle(color: Colors.white),
                                 ),
                               ),
                             ),

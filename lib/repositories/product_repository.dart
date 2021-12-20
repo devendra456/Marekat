@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:marekat/app_config.dart';
 import 'package:marekat/data_model/product_details_response.dart';
@@ -28,8 +27,7 @@ class ProductRepository {
     return productMiniResponseFromJson(response.body);
   }
 
-  Future<ProductMiniResponse> getFlashDealProducts(
-      {@required int id = 0}) async {
+  Future<ProductMiniResponse> getFlashDealProducts({int id = 0}) async {
     final response = await http.get(
         Uri.parse("${AppConfig.BASE_URL}/flash-deal-products/" + id.toString()),
         headers: {"X-localization": langCode.$ == "ar" ? "sa" : "en"});
@@ -37,11 +35,11 @@ class ProductRepository {
   }
 
   Future<ProductMiniResponse> getCategoryProducts(
-      {@required int id = 0, name = "", page = 1}) async {
+      {int id = 0, name = "", page = 1}) async {
     final response = await http.get(
         Uri.parse("${AppConfig.BASE_URL}/products/category/" +
             id.toString() +
-            "?page=${page}&name=${name}"),
+            "?page=$page&name=$name"),
         headers: {"X-localization": langCode.$ == "ar" ? "sa" : "en"});
     return productMiniResponseFromJson(response.body);
   }
@@ -50,7 +48,7 @@ class ProductRepository {
       {int id = 0, name = "", page = 1}) async {
     var url = "${AppConfig.BASE_URL}/products/seller/" +
         id.toString() +
-        "?page=${page}&name=${name}";
+        "?page=$page&name=$name";
 
     final response = await http.get(Uri.parse(url),
         headers: {"X-localization": langCode.$ == "ar" ? "sa" : "en"});
@@ -58,11 +56,11 @@ class ProductRepository {
   }
 
   Future<ProductMiniResponse> getBrandProducts(
-      {@required int id = 0, name = "", page = 1}) async {
+      {int id = 0, name = "", page = 1}) async {
     final response = await http.get(
         Uri.parse("${AppConfig.BASE_URL}/products/brand/" +
             id.toString() +
-            "?page=${page}&name=${name}"),
+            "?page=$page&name=$name"),
         headers: {"X-localization": langCode.$ == "ar" ? "sa" : "en"});
     return productMiniResponseFromJson(response.body);
   }
@@ -78,7 +76,7 @@ class ProductRepository {
     colors = "",
   }) async {
     var url = "${AppConfig.BASE_URL}/products/search" +
-        "?page=${page}&name=${name}&sort_key=${sort_key}&brands=${brands}&categories=${categories}&min=${min}&max=${max}&colors=${colors}";
+        "?page=$page&name=$name&sort_key=$sort_key&brands=$brands&categories=$categories&min=$min&max=$max&colors=$colors";
 
     //print("url:" + url);
     final response = await http.get(Uri.parse(url),
@@ -86,8 +84,7 @@ class ProductRepository {
     return productMiniResponseFromJson(response.body);
   }
 
-  Future<ProductDetailsResponse> getProductDetails(
-      {@required int id = 0}) async {
+  Future<ProductDetailsResponse> getProductDetails({int id = 0}) async {
     final response = await http.get(
         Uri.parse("${AppConfig.BASE_URL}/products/" + id.toString()),
         headers: {"X-localization": langCode.$ == "ar" ? "sa" : "en"});
@@ -95,15 +92,14 @@ class ProductRepository {
     return productDetailsResponseFromJson(response.body);
   }
 
-  Future<ProductMiniResponse> getRelatedProducts({@required int id = 0}) async {
+  Future<ProductMiniResponse> getRelatedProducts({int id = 0}) async {
     final response = await http.get(
         Uri.parse("${AppConfig.BASE_URL}/products/related/" + id.toString()),
         headers: {"X-localization": langCode.$ == "ar" ? "sa" : "en"});
     return productMiniResponseFromJson(response.body);
   }
 
-  Future<ProductMiniResponse> getTopFromThisSellerProducts(
-      {@required int id = 0}) async {
+  Future<ProductMiniResponse> getTopFromThisSellerProducts({int id = 0}) async {
     final response = await http.get(
         Uri.parse(
             "${AppConfig.BASE_URL}/products/top-from-seller/" + id.toString()),
@@ -114,7 +110,7 @@ class ProductRepository {
   Future<VariantResponse> getVariantWiseInfo(
       {int id = 0, color = '', variants = ''}) async {
     var url =
-        "${AppConfig.BASE_URL}/products/variant/price?id=${id.toString()}&color=${color}&variants=${variants}";
+        "${AppConfig.BASE_URL}/products/variant/price?id=${id.toString()}&color=$color&variants=$variants";
 
     final response = await http.get(Uri.parse(url),
         headers: {"X-localization": langCode.$ == "ar" ? "sa" : "en"});

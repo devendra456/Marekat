@@ -35,7 +35,9 @@ class _MainScreenState extends State<MainScreen> {
     _currentIndex = widget.currentIndex;
     controller = ScrollController();
     _children = [
-      Home(),
+      Home(
+        controller: controller,
+      ),
       CategoryList(
         is_base_category: true,
       ),

@@ -820,48 +820,6 @@ class _ProductDetailsState extends State<ProductDetails> {
                       ),
                       child: buildProductsMayLikeList(),
                     ),
-                    /*_relatedProducts.length > 2
-                        ? Center(
-                            child: InkWell(
-                              onTap: () {
-                                setState(() {
-                                  if (viewMore) {
-                                    viewMore = false;
-                                    _relatedProductLength =
-                                        _relatedProducts.length;
-                                  } else {
-                                    viewMore = true;
-                                    _relatedProductLength = 2;
-                                  }
-                                });
-                              },
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 8, horizontal: 32),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(4),
-                                    border: Border.all(
-                                        color: MyTheme.grey_153, width: 0.3)),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      viewMore ? "View More" : "Collapse",
-                                      style: TextStyle(
-                                          color: MyTheme.dark_grey,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Icon(
-                                        viewMore
-                                            ? Icons.keyboard_arrow_down_rounded
-                                            : Icons.keyboard_arrow_up_rounded,
-                                        color: MyTheme.dark_grey)
-                                  ],
-                                ),
-                              ),
-                            ),
-                          )
-                        : Container(),*/
                   ]),
                 ),
                 SliverList(
