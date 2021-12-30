@@ -20,6 +20,7 @@ import 'package:marekat/repositories/coupon_repository.dart';
 import 'package:marekat/repositories/payment_repository.dart';
 import 'package:marekat/screens/order_list.dart';
 import 'package:marekat/ui_sections/loader.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class Checkout extends StatefulWidget {
   int owner_id;
@@ -237,20 +238,23 @@ class _CheckoutState extends State<Checkout> {
   }
 
   Future<void> payPressed() async {
-    FlutterPaytabsBridge.startCardPayment(await generateConfig(), (event) {
-      if (event["status"] == "success") {
-        var transactionDetails = event["data"];
-        print(transactionDetails);
-        ToastComponent.showDialog("Payment Successful");
-        paymentSuccessful();
-      } else if (event["status"] == "error") {
-        paymentError();
-      } else if (event["status"] == "event") {
-        print("errror");
-      } else {
-        print("elase");
-      }
-    });
+    var status = await Permission.mediaLibrary.request();
+    if(status.isGranted){
+      FlutterPaytabsBridge.startCardPayment(await generateConfig(), (event) {
+        if (event["status"] == "success") {
+          var transactionDetails = event["data"];
+          print(transactionDetails);
+          ToastComponent.showDialog("Payment Successful");
+          paymentSuccessful();
+        } else if (event["status"] == "error") {
+          paymentError();
+        } else if (event["status"] == "event") {
+          print("errror");
+        } else {
+          print("elase");
+        }
+      });
+    }
   }
 
   onPressPlaceOrder() {
