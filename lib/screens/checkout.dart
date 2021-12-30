@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_paytabs_bridge/BaseBillingShippingInfo.dart';
 import 'package:flutter_paytabs_bridge/IOSThemeConfiguration.dart';
@@ -20,7 +23,7 @@ import 'package:marekat/repositories/coupon_repository.dart';
 import 'package:marekat/repositories/payment_repository.dart';
 import 'package:marekat/screens/order_list.dart';
 import 'package:marekat/ui_sections/loader.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:path_provider/path_provider.dart';
 
 class Checkout extends StatefulWidget {
   int owner_id;
@@ -229,32 +232,41 @@ class _CheckoutState extends State<Checkout> {
     );
 
     var theme = IOSThemeConfigurations();
+    if(Platform.isAndroid){
+      theme.logoImage = "assets/logo.png";
+      configuration.iOSThemeConfigurations = theme;
+    }
 
+    /*if(Platform.isIOS){
+      Directory tempDir = await getTemporaryDirectory();
+      String tempPath = tempDir.path;
+      await PlatformAssetBundle().load('assets/logo.png').then((value) {
+        theme.logoImage = value.toString();
+        print(value);
+      });
+    }*/
+    /*
     theme.logoImage = "assets/logo.png";
-
-    configuration.iOSThemeConfigurations = theme;
+    configuration.iOSThemeConfigurations = theme;*/
 
     return configuration;
   }
 
   Future<void> payPressed() async {
-    var status = await Permission.mediaLibrary.request();
-    if(status.isGranted){
-      FlutterPaytabsBridge.startCardPayment(await generateConfig(), (event) {
-        if (event["status"] == "success") {
-          var transactionDetails = event["data"];
-          print(transactionDetails);
-          ToastComponent.showDialog("Payment Successful");
-          paymentSuccessful();
-        } else if (event["status"] == "error") {
-          paymentError();
-        } else if (event["status"] == "event") {
-          print("errror");
-        } else {
-          print("elase");
-        }
-      });
-    }
+    FlutterPaytabsBridge.startCardPayment(await generateConfig(), (event) {
+      if (event["status"] == "success") {
+        var transactionDetails = event["data"];
+        print(transactionDetails);
+        ToastComponent.showDialog("Payment Successful");
+        paymentSuccessful();
+      } else if (event["status"] == "error") {
+        paymentError();
+      } else if (event["status"] == "event") {
+        print("errror");
+      } else {
+        print("elase");
+      }
+    });
   }
 
   onPressPlaceOrder() {
