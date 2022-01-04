@@ -42,7 +42,7 @@ dependencies:
   flutter_offline: any
   location: ^4.3.0
   flutter_phoenix: ^1.0.0
-  flutter_paytabs_bridge: ^2.1.6
+  flutter_paytabs_bridge: ^2.1.8
 
 dev_dependencies:
   flutter_test:
