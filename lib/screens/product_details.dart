@@ -22,6 +22,7 @@ import 'package:marekat/repositories/wishlist_repository.dart';
 import 'package:marekat/screens/cart.dart';
 import 'package:marekat/screens/common_webview_screen.dart';
 import 'package:marekat/screens/full_screen_image.dart';
+import 'package:marekat/screens/login.dart';
 import 'package:marekat/screens/product_reviews.dart';
 import 'package:marekat/ui_elements/list_product_card.dart';
 import 'package:marekat/ui_elements/mini_product_card.dart';
@@ -203,6 +204,9 @@ class _ProductDetailsState extends State<ProductDetails> {
       ToastComponent.showDialog(
         "You need to log in",
       );
+      Navigator.push(context, MaterialPageRoute(builder: (builder) {
+        return Login();
+      }));
       return;
     }
 
@@ -316,7 +320,9 @@ class _ProductDetailsState extends State<ProductDetails> {
       ToastComponent.showDialog(
         S.of(context).youAreNotLoggedIn,
       );
-
+      Navigator.push(context, MaterialPageRoute(builder: (builder) {
+        return Login();
+      }));
       return;
     }
 
